@@ -1,0 +1,30 @@
+@import "styles/constants";
+
+.inputBox {
+  position: relative;
+  margin-bottom: 2.5rem;
+}
+
+.input {
+  width: 100%;
+  color: $charcoalGrey;
+  padding: 1.2rem;
+  border: 1px solid $grayFoggy;
+  font-size: 1.05rem;
+  letter-spacing: 0px;
+  background: $grayMilky;
+  border-radius: 5px;
+  font-weight: 600;
+}
+
+.notError,
+.error {
+  position: absolute;
+  display: none;
+  bottom: -1rem;
+  font-size: 0.75rem;
+}
+.error {
+  display: block;
+  color: $alertRed;
+}
