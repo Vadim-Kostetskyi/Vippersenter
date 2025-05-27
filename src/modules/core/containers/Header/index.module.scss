@@ -1,46 +1,5 @@
 @use "styles/colors" as *;
 
-.headerWrapper {
-  & > div:first-child {
-    padding: 25px 12px;
-    text-align: justify;
-    background-color: #454f5b;
-    color: $whiteColor;
-
-    span {
-      font-size: 12px;
-    }
-  }
-
-  & > div:last-child {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px 16px;
-  }
-
-  // & nav {
-  //   display: flex;
-  //   align-items: center;
-
-  //   img {
-  //     margin-right: 100px;
-  //   }
-
-  //   a:not(:last-child) {
-  //     margin-right: 30px;
-  //   }
-  // }
-}
-
-.image {
-  width: 23px;
-  height: 21px;
-  fill: $steelGray;
-}
-
-.button {
-  padding: 5px;
-  &:not(:last-child) {
-    margin-right: 5px;
-  }
+.search {
+  width: 24px;
 }

@@ -1,5 +1,7 @@
+import Header from "modules/core/containers/Header";
+
 const HomePage = () => {
-  return <></>;
+  return <Header />;
 };
 
 export default HomePage;
