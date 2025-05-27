@@ -1,8 +1,8 @@
 import { JSX } from "react";
 
 const Menu = ({ className }: { className?: string }): JSX.Element => (
-  <svg className={className} viewBox="-2 -2 28 28">
-    <path d="M3 13h18c0.552 0 1-0.448 1-1s-0.448-1-1-1h-18c-0.552 0-1 0.448-1 1s0.448 1 1 1zM3 7h18c0.552 0 1-0.448 1-1s-0.448-1-1-1h-18c-0.552 0-1 0.448-1 1s0.448 1 1 1zM3 19h18c0.552 0 1-0.448 1-1s-0.448-1-1-1h-18c-0.552 0-1 0.448-1 1s0.448 1 1 1z"></path>
+  <svg className={className} viewBox="-2 -2 28 28" width="24px" height="24px">
+    <path d="M5.333 14.667h16v2.667h-16zM5.333 8h21.333v2.667h-21.333zM5.333 24h9.647v-2.667h-9.647z"></path>
   </svg>
 );
 

@@ -10,7 +10,7 @@ const resources = {
     translation: translationEn,
     validation: validationEn,
   },
-  ua: {
+  nb: {
     translation: translationNb,
     validation: validationNb,
   },

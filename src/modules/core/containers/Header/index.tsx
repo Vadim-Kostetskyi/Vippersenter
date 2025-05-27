@@ -1,13 +1,17 @@
-import { useTranslation } from "react-i18next";
-import styles from "./index.module.scss";
 import Search from "assets/svg/Search";
+import Logo from "assets/svg/Logo";
+import BurgerMenu from "modules/core/components/BurgerMenu";
+import styles from "./index.module.scss";
 
 const Header = () => {
-  const { t } = useTranslation();
   return (
     <header className={styles.header}>
       <div className={styles.container}>
-        <Search className={styles.search} />
+        <button className={styles.searchBtn}>
+          <Search className={styles.search} />
+        </button>
+        <Logo className={styles.logo} />
+        <BurgerMenu />
       </div>
     </header>
   );
