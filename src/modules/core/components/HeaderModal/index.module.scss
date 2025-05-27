@@ -10,6 +10,7 @@
   opacity: 1;
   padding: 5px 0;
   background-color: $pageBackground;
+  animation: menuOpen 0.2s ease;
 }
 
 .top {
@@ -28,4 +29,15 @@
   padding: 5px;
   right: 15px;
   top: 9px;
+}
+
+@keyframes menuOpen {
+  0% {
+    opacity: 0;
+    transform: translateY(-1.5rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

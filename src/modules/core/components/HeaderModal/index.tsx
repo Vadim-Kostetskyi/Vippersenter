@@ -17,7 +17,9 @@ const HeaderModal: FC<HeaderModalProps> = ({ onClose }) => {
           <Cross />
         </button>
       </div>
-      <Categories />
+      <nav>
+        <Categories />
+      </nav>
     </div>
   );
 };
