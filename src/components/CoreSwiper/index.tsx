@@ -13,6 +13,7 @@ export type CoreSwiperProps = {
   navigation?: SwiperProps["navigation"];
   pagination?: SwiperProps["pagination"];
   autoplay?: SwiperProps["autoplay"];
+  slidesPerView?: number;
 };
 
 const CoreSwiper: FC<CoreSwiperProps> = ({
@@ -21,16 +22,19 @@ const CoreSwiper: FC<CoreSwiperProps> = ({
   modules,
   pagination,
   autoplay,
+  slidesPerView = 1,
 }) => (
   <Swiper
-    modules={[Navigation, EffectFade, ...(modules || [])]}
-    slidesPerView={1}
+    modules={[Navigation, ...(modules || [])]}
+    slidesPerView={slidesPerView}
+    spaceBetween={10}
     pagination={pagination}
     navigation={navigation}
     autoplay={autoplay}
     effect="fade"
     fadeEffect={{ crossFade: true }}
     rewind
+    watchOverflow={true}
   >
     {children}
   </Swiper>

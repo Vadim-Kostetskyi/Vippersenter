@@ -1,25 +1,20 @@
-import { ADDRESS, EMAILS, TELEPHONES } from "utils/constants";
+// import { ADDRESS, EMAILS, TELEPHONES } from "utils/constants";
 
 export const data = [
   {
-    title: "footer.navigation",
-    text: [
-      "footer.main",
-      "footer.catalog",
-      "footer.wholesale",
-      "footer.aboutUs",
-    ],
+    title: "footer.catalog",
+    text: [],
   },
   {
     title: "footer.ourContacts",
     subtitles: [
-      { subtitle: "footer.telephones", text: TELEPHONES },
-      { subtitle: "Email", text: EMAILS },
+      { subtitle: "footer.telephones", text: ["TELEPHONES"] },
+      { subtitle: "Email", text: ["EMAILS"] },
     ],
   },
   {
     title: "footer.ourAddress",
-    text: ADDRESS,
+    text: ["ADDRESS"],
   },
   {
     title: "footer.information",

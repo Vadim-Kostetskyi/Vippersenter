@@ -1,8 +1,8 @@
 import { FC } from "react";
 import Cross from "assets/svg/Cross";
 import Logo from "assets/svg/Logo";
+import CategoriesHeader from "components/CategoriesHeader/insex";
 import styles from "./index.module.scss";
-import Categories from "components/Categories/insex";
 
 interface HeaderModalProps {
   onClose: () => void;
@@ -18,7 +18,7 @@ const HeaderModal: FC<HeaderModalProps> = ({ onClose }) => {
         </button>
       </div>
       <nav>
-        <Categories />
+        <CategoriesHeader />
       </nav>
     </div>
   );

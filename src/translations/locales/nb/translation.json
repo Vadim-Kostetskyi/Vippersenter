@@ -4,5 +4,17 @@
     "glueForEyelashes": "Клей для вій",
     "remover": "Ремувер",
     "preparations": "Препарати"
-  }
+  },
+
+  "footer": {
+    "catalog": "Каталог",
+    "additionally": "Додатково",
+    "paymentAndDelivery": "Оплата і Доставка",
+    "exchangeAndReturn": "Обмін та повернення",
+    "ourAddress": "Наша Адреса",
+    "Contacts": "Контакти"
+  },
+
+  "popularProducts": "Популярні товари",
+  "newProducts": "Новинки"
 }

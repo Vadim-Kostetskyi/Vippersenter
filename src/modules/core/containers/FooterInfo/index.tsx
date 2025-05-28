@@ -1,9 +1,11 @@
 import { useTranslation } from "react-i18next";
 import { data } from "./data";
 import styles from "./index.module.scss";
+import CategoryNames from "../../../../components/CategoryNames";
 
 const FooterInfo = () => {
   const { t } = useTranslation();
+  const { list } = CategoryNames(t);
 
   return (
     <div className={styles.wrapper}>
@@ -17,9 +19,11 @@ const FooterInfo = () => {
                 {subtitles.map(({ subtitle, text }) => (
                   <>
                     <p className={styles.subtitle}>{t(subtitle)}</p>
-                    {text.map((item) => (
-                      <p className={styles.text}>{item}</p>
-                    ))}
+                    {text
+                      ? text.map((item) => (
+                          <p className={styles.text}>{item}</p>
+                        ))
+                      : null}
                   </>
                 ))}
               </li>
@@ -35,7 +39,9 @@ const FooterInfo = () => {
             <li>
               <nav>
                 <p className={styles.title}>{t(title)}</p>
-                {text ? text.map((item) => <a href="#">{t(item)}</a>) : null}
+                {list.map(({ label }) => (
+                  <a href="#">{label}</a>
+                ))}
               </nav>
             </li>
           )
