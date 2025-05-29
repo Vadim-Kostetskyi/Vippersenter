@@ -1,5 +1,4 @@
 import CoreSwiper from "components/CoreSwiper";
-import React from "react";
 import { SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade } from "swiper/modules";
 import { slides } from "./slides";
@@ -24,7 +23,7 @@ const Banner = () => (
       }}
       rewind={true}
     >
-      {slides.map(({ text, image, imageSmall, id }) => (
+      {slides.map(({ text, image, imageSmall }) => (
         <SwiperSlide>
           <div className={styles.itemsWrapper}>
             <picture>

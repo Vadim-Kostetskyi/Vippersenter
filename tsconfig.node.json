@@ -6,16 +6,6 @@
     "lib": ["ES2023"],
     "module": "ESNext",
     "skipLibCheck": true,
-    "baseUrl": "./src",
-    "paths": {
-      "src": ["./src/*"],
-      "modules": ["./src/modules/*"],
-      "components": ["./src/components/*"],
-      "assets": ["./src/assets/*"],
-      "styles": ["./src/styles/*"],
-      "helpers": ["./src/helpers/*"],
-      "utils": ["./src/utils/*"]
-    },
 
     /* Bundler mode */
     "moduleResolution": "bundler",

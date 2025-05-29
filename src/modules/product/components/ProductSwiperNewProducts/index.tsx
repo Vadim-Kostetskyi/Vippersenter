@@ -1,5 +1,4 @@
 import { SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper/modules";
 import { useTranslation } from "react-i18next";
 import CoreSwiper from "components/CoreSwiper";
 import styles from "./index.module.scss";

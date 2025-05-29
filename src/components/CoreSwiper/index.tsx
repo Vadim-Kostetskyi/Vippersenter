@@ -1,6 +1,6 @@
-import React, { FC, ReactNode } from "react";
+import { FC, ReactNode } from "react";
 import { Swiper, SwiperProps } from "swiper/react";
-import { Navigation, EffectFade } from "swiper/modules";
+import { Navigation } from "swiper/modules";
 import "swiper/scss";
 import "swiper/scss/navigation";
 import "swiper/scss/pagination";
