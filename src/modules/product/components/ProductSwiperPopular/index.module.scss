@@ -13,8 +13,12 @@
 }
 
 .itemsWrapper {
+  display: flex;
+  align-items: center;
   overflow: hidden;
   margin-bottom: 10px;
+  // width: 255px;
+  height: 255px;
 
   & img {
     width: 100%;
