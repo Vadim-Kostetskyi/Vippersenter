@@ -29,7 +29,7 @@ const ProductSwiperPopular = () => {
             </div>
             <div className={styles.info}>
               <p>{text}</p>
-              <p>{price}</p>
+              <p className={styles.price}>{price}</p>
               <a href="#">Перейти на товар</a>
             </div>
           </SwiperSlide>
