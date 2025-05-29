@@ -1,6 +1,7 @@
 @use "styles/colors" as *;
 
 .wrapper {
+  margin-bottom: 100px;
   :global(.swiper-button-prev) {
     &::after {
       content: url(../../../../assets/svg/ArrowSwiper.svg);

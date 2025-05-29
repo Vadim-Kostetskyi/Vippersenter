@@ -3,6 +3,7 @@ import Categories from "modules/core/containers/Categories";
 import Footer from "modules/core/containers/Footer";
 import Header from "modules/core/containers/Header";
 import MenuBar from "modules/core/containers/MenuBar";
+import NewProducts from "modules/product/containers/NewProducts";
 import PopularProducts from "modules/product/containers/PopularProducts";
 
 const HomePage = () => {
@@ -14,6 +15,7 @@ const HomePage = () => {
         <Banner />
         <Categories />
         <PopularProducts />
+        <NewProducts />
       </main>
       <Footer />
     </>
