@@ -1,18 +1,21 @@
 @use "styles/colors" as *;
 
 .wrapper {
-  background-color: $darkNavy;
   padding: 32px 15px 0;
+  color: $gunmetal;
+  background: $footerBackground;
+  text-align: center;
+
   & p {
-    color: $whiteColor;
+    color: $gunmetal;
   }
 
   & > ul {
     display: flex;
     flex-wrap: wrap;
     gap: 25px;
-    padding-bottom: 25px;
-    border-bottom: 1px solid $whiteGhost;
+    margin-bottom: 20px;
+    text-align: start;
   }
   li {
     width: calc(50% - 15px);
@@ -27,21 +30,25 @@
     font-size: 14px;
     font-weight: 300;
     padding-bottom: 15px;
-    color: $whiteColor;
+    color: $gunmetal;
+
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+    }
   }
+}
+
+.logo {
+  width: 160px;
+  height: 60px;
+  margin-bottom: 30px;
 }
 
 .title {
   font-size: 20px;
   font-weight: 500;
   margin-bottom: 20px;
-}
-
-.subtitle {
-  font-size: 12px;
-  font-weight: 300;
-  color: $cloudGray !important;
-  margin-bottom: 15px;
 }
 
 .text {
@@ -55,6 +62,5 @@
   font-size: 12px;
   & p {
     text-align: center;
-    color: rgba(255, 255, 255, 0.6);
   }
 }
