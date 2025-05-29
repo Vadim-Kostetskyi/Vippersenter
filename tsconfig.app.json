@@ -8,9 +8,9 @@
     "skipLibCheck": true,
     "baseUrl": "./src",
     "paths": {
-      "src/*": ["./src/*"],
-      "modules/*": ["./src/modules/*"],
-      "components/*": ["./src/components/*"],
+      "src": ["./src/*"],
+      "modules": ["./src/modules/*"],
+      "components": ["./src/components/*"],
       "assets": ["./src/assets/*"],
       "styles": ["./src/styles/*"],
       "helpers": ["./src/helpers/*"],

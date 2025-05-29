@@ -14,22 +14,30 @@ const FooterInfo = () => {
 
       <ul>
         {data.map(({ title, text }, index) => (
-          <li>
+          <li key={title}>
             <p className={styles.title}>{t(title)}</p>
             {index ? (
               index === 1 ? (
                 <nav>
                   {text.map((item) => (
-                    <a href="#">{t(item)}</a>
+                    <a href="#" key={item}>
+                      {t(item)}
+                    </a>
                   ))}
                 </nav>
               ) : (
-                text.map((item) => <p className={styles.text}>{t(item)}</p>)
+                text.map((item) => (
+                  <p className={styles.text} key={item}>
+                    {t(item)}
+                  </p>
+                ))
               )
             ) : (
               <nav>
                 {list.map(({ label }) => (
-                  <a href="#">{label}</a>
+                  <a href="#" key={label}>
+                    {label}
+                  </a>
                 ))}
               </nav>
             )}

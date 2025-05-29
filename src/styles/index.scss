@@ -50,20 +50,20 @@ main {
   padding-inline: 15px;
 }
 
-.swiper {
-  .swiper-button-prev {
-    &::after {
-      content: url(../assets/svg/ArrowSwiper.svg);
-    }
-    cursor: pointer;
-    opacity: 0.5;
-  }
-  .swiper-button-next {
-    @extend .swiper-button-prev;
-    transform: rotate(0.5turn);
-  }
+// .swiper {
+//   .swiper-button-prev {
+//     &::after {
+//       content: url(../assets/svg/ArrowSwiper.svg);
+//     }
+//     cursor: pointer;
+//     opacity: 0.5;
+//   }
+//   .swiper-button-next {
+//     @extend .swiper-button-prev;
+//     transform: rotate(0.5turn);
+//   }
 
-  .swiper-button-disabled {
-    display: none;
-  }
-}
+//   .swiper-button-disabled {
+//     display: none;
+//   }
+// }

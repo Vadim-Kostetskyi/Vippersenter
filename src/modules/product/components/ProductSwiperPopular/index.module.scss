@@ -10,6 +10,25 @@
     margin-bottom: 15px;
     text-align: center;
   }
+
+  :global(.swiper-button-prev) {
+    &::after {
+      content: url(../../../../assets/svg/ArrowSwiper.svg);
+    }
+    cursor: pointer;
+  }
+  :global(.swiper-button-next) {
+    &::after {
+      content: url(../../../../assets/svg/ArrowSwiper.svg);
+      rotate: 180deg;
+      transform: translateY(-8px);
+    }
+    cursor: pointer;
+  }
+
+  :global(.swiper-button-disabled) {
+    display: none;
+  }
 }
 
 .itemsWrapper {

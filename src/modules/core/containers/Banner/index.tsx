@@ -22,9 +22,10 @@ const Banner = () => (
       autoplay={{
         delay: 5000,
       }}
+      rewind={true}
     >
       {slides.map(({ text, image, imageSmall, id }) => (
-        <SwiperSlide key={id}>
+        <SwiperSlide>
           <div className={styles.itemsWrapper}>
             <picture>
               <source media="(max-width: 480px)" srcSet={imageSmall} />

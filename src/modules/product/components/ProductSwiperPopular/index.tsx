@@ -11,16 +11,9 @@ const ProductSwiperPopular = () => {
   return (
     <div className={styles.wrapper}>
       <h1>{t("popularProducts")}</h1>
-      <CoreSwiper
-        modules={[Pagination]}
-        navigation={true}
-        autoplay={{
-          delay: 5000,
-        }}
-        slidesPerView={2}
-      >
-        {slides.map(({ text, image, imageSmall, id, price }) => (
-          <SwiperSlide key={id}>
+      <CoreSwiper modules={[Pagination]} navigation={true} slidesPerView={2}>
+        {slides.map(({ text, image, imageSmall, price }) => (
+          <SwiperSlide>
             <div className={styles.itemsWrapper}>
               <picture>
                 <source media="(max-width: 480px)" srcSet={imageSmall} />
