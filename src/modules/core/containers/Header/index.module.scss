@@ -1,7 +1,11 @@
 @use "styles/colors" as *;
 
 .header {
-  padding: 5px 0;
+  position: fixed;
+  width: 100%;
+  padding: 5px 15px;
+  background-color: $pageBackground;
+  z-index: 10000;
 }
 
 .container {

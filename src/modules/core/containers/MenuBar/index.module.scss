@@ -1,0 +1,42 @@
+@use "styles/colors" as *;
+
+.menuBar {
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
+  bottom: 0;
+  width: 100%;
+  padding: 0 0 5px;
+  background-color: $pageBackground;
+  z-index: 10000;
+
+  & li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 140px;
+    height: 60px;
+  }
+
+  & a {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    font-size: 12px;
+
+    &:hover,
+    &:focus {
+      background-color: $grayDark;
+    }
+  }
+}
+
+.icon {
+  width: 22px;
+  margin-bottom: 5px;
+}

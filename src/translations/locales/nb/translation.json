@@ -12,7 +12,9 @@
     "paymentAndDelivery": "Оплата і Доставка",
     "exchangeAndReturn": "Обмін та повернення",
     "ourAddress": "Наша Адреса",
-    "Contacts": "Контакти"
+    "Contacts": "Контакти",
+    "main": "Головна",
+    "shoppingCart": "Кошик"
   },
 
   "popularProducts": "Популярні товари",
