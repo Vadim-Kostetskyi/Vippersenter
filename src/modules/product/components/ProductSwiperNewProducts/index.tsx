@@ -1,8 +1,9 @@
 import { SwiperSlide } from "swiper/react";
 import { useTranslation } from "react-i18next";
 import CoreSwiper from "components/CoreSwiper";
-import styles from "./index.module.scss";
 import { slides } from "./slides";
+import { breakpoints } from "utils/constants";
+import styles from "./index.module.scss";
 
 const ProductSwiperNewProducts = () => {
   const { t } = useTranslation();
@@ -10,7 +11,7 @@ const ProductSwiperNewProducts = () => {
   return (
     <div className={styles.wrapper}>
       <h1>{t("newProducts")}</h1>
-      <CoreSwiper navigation={true} slidesPerView={2}>
+      <CoreSwiper navigation={true} slidesPerView={2} breakpoints={breakpoints}>
         {slides.map(({ text, image, imageSmall, price }) => (
           <SwiperSlide>
             <div className={styles.itemsWrapper}>

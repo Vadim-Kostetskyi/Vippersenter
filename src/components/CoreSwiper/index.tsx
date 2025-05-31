@@ -1,5 +1,6 @@
 import { FC, ReactNode } from "react";
 import { Swiper, SwiperProps } from "swiper/react";
+import { SwiperOptions } from "swiper/types";
 import { Navigation } from "swiper/modules";
 import "swiper/scss";
 import "swiper/scss/navigation";
@@ -15,6 +16,12 @@ export type CoreSwiperProps = {
   autoplay?: SwiperProps["autoplay"];
   slidesPerView?: number;
   rewind?: boolean;
+  breakpoints?:
+    | {
+        [width: number]: SwiperOptions;
+        [ratio: string]: SwiperOptions;
+      }
+    | undefined;
 };
 
 const CoreSwiper: FC<CoreSwiperProps> = ({
@@ -25,6 +32,7 @@ const CoreSwiper: FC<CoreSwiperProps> = ({
   autoplay,
   slidesPerView = 1,
   rewind = false,
+  breakpoints,
 }) => (
   <Swiper
     modules={[Navigation, ...(modules || [])]}
@@ -37,6 +45,7 @@ const CoreSwiper: FC<CoreSwiperProps> = ({
     fadeEffect={{ crossFade: true }}
     rewind={rewind}
     watchOverflow={true}
+    breakpoints={breakpoints}
   >
     {children}
   </Swiper>

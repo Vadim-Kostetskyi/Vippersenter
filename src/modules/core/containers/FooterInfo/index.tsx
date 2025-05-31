@@ -10,40 +10,41 @@ const FooterInfo = () => {
 
   return (
     <div className={styles.wrapper}>
-      <Logo className={styles.logo} />
-
-      <ul>
-        {data.map(({ title, text }, index) => (
-          <li key={title}>
-            <p className={styles.title}>{t(title)}</p>
-            {index ? (
-              index === 1 ? (
-                <nav>
-                  {text.map((item) => (
-                    <a href="#" key={item}>
+      <div>
+        <Logo className={styles.logo} />
+        <ul>
+          {data.map(({ title, text }, index) => (
+            <li key={title}>
+              <p className={styles.title}>{t(title)}</p>
+              {index ? (
+                index === 1 ? (
+                  <nav>
+                    {text.map((item) => (
+                      <a href="#" key={item}>
+                        {t(item)}
+                      </a>
+                    ))}
+                  </nav>
+                ) : (
+                  text.map((item) => (
+                    <p className={styles.text} key={item}>
                       {t(item)}
+                    </p>
+                  ))
+                )
+              ) : (
+                <nav>
+                  {list.map(({ label }) => (
+                    <a href="#" key={label}>
+                      {label}
                     </a>
                   ))}
                 </nav>
-              ) : (
-                text.map((item) => (
-                  <p className={styles.text} key={item}>
-                    {t(item)}
-                  </p>
-                ))
-              )
-            ) : (
-              <nav>
-                {list.map(({ label }) => (
-                  <a href="#" key={label}>
-                    {label}
-                  </a>
-                ))}
-              </nav>
-            )}
-          </li>
-        ))}
-      </ul>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
       <div className={styles.copyright}>
         <p>@ EFFECT 2023</p>
       </div>

@@ -2,8 +2,9 @@ import { SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import { useTranslation } from "react-i18next";
 import CoreSwiper from "components/CoreSwiper";
-import styles from "./index.module.scss";
 import { slides } from "./slides";
+import { breakpoints } from "utils/constants";
+import styles from "./index.module.scss";
 
 const ProductSwiperPopular = () => {
   const { t } = useTranslation();
@@ -11,7 +12,12 @@ const ProductSwiperPopular = () => {
   return (
     <div className={styles.wrapper}>
       <h1>{t("popularProducts")}</h1>
-      <CoreSwiper modules={[Pagination]} navigation={true} slidesPerView={2}>
+      <CoreSwiper
+        modules={[Pagination]}
+        navigation={true}
+        slidesPerView={2}
+        breakpoints={breakpoints}
+      >
         {slides.map(({ text, image, imageSmall, price }) => (
           <SwiperSlide>
             <div className={styles.itemsWrapper}>
