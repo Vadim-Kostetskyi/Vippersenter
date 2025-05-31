@@ -1,0 +1,11 @@
+@use "styles/bootstrap" as *;
+
+.search {
+  width: 24px;
+}
+
+.searchBtn {
+  &:hover {
+    scale: 1.1;
+  }
+}
