@@ -2,6 +2,10 @@
 
 .search {
   width: 24px;
+
+  @include media(laptop) {
+    display: none;
+  }
 }
 
 .searchBtn {

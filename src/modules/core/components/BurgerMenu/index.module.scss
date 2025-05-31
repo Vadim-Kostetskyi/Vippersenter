@@ -1,1 +1,7 @@
 @use "styles/bootstrap" as *;
+
+.menuBtn {
+  @include media(laptop) {
+    display: none;
+  }
+}
