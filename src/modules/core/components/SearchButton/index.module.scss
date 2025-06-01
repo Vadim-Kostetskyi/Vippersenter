@@ -1,7 +1,9 @@
 @use "styles/bootstrap" as *;
 
-.search {
-  width: 24px;
+.searchBtnMobile {
+  &:hover {
+    scale: 1.1;
+  }
 
   @include media(laptop) {
     display: none;
@@ -9,7 +11,13 @@
 }
 
 .searchBtn {
+  margin-right: 25px;
+
   &:hover {
     scale: 1.1;
   }
+}
+
+.search {
+  width: 24px;
 }
