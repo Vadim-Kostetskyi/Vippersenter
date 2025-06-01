@@ -27,13 +27,14 @@ const Banner = () => (
         <SwiperSlide>
           <div className={styles.itemsWrapper}>
             <picture>
-              <source media="(max-width: 480px)" srcSet={imageSmall} />
+              <source media="(max-width: 960px)" srcSet={imageSmall} />
               <img src={image} alt={text} className={styles.image} />
             </picture>
           </div>
         </SwiperSlide>
       ))}
     </CoreSwiper>
+    <img src="" alt="" />
   </div>
 );
 

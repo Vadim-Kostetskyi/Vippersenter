@@ -1,4 +1,4 @@
-import { SlidesProps } from "modules/core/containers/Banner";
+import { SlidesProps } from "modules/core/components/Banner";
 import Slide1 from "assets/image/popular/img_3502.webp";
 import Slide2 from "assets/image/popular/img_3855-scaled.webp";
 import Slide3 from "assets/image/popular/img_4860-3-scaled.webp";
