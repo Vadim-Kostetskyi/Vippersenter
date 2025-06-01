@@ -2,7 +2,7 @@
 
 export const data = [
   {
-    title: "footer.catalog",
+    title: "catalog",
     text: [],
   },
   {

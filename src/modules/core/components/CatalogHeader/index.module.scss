@@ -1,1 +1,63 @@
 @use "styles/bootstrap" as *;
+
+.catalogHeader {
+  position: relative;
+
+  &:focus .subMenu,
+  &:hover .subMenu {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.lickBox {
+  padding: 8px 13px;
+  background-color: $backdropColor;
+}
+
+.link {
+  color: $whiteColor;
+
+  &:visited {
+    color: $whiteColor;
+  }
+}
+
+.subMenu {
+  position: absolute;
+  visibility: hidden;
+  top: 32px;
+  opacity: 0;
+  transform: translateY(1.5rem);
+  transition: all 0.2s ease;
+
+  & ul {
+    width: 100%;
+    margin-right: 70px;
+    padding: 15px 20px;
+    margin-top: 15px;
+    background-color: $pageBackground;
+    box-shadow: (0 3px 4px rgba(0, 0, 0, 0.1));
+  }
+
+  & li:not(:last-child) {
+    margin-bottom: 10px;
+  }
+
+  & a {
+    text-transform: uppercase;
+    color: $backdropColor;
+  }
+}
+
+@keyframes listOpen {
+  0% {
+    opacity: 0;
+    transform: translateY(-1.5rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

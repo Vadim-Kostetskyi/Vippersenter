@@ -4,7 +4,7 @@ import styles from "./index.module.scss";
 
 const HeaderIcons = () => {
   return (
-    <div>
+    <div className={styles.headerIcons}>
       <SearchButton isLaptop={true} />
       <ShoppingBag />
     </div>

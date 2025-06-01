@@ -6,11 +6,16 @@
   padding: 5px 15px;
   background-color: $pageBackground;
   z-index: 10000;
+
+  @include media(laptop) {
+    padding: 10px 15px;
+  }
 }
 
 .container {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .logo {

@@ -17,7 +17,7 @@ const MenuBar = () => {
       <li>
         <a href="#">
           <Catalog className={styles.icon} />
-          {t("footer.catalog")}
+          {t("catalog")}
         </a>
       </li>
       <li>

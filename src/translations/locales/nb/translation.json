@@ -6,8 +6,12 @@
     "preparations": "Препарати"
   },
 
+  "header": {
+    "aboutUs": "Про нас",
+    "cooperation": "Співпраця"
+  },
+
   "footer": {
-    "catalog": "Каталог",
     "additionally": "Додатково",
     "paymentAndDelivery": "Оплата і Доставка",
     "exchangeAndReturn": "Обмін та повернення",
@@ -17,6 +21,7 @@
     "shoppingCart": "Кошик"
   },
 
+  "catalog": "Каталог",
   "popularProducts": "Популярні товари",
   "newProducts": "Новинки"
 }
