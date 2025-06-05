@@ -7,6 +7,12 @@
 
   & img {
     width: 100%;
+    transition: transform 0.8s ease;
+  }
+
+  &:hover img,
+  &:focus img {
+    transform: scale(1.05);
   }
 
   &::after {
@@ -19,6 +25,11 @@
     background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
     pointer-events: none;
     z-index: 1;
+  }
+
+  @include media(laptopMedium) {
+    max-width: 485px;
+    height: 290px;
   }
 }
 
@@ -37,7 +48,8 @@
   z-index: 10;
 
   & > span {
-    font-size: 25px;
+    font-size: 18px;
+    letter-spacing: 0.1rem;
   }
 }
 

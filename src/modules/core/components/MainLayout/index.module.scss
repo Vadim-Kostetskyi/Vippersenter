@@ -8,7 +8,7 @@
   max-width: $max-content-width;
   width: calc(100% - 16px);
 
-  @include media(laptop) {
+  @include media(laptopMedium) {
     width: calc(100% - 15rem);
   }
   @include media(mobile) {
