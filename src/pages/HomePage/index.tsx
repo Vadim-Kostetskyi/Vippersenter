@@ -7,7 +7,7 @@ import { useGetProductsQuery } from "storeRedux/productsApi";
 import MainLayout from "modules/core/components/MainLayout";
 
 const HomePage = () => {
-  const { data: products, error, isLoading } = useGetProductsQuery();
+  const { data: products } = useGetProductsQuery();
   console.log(products);
 
   return (
