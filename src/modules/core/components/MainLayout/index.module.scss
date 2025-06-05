@@ -5,8 +5,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: calc(100% - 40px);
   max-width: $max-content-width;
-  width: calc(100% - 16px);
+  margin-bottom: auto;
 
   @include media(laptopMedium) {
     width: calc(100% - 15rem);

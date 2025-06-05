@@ -21,6 +21,13 @@
     "shoppingCart": "Кошик"
   },
 
+  "login": {
+    "login": "Вхід",
+    "usernameOrEmailAddress": "Ім'я користувача або електронна пошта",
+    "password": "Пароль",
+    "logInToSystem": "Увійти в систему"
+  },
+
   "catalog": "Каталог",
   "popularProducts": "Популярні товари",
   "newProducts": "Новинки",

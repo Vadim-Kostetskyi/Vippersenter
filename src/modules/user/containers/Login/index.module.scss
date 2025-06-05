@@ -1,0 +1,33 @@
+@use "styles/bootstrap" as *;
+
+.login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+
+  @include media(laptopMedium) {
+    justify-content: space-between;
+  }
+}
+
+.formBox {
+  width: 100%;
+  @include media(laptopMedium) {
+    margin-left: -50px;
+    width: 50%;
+  }
+}
+
+.imageBox {
+  display: none;
+  margin-right: -10vw;
+  width: 50vw;
+  overflow: hidden;
+  @include media(laptopMedium) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

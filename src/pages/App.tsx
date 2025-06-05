@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import HomePage from "./HomePage";
-import Login from "modules/user/conteiners/Login";
+import LoginPage from "./LoginPage";
 
 function App() {
   const admin = import.meta.env.VITE_ADMIN_KEY;
@@ -8,7 +8,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path={admin} element={<Login />} />
+      <Route path={admin} element={<LoginPage />} />
     </Routes>
   );
 }

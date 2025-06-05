@@ -1,6 +1,7 @@
 import { FC, ReactNode } from "react";
 import Header from "modules/core/containers/Header";
 import Footer from "modules/core/containers/Footer";
+import MenuBar from "../MenuBar";
 import styles from "./index.module.scss";
 
 interface MainLayoutProps {
@@ -9,8 +10,9 @@ interface MainLayoutProps {
 
 const MainLayout: FC<MainLayoutProps> = ({ children }) => (
   <>
+    <MenuBar />
     <Header />
-    <div className={styles.main}>{children}</div>
+    <main className={styles.main}>{children}</main>
     <Footer />
   </>
 );
