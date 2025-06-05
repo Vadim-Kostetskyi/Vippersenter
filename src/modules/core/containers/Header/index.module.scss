@@ -2,13 +2,18 @@
 
 .header {
   position: fixed;
-  width: 100%;
-  padding: 5px 15px;
+  width: calc(100% - 16px);
+  max-width: $max-content-width;
+  padding: 5px 0;
   background-color: $pageBackground;
   z-index: 10000;
 
   @include media(laptop) {
-    padding: 10px 15px;
+    width: calc(100% - 15rem);
+    padding: 10px 0;
+  }
+  @include media(mobile) {
+    width: calc(100% - 30px);
   }
 }
 

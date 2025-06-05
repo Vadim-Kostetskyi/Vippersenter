@@ -34,7 +34,7 @@ const Banner = () => (
         </SwiperSlide>
       ))}
     </CoreSwiper>
-    <img src="" alt="" />
+    {/* <img src="" alt="" /> */}
   </div>
 );
 

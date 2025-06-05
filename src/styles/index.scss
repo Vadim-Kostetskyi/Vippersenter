@@ -42,28 +42,13 @@ body {
 }
 
 #root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
   min-height: 100vh;
 }
 
 main {
-  padding-inline: 15px;
+  width: 100%;
 }
-
-// .swiper {
-//   .swiper-button-prev {
-//     &::after {
-//       content: url(../assets/svg/ArrowSwiper.svg);
-//     }
-//     cursor: pointer;
-//     opacity: 0.5;
-//   }
-//   .swiper-button-next {
-//     @extend .swiper-button-prev;
-//     transform: rotate(0.5turn);
-//   }
-
-//   .swiper-button-disabled {
-//     display: none;
-//   }
-// }

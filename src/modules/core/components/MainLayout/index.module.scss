@@ -1,0 +1,21 @@
+@use "styles/bootstrap" as *;
+
+.main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: $max-content-width;
+  width: calc(100% - 16px);
+
+  @include media(laptop) {
+    width: calc(100% - 15rem);
+  }
+  @include media(mobile) {
+    width: calc(100% - 30px);
+  }
+}
+
+.mainMaxHeight {
+  height: 100%;
+}

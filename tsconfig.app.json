@@ -14,7 +14,8 @@
       "assets": ["./src/assets/*"],
       "styles": ["./src/styles/*"],
       "helpers": ["./src/helpers/*"],
-      "utils": ["./src/utils/*"]
+      "utils": ["./src/utils/*"],
+      "storeRedux": ["src/storeRedux/*"]
     },
 
     /* Bundler mode */

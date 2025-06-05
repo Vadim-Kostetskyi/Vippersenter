@@ -8,6 +8,7 @@ $laptopMedium: 1150px;
 $laptop: 1280px;
 $desktopUp: 1281px;
 $desktop: 1440px;
+$max-content-width: 1440px;
 
 @mixin media($breakpoint) {
   @if $breakpoint ==mobile {

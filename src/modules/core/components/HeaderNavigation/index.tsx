@@ -11,11 +11,11 @@ const HeaderNavigation = () => {
       <ul>
         {list.map((item, index) =>
           index ? (
-            <li>
+            <li key={item}>
               <a href="#">{t(item)}</a>
             </li>
           ) : (
-            <li>
+            <li key={item}>
               <CatalogHeader />
             </li>
           )
