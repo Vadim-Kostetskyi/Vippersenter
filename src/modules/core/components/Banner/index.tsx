@@ -8,7 +8,7 @@ import styles from "./index.module.scss";
 export interface SlidesProps {
   id: number;
   image: string;
-  imageSmall: string;
+  imageSmall?: string;
   text: string;
   price?: string;
 }

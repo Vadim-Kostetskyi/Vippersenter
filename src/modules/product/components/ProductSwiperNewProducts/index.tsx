@@ -23,7 +23,7 @@ const ProductSwiperNewProducts = () => {
             <div className={styles.info}>
               <p>{text}</p>
               <p className={styles.price}>{price}</p>
-              <a href="#">Перейти на товар</a>
+              <a href="#">{t("goToProduct")}</a>
             </div>
           </SwiperSlide>
         ))}

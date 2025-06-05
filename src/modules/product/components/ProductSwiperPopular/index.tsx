@@ -18,18 +18,17 @@ const ProductSwiperPopular = () => {
         slidesPerView={2}
         breakpoints={breakpoints}
       >
-        {slides.map(({ text, image, imageSmall, price }) => (
+        {slides.map(({ text, image, price }) => (
           <SwiperSlide>
             <div className={styles.itemsWrapper}>
               <picture>
-                <source media="(max-width: 480px)" srcSet={imageSmall} />
                 <img src={image} alt={text} className={styles.image} />
               </picture>
             </div>
             <div className={styles.info}>
               <p>{text}</p>
               <p className={styles.price}>{price}</p>
-              <a href="#">Перейти на товар</a>
+              <a href="#">{t("goToProduct")}</a>
             </div>
           </SwiperSlide>
         ))}
