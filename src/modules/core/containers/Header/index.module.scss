@@ -1,12 +1,20 @@
 @use "styles/bootstrap" as *;
 
-.header {
+header {
   position: fixed;
-  width: calc(100% - 16px);
-  max-width: $max-content-width;
+  width: 100%;
   padding: 5px 0;
   background-color: $pageBackground;
   z-index: 10000;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: auto;
+  width: calc(100% - 16px);
+  max-width: $max-content-width;
 
   @include media(laptop) {
     width: calc(100% - 15rem);
@@ -15,12 +23,6 @@
   @include media(mobile) {
     width: calc(100% - 30px);
   }
-}
-
-.container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .logo {

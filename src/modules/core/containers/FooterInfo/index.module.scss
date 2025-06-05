@@ -53,6 +53,10 @@
       text-decoration: underline;
     }
   }
+
+  @include media(laptop) {
+    margin-bottom: 0;
+  }
 }
 
 .logo {

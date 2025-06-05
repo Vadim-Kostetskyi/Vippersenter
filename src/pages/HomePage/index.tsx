@@ -13,9 +13,9 @@ const HomePage = () => {
   return (
     <>
       <MenuBar />
+      <Banner />
       <MainLayout>
         <main>
-          <Banner />
           <Categories />
           <PopularProducts />
           <NewProducts />

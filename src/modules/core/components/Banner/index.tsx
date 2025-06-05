@@ -17,6 +17,7 @@ const Banner = () => (
   <div className={styles.wrapper}>
     <CoreSwiper
       modules={[EffectFade, Autoplay]}
+      autoHeight={true}
       navigation={true}
       autoplay={{
         delay: 5000,

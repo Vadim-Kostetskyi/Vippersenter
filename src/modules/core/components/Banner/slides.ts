@@ -6,7 +6,7 @@ export const slides: SlidesProps[] = [
   {
     id: 0,
     text: "Banner",
-    image: BannerMobile,
+    image: Banner,
     imageSmall: BannerMobile,
   },
   {
