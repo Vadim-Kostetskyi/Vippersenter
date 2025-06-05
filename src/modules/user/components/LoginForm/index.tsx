@@ -27,6 +27,10 @@ const LoginForm = () => {
           {t("login.password")} <span>*</span>
         </label>
         <input type="password" id="password" name="password" required />
+        <div className={styles.checkbox}>
+          <input type="checkbox" id="rememberMe" name="rememberMe" />
+          <label htmlFor="rememberMe">{t("login.rememberMe")}</label>
+        </div>
 
         <button type="submit">{t("login.logInToSystem")}</button>
       </form>

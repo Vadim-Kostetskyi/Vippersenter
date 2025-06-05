@@ -25,7 +25,8 @@
     "login": "Вхід",
     "usernameOrEmailAddress": "Ім'я користувача або електронна пошта",
     "password": "Пароль",
-    "logInToSystem": "Увійти в систему"
+    "logInToSystem": "Увійти в систему",
+    "rememberMe": "Зам'ятайти мене"
   },
 
   "catalog": "Каталог",
