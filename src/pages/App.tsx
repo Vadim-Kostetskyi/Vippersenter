@@ -5,12 +5,13 @@ import PrivateRoute from "storeRedux/PrivateRoute";
 import Dashboard from "modules/product/containers/Dashboard";
 
 function App() {
-  const admin = import.meta.env.VITE_LOGIN_KEY;
+  // const admin = import.meta.env.VITE_LOGIN_KEY;
 
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path={admin} element={<LoginPage />} />
+      {/* <Route path={admin} element={<LoginPage />} /> */}
+      <Route path="/login" element={<LoginPage />} />
       <Route
         path="/dashboard"
         element={
