@@ -29,6 +29,12 @@
     "rememberMe": "Зам'ятайти мене"
   },
 
+  "product": {
+    "title": "назва",
+    "price": "ціна",
+    "quantity": "кількість"
+  },
+
   "catalog": "Каталог",
   "popularProducts": "Популярні товари",
   "newProducts": "Новинки",
