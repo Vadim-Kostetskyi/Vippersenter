@@ -20,4 +20,13 @@ const PrivateRoute = ({ children }: { children: JSX.Element }) => {
   return children;
 };
 
+// const PrivateRoute = ({ children }: { children: JSX.Element }) => {
+//   const { data, isLoading, isError } = useGetCurrentUserQuery();
+
+//   if (isLoading) return <div>Loading...</div>;
+//   if (isError) return <Navigate to="/login" replace />;
+
+//   return children;
+// };
+
 export default PrivateRoute;
