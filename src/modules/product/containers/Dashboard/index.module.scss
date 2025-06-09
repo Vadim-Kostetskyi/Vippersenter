@@ -1,6 +1,7 @@
 @use "styles/bootstrap" as *;
 
 .dashboard {
-  width: 100%;
-  margin-top: 70px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }

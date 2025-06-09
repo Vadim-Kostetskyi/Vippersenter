@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import React from "react";
+import styles from "./index.module.scss";
 
 type Product = {
   name: string;
@@ -77,11 +78,7 @@ const ProductsTable = () => {
   }, {});
 
   return (
-    <table
-      border={1}
-      cellPadding={8}
-      style={{ borderCollapse: "collapse", width: "100%" }}
-    >
+    <table border={1} cellPadding={8} className={styles.productsTable}>
       <thead>
         <tr>
           <th>{t("product.title")}</th>

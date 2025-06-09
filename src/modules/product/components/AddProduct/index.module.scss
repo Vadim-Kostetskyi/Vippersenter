@@ -1,0 +1,23 @@
+@use "styles/bootstrap" as *;
+
+.button {
+  padding: 16px;
+  text-align: center;
+  position: sticky;
+  bottom: 65px;
+  z-index: 1;
+  border: 5px solid $darkGreen;
+  background-color: $greenMint;
+
+  @include media(laptopMedium) {
+    position: fixed;
+    top: 150px;
+    right: 10px;
+    bottom: auto;
+    border-radius: 30%;
+  }
+}
+
+.icon {
+  fill: $darkGreen;
+}
