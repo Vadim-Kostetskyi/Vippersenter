@@ -30,13 +30,25 @@
   },
 
   "product": {
-    "title": "назва",
-    "price": "ціна",
-    "quantity": "кількість"
+    "title": "Назва",
+    "price": "Ціна",
+    "quantity": "Кількість"
+  },
+
+  "form": {
+    "attributeName": "Назва атрибуту",
+    "attributes": "Атрибути",
+    "value": "Значення",
+    "addValue": "Додати значення",
+    "deleteAttribute": "Видалити атрибут",
+    "addAttribute": "Додати атрибут",
+    "description": "Опис",
+    "save": "Зберегти"
   },
 
   "catalog": "Каталог",
   "popularProducts": "Популярні товари",
   "newProducts": "Новинки",
-  "goToProduct": "Перейти на товар"
+  "goToProduct": "Перейти на товар",
+  "category": "Категорія"
 }

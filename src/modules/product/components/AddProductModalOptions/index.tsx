@@ -1,0 +1,203 @@
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+
+interface Attribute {
+  name: string;
+  values: string[];
+}
+
+const AddProductModalOptions = () => {
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState<number | "">("");
+  const [quantity, setQuantity] = useState<number | "">("");
+  const [attributes, setAttributes] = useState<Attribute[]>([]);
+  const [description, setDescription] = useState("");
+
+  const { t } = useTranslation();
+
+  const addAttribute = () => {
+    setAttributes((prev) => [...prev, { name: "", values: [""] }]);
+  };
+
+  const updateAttributeName = (index: number, newName: string) => {
+    setAttributes((prev) => {
+      const newAttrs = [...prev];
+      newAttrs[index].name = newName;
+      return newAttrs;
+    });
+  };
+
+  const addValue = (attrIndex: number) => {
+    setAttributes((prev) => {
+      const newAttrs = [...prev];
+      if (
+        newAttrs[attrIndex].values[newAttrs[attrIndex].values.length - 1] !== ""
+      ) {
+        newAttrs[attrIndex].values.push("");
+      }
+      return newAttrs;
+    });
+  };
+
+  const updateValue = (
+    attrIndex: number,
+    valueIndex: number,
+    newValue: string
+  ) => {
+    setAttributes((prev) => {
+      const newAttrs = [...prev];
+      newAttrs[attrIndex].values[valueIndex] = newValue;
+      return newAttrs;
+    });
+  };
+
+  const removeValue = (attrIndex: number, valueIndex: number) => {
+    setAttributes((prev) => {
+      const newAttrs = [...prev];
+      const attr = { ...newAttrs[attrIndex] };
+      const newValues = [...attr.values];
+
+      newValues.splice(valueIndex, 1);
+      if (newValues.length === 0) {
+        newValues.push("");
+      }
+
+      attr.values = newValues;
+      newAttrs[attrIndex] = attr;
+
+      return newAttrs;
+    });
+  };
+
+  const removeAttribute = (index: number) => {
+    setAttributes((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const productData = {
+      name,
+      price: Number(price),
+      quantity: Number(quantity),
+      attributes: attributes
+        .filter((a) => a.name.trim() !== "")
+        .map((a) => ({
+          name: a.name,
+          values: a.values.filter((v) => v.trim() !== ""),
+        })),
+      description,
+    };
+
+    console.log("Відправка продукту:", productData);
+  };
+
+  return (
+    <form onSubmit={onSubmit} style={{ maxWidth: 600, margin: "auto" }}>
+      <label>
+        <input
+          type="text"
+          value={name}
+          placeholder={t("product.title")}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+      </label>
+
+      <label>
+        <input
+          type="number"
+          value={price}
+          min={0}
+          placeholder={t("product.price")}
+          onChange={(e) =>
+            setPrice(e.target.value === "" ? "" : Number(e.target.value))
+          }
+          required
+        />
+      </label>
+
+      <label>
+        <input
+          type="number"
+          value={quantity}
+          min={0}
+          placeholder={t("product.quantity")}
+          onChange={(e) =>
+            setQuantity(e.target.value === "" ? "" : Number(e.target.value))
+          }
+          required
+        />
+      </label>
+
+      <fieldset style={{ marginTop: 20 }}>
+        <legend>{t("form.attributes")}:</legend>
+        {attributes.map((attr, i) => (
+          <div
+            key={i}
+            style={{ border: "1px solid #ccc", padding: 10, marginBottom: 15 }}
+          >
+            <input
+              type="text"
+              placeholder={t("form.attributeName")}
+              value={attr.name}
+              onChange={(e) => updateAttributeName(i, e.target.value)}
+              required
+              style={{ display: "block", marginBottom: 8, width: "100%" }}
+            />
+
+            {attr.values.map((val, idx) => (
+              <div
+                key={idx}
+                style={{ display: "flex", gap: 8, marginBottom: 5 }}
+              >
+                <input
+                  type="text"
+                  placeholder={t("form.value")}
+                  value={val}
+                  onChange={(e) => updateValue(i, idx, e.target.value)}
+                  required
+                  style={{ flexGrow: 1 }}
+                />
+                <button type="button" onClick={() => removeValue(i, idx)}>
+                  ❌
+                </button>
+              </div>
+            ))}
+
+            <button type="button" onClick={() => addValue(i)}>
+              {t("form.addValue")}
+            </button>
+            <button
+              type="button"
+              onClick={() => removeAttribute(i)}
+              style={{ marginLeft: 10, color: "red" }}
+            >
+              {t("form.deleteAttribute")}
+            </button>
+          </div>
+        ))}
+
+        <button type="button" onClick={addAttribute}>
+          {t("form.addAttribute")}
+        </button>
+      </fieldset>
+
+      <label style={{ display: "block", marginTop: 20 }}>
+        {t("form.description")}:
+        <textarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          rows={4}
+          style={{ width: "100%" }}
+        />
+      </label>
+
+      <button type="submit" style={{ marginTop: 20 }}>
+        {t("form.save")}
+      </button>
+    </form>
+  );
+};
+
+export default AddProductModalOptions;

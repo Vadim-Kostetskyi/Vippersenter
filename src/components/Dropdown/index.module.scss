@@ -1,0 +1,53 @@
+@use "styles/bootstrap" as *;
+
+.dropdown {
+  position: relative;
+  width: fit-content;
+}
+
+.button {
+  position: relative;
+  padding: 5px 25px 5px 15px;
+  font-size: 18px;
+  background-color: $whiteColor;
+  border: none;
+  cursor: pointer;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%) rotate(90deg);
+    width: 10px;
+    height: 10px;
+    background-image: url("../../assets/svg/Arrow.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    pointer-events: none;
+  }
+}
+
+.open {
+  &::after {
+    transform: translateY(-50%) rotate(270deg);
+  }
+}
+
+.list {
+  width: 100%;
+  background-color: $whiteColor;
+
+  & button {
+    display: flex;
+    width: 100%;
+    padding: 5px 0 5px 15px;
+
+    &:hover,
+    &:focus {
+      color: $whiteColor;
+      background-color: $steelGray;
+      cursor: pointer;
+    }
+  }
+}
