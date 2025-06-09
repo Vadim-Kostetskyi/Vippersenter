@@ -1,12 +1,19 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
+import styles from "./index.module.scss";
 
 interface Attribute {
   name: string;
   values: string[];
 }
 
-const AddProductModalOptions = () => {
+interface AddProductModalOptionsProps {
+  onModalClose: () => void;
+}
+
+const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
+  onModalClose,
+}) => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState<number | "">("");
   const [quantity, setQuantity] = useState<number | "">("");
@@ -88,12 +95,13 @@ const AddProductModalOptions = () => {
         })),
       description,
     };
+    onModalClose();
 
     console.log("Відправка продукту:", productData);
   };
 
   return (
-    <form onSubmit={onSubmit} style={{ maxWidth: 600, margin: "auto" }}>
+    <form onSubmit={onSubmit} className={styles.form}>
       <label>
         <input
           type="text"
@@ -130,7 +138,7 @@ const AddProductModalOptions = () => {
         />
       </label>
 
-      <fieldset style={{ marginTop: 20 }}>
+      <fieldset className={styles.fieldset}>
         <legend>{t("form.attributes")}:</legend>
         {attributes.map((attr, i) => (
           <div
@@ -183,19 +191,16 @@ const AddProductModalOptions = () => {
         </button>
       </fieldset>
 
-      <label style={{ display: "block", marginTop: 20 }}>
+      <label className={styles.description}>
         {t("form.description")}:
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           rows={4}
-          style={{ width: "100%" }}
         />
       </label>
 
-      <button type="submit" style={{ marginTop: 20 }}>
-        {t("form.save")}
-      </button>
+      <button type="submit">{t("form.save")}</button>
     </form>
   );
 };
