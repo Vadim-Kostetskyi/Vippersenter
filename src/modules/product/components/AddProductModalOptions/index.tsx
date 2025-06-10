@@ -9,10 +9,14 @@ interface Attribute {
 
 interface AddProductModalOptionsProps {
   onModalClose: () => void;
+  selectedCategory: string;
+  selectedImage: File | null;
 }
 
 const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
   onModalClose,
+  selectedCategory,
+  selectedImage,
 }) => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState<number | "">("");
@@ -84,9 +88,11 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
     e.preventDefault();
 
     const productData = {
+      image: selectedImage,
       name,
       price: Number(price),
       quantity: Number(quantity),
+      category: selectedCategory,
       attributes: attributes
         .filter((a) => a.name.trim() !== "")
         .map((a) => ({
