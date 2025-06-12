@@ -1,8 +1,8 @@
 import ProductsTable from "modules/product/components/ProductsTable";
 import AddProduct from "modules/product/components/AddProduct";
 import AddProductModal from "modules/product/containers/AddProductModal";
-import styles from "./index.module.scss";
 import { useState } from "react";
+import styles from "./index.module.scss";
 
 const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

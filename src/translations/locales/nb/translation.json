@@ -51,5 +51,6 @@
   "popularProducts": "Популярні товари",
   "newProducts": "Новинки",
   "goToProduct": "Перейти на товар",
-  "category": "Категорія"
+  "category": "Категорія",
+  "currency": "₴"
 }

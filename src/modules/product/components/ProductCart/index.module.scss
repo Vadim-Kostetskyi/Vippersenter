@@ -1,0 +1,116 @@
+@use "styles/bootstrap" as *;
+
+.productCart {
+  width: 100%;
+
+  @include media(laptop) {
+    display: flex;
+  }
+}
+
+.infoBox {
+  @include media(laptop) {
+    padding-left: 30px;
+    margin-top: 300px;
+  }
+}
+
+.title {
+  font-size: 34px;
+  font-weight: 900;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+
+  @include media(tabletOnly) {
+    font-size: 48px;
+  }
+}
+
+.image {
+  max-width: 500px;
+  margin-bottom: 15px;
+}
+
+.price {
+  font-size: 26px;
+  margin-bottom: 15px;
+}
+
+.quantity {
+  font-weight: 700;
+}
+
+.inStock {
+  display: flex;
+  align-items: center;
+  color: $limeGreen;
+
+  &:before {
+    content: "";
+    position: relative;
+    display: block;
+    width: 6px;
+    height: 6px;
+    margin-right: 6px;
+    border-radius: 50%;
+    background-color: $limeGreen;
+  }
+  margin-bottom: 15px;
+}
+
+.outStock {
+  display: flex;
+  align-items: center;
+  color: $customRed;
+
+  &:before {
+    content: "";
+    position: relative;
+    display: block;
+    width: 6px;
+    height: 6px;
+    margin-right: 6px;
+    border-radius: 50%;
+    background-color: $customRed;
+  }
+
+  margin-bottom: 15px;
+}
+
+.quantityBox {
+  display: flex;
+  align-items: center;
+
+  & input {
+    position: relative;
+    width: 55px;
+    height: 100%;
+    padding: 10px;
+    text-align: center;
+    border: none;
+    border-bottom: 1px solid $coralPink;
+    background-color: $softBlush;
+
+    -moz-appearance: textfield;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+
+  & button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    background-color: $softBlush;
+    cursor: pointer;
+  }
+  margin-bottom: 40px;
+}
+
+.description {
+  text-transform: uppercase;
+}

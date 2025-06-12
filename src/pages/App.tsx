@@ -3,12 +3,14 @@ import HomePage from "./HomePage";
 import LoginPage from "./LoginPage";
 import PrivateRoute from "storeRedux/PrivateRoute";
 import ProductFormPage from "./ProductFormPage";
+import ProductPage from "./ProductPage";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/product" element={<ProductPage />} />
       <Route
         path="/dashboard"
         element={

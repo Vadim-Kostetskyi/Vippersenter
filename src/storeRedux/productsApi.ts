@@ -22,6 +22,12 @@ export const productsApi = createApi({
 
     getProductById: builder.query<Product, string>({
       query: (id) => `product/${id}`,
+      transformResponse: (response: Product) => {
+        return {
+          ...response,
+          image: BASE_URL + response.image,
+        };
+      },
     }),
 
     // запит з фільтрами / сторінками

@@ -112,7 +112,7 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
     const uploadImageResult = await uploadImage(formData).unwrap();
 
     const productData = {
-      image: uploadImageResult.imageUrl,
+      image: uploadImageResult.imageUrl.replace(/^\/api\/v1/, ""),
       name,
       price: Number(price),
       quantity: Number(quantity),
@@ -126,7 +126,7 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
       description,
     };
 
-    console.log(attributes);
+    console.log(productData);
 
     try {
       await addProduct(productData).unwrap();
