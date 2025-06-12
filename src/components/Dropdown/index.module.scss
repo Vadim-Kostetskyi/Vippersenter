@@ -38,6 +38,7 @@
   position: absolute;
   width: 100%;
   background-color: $whiteColor;
+  z-index: 1000;
 
   & button {
     display: flex;

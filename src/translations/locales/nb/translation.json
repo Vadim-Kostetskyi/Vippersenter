@@ -32,7 +32,8 @@
   "product": {
     "title": "Назва",
     "price": "Ціна",
-    "quantity": "Кількість"
+    "quantity": "Кількість",
+    "characteristics": "Характеристики"
   },
 
   "form": {

@@ -7,8 +7,6 @@ import UploadImage from "components/UploadImage";
 import Cross from "assets/svg/Cross";
 import styles from "./index.module.scss";
 
-import image from "assets/image/img_3912-scaled.webp";
-
 interface AddProductModalProps {
   onModalClose: () => void;
 }

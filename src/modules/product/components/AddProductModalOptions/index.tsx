@@ -26,7 +26,7 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
   const [price, setPrice] = useState<number | "">("");
   const [quantity, setQuantity] = useState<number | "">("");
   const [attributes, setAttributes] = useState<Attribute[]>([]);
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState<string[]>([]);
   const [addProduct] = useAddProductMutation();
   const [uploadImage] = useUploadImageMutation();
 
@@ -90,12 +90,19 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
     setAttributes((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const onSetDescription = (value: string) => {
+    setDescription((prev) => [...prev, value]);
+  };
+
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const formData = new FormData();
 
-    if (!selectedImage) {
+    if (selectedCategory === t("category")) {
+      alert("Please select an category first");
+      return;
+    } else if (!selectedImage) {
       alert("Please select an image first");
       return;
     }
@@ -119,11 +126,13 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
       description,
     };
 
+    console.log(attributes);
+
     try {
       await addProduct(productData).unwrap();
       alert("Товар успішно додано!");
     } catch (err) {
-      console.error("Помилка додавання товару", err);
+      console.error("Error adding a product", err);
     }
 
     onModalClose();
@@ -226,7 +235,7 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
         {t("form.description")}:
         <textarea
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={(e) => onSetDescription(e.target.value)}
           rows={4}
         />
       </label>

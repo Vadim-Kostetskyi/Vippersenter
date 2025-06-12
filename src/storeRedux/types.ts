@@ -1,10 +1,16 @@
+type Attribute = {
+  name: string;
+  values: string[];
+};
+
 export interface Product {
   _id: string;
   name: string;
   price: number;
+  quantity: number;
   category: string;
-  inStock: boolean;
-  tags: string[];
+  description: string[];
+  attributes?: Attribute[];
 }
 
 export interface GetProductsResponse {
@@ -31,4 +37,4 @@ export interface RegisterResponse {
   message: string;
 }
 
-export interface User{}
+export interface User {}
