@@ -6,7 +6,7 @@ type Product = {
   name: string;
   price: number;
   quantity: number;
-  category: string; // Додаємо поле категорії
+  category: string;
   description: string[];
   attributes?: {
     lines?: string[];

@@ -31,6 +31,22 @@ export const productsApi = createApi({
     >({
       query: ({ page, size }) => `product?page=${page}&size=${size}`,
     }),
+
+    uploadImage: builder.mutation<{ imageUrl: string }, FormData>({
+      query: (formData) => ({
+        url: "images/upload",
+        method: "POST",
+        body: formData,
+      }),
+    }),
+
+    addProduct: builder.mutation<Product, Partial<Product>>({
+      query: (newProduct) => ({
+        url: "products",
+        method: "POST",
+        body: newProduct,
+      }),
+    }),
   }),
 });
 
@@ -38,4 +54,6 @@ export const {
   useGetProductsQuery,
   useGetProductByIdQuery,
   useGetProductsPagedQuery,
+  useUploadImageMutation,
+  useAddProductMutation,
 } = productsApi;

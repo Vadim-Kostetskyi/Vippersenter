@@ -1,6 +1,10 @@
 import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styles from "./index.module.scss";
+import {
+  useAddProductMutation,
+  useUploadImageMutation,
+} from "storeRedux/productsApi";
 
 interface Attribute {
   name: string;
@@ -23,6 +27,8 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
   const [quantity, setQuantity] = useState<number | "">("");
   const [attributes, setAttributes] = useState<Attribute[]>([]);
   const [description, setDescription] = useState("");
+  const [addProduct] = useAddProductMutation();
+  const [uploadImage] = useUploadImageMutation();
 
   const { t } = useTranslation();
 
@@ -84,11 +90,22 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
     setAttributes((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const formData = new FormData();
+
+    if (!selectedImage) {
+      alert("Please select an image first");
+      return;
+    }
+
+    formData.append("image", selectedImage);
+
+    const uploadImageResult = await uploadImage(formData).unwrap();
+
     const productData = {
-      image: selectedImage,
+      image: uploadImageResult.imageUrl,
       name,
       price: Number(price),
       quantity: Number(quantity),
@@ -101,6 +118,14 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
         })),
       description,
     };
+
+    try {
+      await addProduct(productData).unwrap();
+      alert("Товар успішно додано!");
+    } catch (err) {
+      console.error("Помилка додавання товару", err);
+    }
+
     onModalClose();
 
     console.log("Відправка продукту:", productData);
