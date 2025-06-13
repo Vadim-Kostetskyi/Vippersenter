@@ -11,16 +11,21 @@
   text-transform: uppercase;
   letter-spacing: 0.1rem;
   font-weight: 600;
-  transition: all 0.9s ease;
+  transition: all 0.3s ease;
 
   &:hover,
   &:focus {
-    box-shadow: 2px 2px 12px 0 rgba(166, 166, 166, 0.45);
+    box-shadow: 2px 2px 12px 0 $overlayGray;
 
     & svg {
       visibility: hidden;
     }
   }
+}
+
+.icon {
+  width: 15px;
+  margin-right: 10px;
 }
 
 .filtersBox {

@@ -4,7 +4,7 @@ export const categories = [
   {
     lashes: {
       image: lashesImg,
-      category: "lashes",
+      category: ["falseEyelashes"],
     },
   },
 ];
@@ -34,5 +34,12 @@ export const eyelashes = [
   {
     label: "thickness",
     items: ["0.07", "0.1"],
+  },
+];
+
+export const glue = [
+  {
+    label: "volume",
+    items: ["10г", "3г", "5г"],
   },
 ];

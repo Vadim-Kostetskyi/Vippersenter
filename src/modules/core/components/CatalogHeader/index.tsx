@@ -15,9 +15,9 @@ const CatalogHeader = () => {
       </div>
       <div className={styles.subMenu}>
         <ul>
-          {list.map(({ label }) => (
-            <li key={label}>
-              <a href="#">{label}</a>
+          {list.map(({ key, label }) => (
+            <li key={key}>
+              <a href={`/product-category/${key}`}>{label}</a>
             </li>
           ))}
         </ul>
