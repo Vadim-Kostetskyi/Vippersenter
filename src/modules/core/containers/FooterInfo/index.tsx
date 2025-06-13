@@ -34,8 +34,8 @@ const FooterInfo = () => {
                 )
               ) : (
                 <nav>
-                  {list.map(({ label }) => (
-                    <a href="#" key={label}>
+                  {list.map(({ key, label }) => (
+                    <a href={`/product-category/${key}`} key={label}>
                       {label}
                     </a>
                   ))}

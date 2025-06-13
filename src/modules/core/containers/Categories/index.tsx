@@ -9,13 +9,15 @@ const Categories = () => {
   const { byKey } = CategoryNames(t);
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.categories}>
       {categories.map(({ image, categoryName }) => (
-        <CategoryCard
-          image={image}
-          categoryName={byKey[categoryName]}
-          key={categoryName}
-        />
+        <a href={`/product-category/${categoryName}`} key={categoryName}>
+          <CategoryCard
+            image={image}
+            categoryName={byKey[categoryName]}
+            key={categoryName}
+          />
+        </a>
       ))}
     </div>
   );

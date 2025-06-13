@@ -1,6 +1,6 @@
 @use "styles/bootstrap" as *;
 
-.wrapper {
+.categories {
   margin-bottom: 100px;
 
   @include media(tabletLarge) {
