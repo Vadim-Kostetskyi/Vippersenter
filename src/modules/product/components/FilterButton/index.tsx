@@ -1,11 +1,16 @@
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { FC, useState } from "react";
 import Filters from "assets/svg/Filters";
 import Cross from "assets/svg/Cross";
 import Filter from "../Filter";
+import { FilterItemProps } from "../ProductCategoryModel";
 import styles from "./index.module.scss";
 
-const FilterButton = () => {
+interface FilterButtonProps {
+  filterItems: FilterItemProps[];
+}
+
+const FilterButton: FC<FilterButtonProps> = ({ filterItems }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
 
@@ -28,7 +33,7 @@ const FilterButton = () => {
             <Cross className={styles.crossIcon} />
           </button>
           <h2 className={styles.title}>{t("filter.filterProducts")}</h2>
-          <Filter />
+          <Filter filters={filterItems} />
         </div>
       )}
     </>

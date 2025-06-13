@@ -1,9 +1,18 @@
+import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import styles from "./index.module.scss";
 import DropdownFilter from "../DropdownFilter";
-import { bend } from "./data";
+import styles from "./index.module.scss";
 
-const Filter = () => {
+interface itemProps {
+  label: string;
+  items: string[];
+}
+
+interface FilterProps {
+  filters: itemProps[];
+}
+
+const Filter: FC<FilterProps> = ({ filters }) => {
   const { t } = useTranslation();
 
   return (
@@ -18,17 +27,18 @@ const Filter = () => {
             <input type="checkbox" />
             <span>20 {t("filter.lines")}</span>
           </label>
-
           <label>
             <input type="checkbox" />
             <span>28 {t("filter.lines")}</span>
           </label>
           <label>
             <input type="checkbox" />
-            <span>{t("lines")}</span>
+            <span>{t("eyelashes")}</span>
           </label>
         </div>
-        <DropdownFilter title={t("filter.bend")} items={bend} />
+        {filters.map(({ label, items }) => (
+          <DropdownFilter title={t(`filter.${label}`)} items={items} />
+        ))}
       </form>
     </div>
   );

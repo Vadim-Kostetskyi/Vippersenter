@@ -1,5 +1,5 @@
 import ProductCategoryModel from "modules/product/components/ProductCategoryModel";
-import { categories } from "./data";
+import { categories, eyelashes } from "./data";
 
 const ProductCategory = () => {
   console.log(categories);
@@ -11,6 +11,7 @@ const ProductCategory = () => {
         <ProductCategoryModel
           image={category.lashes.image}
           category={category.lashes.category}
+          filterItems={eyelashes}
         />
       ))}
     </>
