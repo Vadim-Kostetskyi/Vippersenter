@@ -16,8 +16,6 @@ const Filter = () => {
     ? subCategories.find((obj) => category in obj)?.[category] ?? []
     : [];
 
-  console.log(filteredValuesSubCategory);
-
   return (
     <div className={styles.filter}>
       <button className={styles.clearBtn}>

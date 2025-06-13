@@ -17,8 +17,6 @@ const ProductsTable = () => {
     return acc;
   }, {});
 
-  console.log(products);
-
   return (
     <table border={1} cellPadding={8} className={styles.productsTable}>
       <thead>

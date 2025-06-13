@@ -18,8 +18,6 @@ const UploadImage: FC<UploadImageProps> = ({
     }
   };
 
-  console.log(image);
-
   return (
     <div className={styles.uploadImage}>
       <div className={className}>

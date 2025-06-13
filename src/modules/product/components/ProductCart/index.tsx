@@ -23,8 +23,6 @@ const ProductCart = () => {
   const handleIncrement = () => setCount((prev) => prev + 1);
   const handleDecrement = () => setCount((prev) => (prev > 1 ? prev - 1 : 1));
 
-  console.log(product);
-
   return (
     <div className={styles.productCart}>
       <img src={image} alt="" className={styles.image} />

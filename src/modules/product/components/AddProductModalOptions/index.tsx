@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { ChangeEvent, FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styles from "./index.module.scss";
 import {
@@ -27,6 +27,9 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
   const [quantity, setQuantity] = useState<number | "">("");
   const [attributes, setAttributes] = useState<Attribute[]>([]);
   const [description, setDescription] = useState<string[]>([]);
+  const [newProduct, setNewProduct] = useState(false);
+  const [popularProduct, setPopularProduct] = useState(false);
+
   const [addProduct] = useAddProductMutation();
   const [uploadImage] = useUploadImageMutation();
 
@@ -117,6 +120,8 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
       price: Number(price),
       quantity: Number(quantity),
       category: selectedCategory,
+      newProduct,
+      popularProduct,
       attributes: attributes
         .filter((a) => a.name.trim() !== "")
         .map((a) => ({
@@ -126,8 +131,6 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
       description,
     };
 
-    console.log(productData);
-
     try {
       await addProduct(productData).unwrap();
       alert("Товар успішно додано!");
@@ -136,8 +139,6 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
     }
 
     onModalClose();
-
-    console.log("Відправка продукту:", productData);
   };
 
   return (
@@ -230,6 +231,23 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
           {t("form.addAttribute")}
         </button>
       </fieldset>
+
+      <div className={styles.newSettings}>
+        <label>
+          <input
+            type="checkbox"
+            onChange={(e) => setPopularProduct(e.target.checked)}
+          />
+          Популярні товари
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            onChange={(e) => setNewProduct(e.target.checked)}
+          />
+          <span>Новинки</span>
+        </label>
+      </div>
 
       <label className={styles.description}>
         {t("form.description")}:

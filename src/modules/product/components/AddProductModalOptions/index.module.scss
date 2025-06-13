@@ -24,3 +24,9 @@
     width: 100%;
   }
 }
+
+.newSettings {
+  & label:not(:last-child) {
+    margin-right: 30px;
+  }
+}
