@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import styles from "./index.module.scss";
-import DropdownFilter from "../DropdownFilter/insex";
+import DropdownFilter from "../DropdownFilter";
 import { bend } from "./data";
 
 const Filter = () => {
