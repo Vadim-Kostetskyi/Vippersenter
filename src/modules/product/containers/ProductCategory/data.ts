@@ -1,45 +1,11 @@
 import lashesImg from "assets/image/category/dyzayn-bez-nazvy.png";
+import glueImg from "assets/image/category/img_3911-scaled.jpg";
+import removerImg from "assets/image/category/img_3912-scaled.jpg";
+import preparationsImg from "assets/image/category/cc12bb1e-f27d-4350-94d9-976e9f0eb6d6.jpg";
 
-export const categories = [
-  {
-    lashes: {
-      image: lashesImg,
-      category: ["falseEyelashes"],
-    },
-  },
-];
-
-export const eyelashes = [
-  {
-    label: "bend",
-    items: ["B", "C", "CC", "D", "L", "L SOFT", "LC", "M"],
-  },
-  {
-    label: "length",
-    items: [
-      "10mm",
-      "11mm",
-      "12mm",
-      "13mm",
-      "14mm",
-      "4-7mm",
-      "5mm",
-      "6-13mm",
-      "6mm",
-      "7mm",
-      "8mm",
-      "9mm",
-    ],
-  },
-  {
-    label: "thickness",
-    items: ["0.07", "0.1"],
-  },
-];
-
-export const glue = [
-  {
-    label: "volume",
-    items: ["10г", "3г", "5г"],
-  },
-];
+export const images = {
+  falseEyelashes: lashesImg,
+  glueForEyelashes: glueImg,
+  remover: removerImg,
+  preparations: preparationsImg,
+};

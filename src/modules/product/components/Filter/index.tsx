@@ -1,26 +1,22 @@
-import { FC } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import DropdownFilter from "../DropdownFilter";
 import styles from "./index.module.scss";
-import { categories } from "./data";
+import { categories, subCategories } from "./data";
 
-interface itemProps {
-  label: string;
-  items: string[];
-}
-
-interface FilterProps {
-  filters: itemProps[];
-}
-
-const Filter: FC<FilterProps> = ({ filters }) => {
+const Filter = () => {
   const { t } = useTranslation();
 
   const { category } = useParams();
 
-  const filteredValues =
+  const filteredValuesCategory =
     category && categories.length > 0 ? categories[0][category] ?? [] : [];
+
+  const filteredValuesSubCategory = category
+    ? subCategories.find((obj) => category in obj)?.[category] ?? []
+    : [];
+
+  console.log(filteredValuesSubCategory);
 
   return (
     <div className={styles.filter}>
@@ -30,8 +26,8 @@ const Filter: FC<FilterProps> = ({ filters }) => {
       <form className={styles.form}>
         <div className={styles.categories}>
           <h2>{t("filter.categories")}</h2>
-          {filteredValues.map((item, index) => {
-            const isLast = index === filteredValues.length - 1;
+          {filteredValuesCategory.map((item, index) => {
+            const isLast = index === filteredValuesCategory.length - 1;
 
             return (
               <label>
@@ -41,7 +37,7 @@ const Filter: FC<FilterProps> = ({ filters }) => {
             );
           })}
         </div>
-        {filters.map(({ label, items }) => (
+        {filteredValuesSubCategory.map(({ label, items }) => (
           <DropdownFilter title={t(`filter.${label}`)} items={items} />
         ))}
       </form>
