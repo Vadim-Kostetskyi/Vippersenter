@@ -1,0 +1,68 @@
+{
+  "categories": {
+    "falseEyelashes": "Накладні вії",
+    "glueForEyelashes": "Клей для вій",
+    "remover": "Ремувер",
+    "preparations": "Препарати"
+  },
+
+  "header": {
+    "aboutUs": "Про нас",
+    "cooperation": "Співпраця"
+  },
+
+  "footer": {
+    "additionally": "Додатково",
+    "paymentAndDelivery": "Оплата і Доставка",
+    "exchangeAndReturn": "Обмін та повернення",
+    "ourAddress": "Наша Адреса",
+    "Contacts": "Контакти",
+    "main": "Головна",
+    "shoppingCart": "Кошик"
+  },
+
+  "login": {
+    "login": "Вхід",
+    "usernameOrEmailAddress": "Ім'я користувача або електронна пошта",
+    "password": "Пароль",
+    "logInToSystem": "Увійти в систему",
+    "rememberMe": "Зам'ятайти мене"
+  },
+
+  "product": {
+    "title": "Назва",
+    "price": "Ціна",
+    "quantity": "Кількість",
+    "characteristics": "Характеристики"
+  },
+
+  "form": {
+    "attributeName": "Назва атрибуту",
+    "attributes": "Атрибути",
+    "value": "Значення",
+    "addValue": "Додати значення",
+    "deleteAttribute": "Видалити атрибут",
+    "addAttribute": "Додати атрибут",
+    "description": "Опис",
+    "save": "Зберегти"
+  },
+
+  "filter": {
+    "filters": "Фільтри",
+    "clearEverything": "Очистити все",
+    "filterProducts": "Фільтрувати продукти",
+    "categories": "Категорії",
+    "lines": "ліній",
+    "bend": "Вигин",
+    "length": "Довжина",
+    "thickness": "Товщина"
+  },
+
+  "catalog": "Каталог",
+  "popularProducts": "Популярні товари",
+  "newProducts": "Новинки",
+  "goToProduct": "Перейти на товар",
+  "category": "Категорія",
+  "eyelashes": "Вії",
+  "currency": "₴"
+}

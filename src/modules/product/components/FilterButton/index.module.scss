@@ -1,0 +1,69 @@
+@use "styles/bootstrap" as *;
+
+.filterButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 10px 0;
+  border: 1px solid $gainsboro;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  font-weight: 600;
+  transition: all 0.9s ease;
+
+  &:hover,
+  &:focus {
+    box-shadow: 2px 2px 12px 0 rgba(166, 166, 166, 0.45);
+
+    & svg {
+      visibility: hidden;
+    }
+  }
+}
+
+.filtersBox {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 10000;
+  width: 100%;
+  height: 100vh;
+  opacity: 1;
+  padding: 10px 15px;
+  background-color: $pageBackground;
+  animation: filterOpen 0.2s ease;
+}
+
+.crossBtn {
+  position: absolute;
+  top: 20px;
+  right: 15px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 800;
+  padding-bottom: 15px;
+  margin-bottom: 25px;
+  border-bottom: 1px solid $lightGrey;
+}
+
+.clearBtn {
+  font-size: 16px;
+  margin-bottom: 25px;
+  color: $backdropColor;
+  opacity: 0.6;
+}
+
+@keyframes filterOpen {
+  0% {
+    opacity: 0;
+    transform: translateX(-100rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
