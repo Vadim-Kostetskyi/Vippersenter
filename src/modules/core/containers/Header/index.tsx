@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 import Logo from "assets/svg/Logo";
 import BurgerMenu from "modules/core/components/BurgerMenu";
-import SearchButton from "modules/core/components/SearchButton/insex";
+import SearchButton from "modules/core/components/SearchButton";
 import HeaderIcons from "modules/core/components/HeaderIcons";
 import HeaderNavigation from "modules/core/components/HeaderNavigation";
 import styles from "./index.module.scss";

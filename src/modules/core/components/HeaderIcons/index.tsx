@@ -1,4 +1,4 @@
-import SearchButton from "../SearchButton/insex";
+import SearchButton from "../SearchButton";
 import ShoppingBag from "../ShoppingBag";
 import styles from "./index.module.scss";
 

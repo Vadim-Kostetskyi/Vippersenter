@@ -1,7 +1,7 @@
 import { FC } from "react";
 import Cross from "assets/svg/Cross";
 import Logo from "assets/svg/Logo";
-import CategoriesHeader from "components/CategoriesHeader/insex";
+import CategoriesHeader from "components/CategoriesHeader";
 import styles from "./index.module.scss";
 
 interface HeaderModalProps {
