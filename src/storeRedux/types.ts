@@ -12,6 +12,8 @@ export interface Product {
   category: string;
   description: string[];
   attributes?: Attribute[];
+  newProduct?: boolean;
+  popularProduct?: boolean;
 }
 
 export interface GetProductsResponse {
