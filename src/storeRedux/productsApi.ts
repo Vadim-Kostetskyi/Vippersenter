@@ -18,7 +18,11 @@ export const productsApi = createApi({
   endpoints: (builder) => ({
     getProducts: builder.query<
       Product[],
-      { newProduct?: boolean; popularProduct?: boolean } | void
+      {
+        newProduct?: boolean;
+        popularProduct?: boolean;
+        category?: string;
+      } | void
     >({
       query: (filters) => {
         if (!filters) return "products";
@@ -27,6 +31,7 @@ export const productsApi = createApi({
 
         if (filters.newProduct) params.append("newProduct", "true");
         if (filters.popularProduct) params.append("popularProduct", "true");
+        if (filters.category) params.append("category", filters.category);
 
         const queryString = params.toString();
         return queryString ? `products?${queryString}` : "products";

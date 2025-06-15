@@ -1,0 +1,11 @@
+@use "styles/bootstrap" as *;
+
+.productListCategory {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 40px;
+}

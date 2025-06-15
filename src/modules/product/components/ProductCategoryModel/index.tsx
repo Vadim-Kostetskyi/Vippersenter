@@ -19,7 +19,6 @@ const ProductCategoryModel: FC<ProductCategoryModelProps> = ({
         <img src={image} alt="" />
         <h1>{t(`categories.${category}`)}</h1>
       </div>
-      <FilterButton />
     </>
   );
 };

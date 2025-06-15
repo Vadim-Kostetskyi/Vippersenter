@@ -5,6 +5,10 @@
   padding: 15px;
   border: 1px solid $grayVeryLight;
   border-radius: 4px;
+
+  @include media(laptop) {
+    border: none;
+  }
 }
 
 .trigger {
@@ -13,12 +17,19 @@
   border-radius: 4px;
   user-select: none;
   cursor: pointer;
+
+  @include media(laptop) {
+    cursor: auto;
+  }
 }
 
 .arrowImg {
   width: 10px;
   transform: rotate(90deg);
   transition: transform 0.3s ease;
+  @include media(laptop) {
+    display: none;
+  }
 }
 
 .arrowImgOpen {

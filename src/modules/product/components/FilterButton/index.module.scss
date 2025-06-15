@@ -6,12 +6,17 @@
   justify-content: center;
   width: 100%;
   padding: 10px 0;
+  margin-bottom: 10px;
   border: 1px solid $gainsboro;
   border-radius: 4px;
   text-transform: uppercase;
   letter-spacing: 0.1rem;
   font-weight: 600;
   transition: all 0.3s ease;
+
+  @include media(laptop) {
+    display: none;
+  }
 
   &:hover,
   &:focus {
@@ -70,5 +75,13 @@
   100% {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+.filter {
+  display: none;
+
+  @include media(laptop) {
+    display: block;
   }
 }

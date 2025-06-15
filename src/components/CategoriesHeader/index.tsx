@@ -12,7 +12,7 @@ const CategoriesHeader = () => {
       {list.map(({ key, label }) => {
         return (
           <li key={key}>
-            <a href="#">{label}</a>
+            <a href={`/product-category/${key}`}>{label}</a>
             <Arrow />
           </li>
         );

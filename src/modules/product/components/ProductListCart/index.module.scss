@@ -1,0 +1,60 @@
+@use "styles/bootstrap" as *;
+
+.productListCart {
+  max-width: 300px;
+  width: calc(50% - 5px);
+
+  & img {
+    width: 100%;
+    height: 100%;
+  }
+
+  @include media(tabletLarge) {
+    width: calc((90% - 5px) / 3);
+  }
+}
+
+.imageBox {
+  display: flex;
+  align-items: center;
+  max-height: 300px;
+  overflow: hidden;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  color: $backdropColor;
+
+  & > a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 15px 0;
+    font-weight: 600;
+    color: $gunmetal;
+    border: 1px solid $gunmetal;
+    margin-top: auto;
+    text-transform: uppercase;
+
+    &:hover,
+    &:focus {
+      color: $whiteColor;
+      background-color: $gunmetal;
+    }
+
+    @include media(laptopMedium) {
+      padding: 10px;
+      font-size: 14px;
+      letter-spacing: 0.1rem;
+    }
+  }
+
+  & > p {
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+}

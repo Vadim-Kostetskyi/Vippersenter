@@ -31,6 +31,9 @@ const FilterButton = () => {
           <Filter />
         </div>
       )}
+      <div className={styles.filter}>
+        <Filter />
+      </div>
     </>
   );
 };
