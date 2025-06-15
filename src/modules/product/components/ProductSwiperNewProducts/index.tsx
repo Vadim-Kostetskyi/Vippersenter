@@ -10,7 +10,6 @@ const ProductSwiperNewProducts = () => {
     newProduct: true,
   });
   const { t } = useTranslation();
-  console.log(popularProducts);
 
   return (
     <div className={styles.wrapper}>
