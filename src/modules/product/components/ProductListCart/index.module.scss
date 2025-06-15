@@ -1,8 +1,13 @@
 @use "styles/bootstrap" as *;
 
 .productListCart {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   max-width: 300px;
   width: calc(50% - 5px);
+  height: 412px;
+  gap: 15px;
 
   & img {
     width: 100%;
