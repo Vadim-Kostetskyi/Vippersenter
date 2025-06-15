@@ -2,15 +2,15 @@
 
 .addProductModal {
   position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  overflow-y: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   padding: 70px 0 0;
+  overflow-y: auto;
   background-color: $backdrop;
   z-index: 100000;
 }

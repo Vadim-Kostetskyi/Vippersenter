@@ -156,6 +156,7 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
       <label>
         <input
           type="number"
+          step="0.01"
           value={price}
           min={0}
           placeholder={t("product.price")}
@@ -170,7 +171,7 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
         <input
           type="number"
           value={quantity}
-          min={0}
+          min={1}
           placeholder={t("product.quantity")}
           onChange={(e) =>
             setQuantity(e.target.value === "" ? "" : Number(e.target.value))

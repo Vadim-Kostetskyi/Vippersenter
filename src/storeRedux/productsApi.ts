@@ -16,8 +16,26 @@ export const productsApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    getProducts: builder.query<Product[], void>({
-      query: () => "products",
+    getProducts: builder.query<
+      Product[],
+      { newProduct?: boolean; popularProduct?: boolean } | void
+    >({
+      query: (filters) => {
+        if (!filters) return "products";
+
+        const params = new URLSearchParams();
+
+        if (filters.newProduct) params.append("newProduct", "true");
+        if (filters.popularProduct) params.append("popularProduct", "true");
+
+        const queryString = params.toString();
+        return queryString ? `products?${queryString}` : "products";
+      },
+      transformResponse: (response: Product[]) =>
+        response.map((product) => ({
+          ...product,
+          image: BASE_URL + product.image,
+        })),
     }),
 
     getProductById: builder.query<Product, string>({
@@ -36,6 +54,16 @@ export const productsApi = createApi({
       { page: number; size: number }
     >({
       query: ({ page, size }) => `product?page=${page}&size=${size}`,
+    }),
+
+    getRandomProducts: builder.query<Product[], void>({
+      query: () => `products?random=true`,
+      transformResponse: (response: Product[]) => {
+        return response.map((product) => ({
+          ...product,
+          image: BASE_URL + product.image,
+        }));
+      },
     }),
 
     uploadImage: builder.mutation<{ imageUrl: string }, FormData>({
@@ -60,6 +88,7 @@ export const {
   useGetProductsQuery,
   useGetProductByIdQuery,
   useGetProductsPagedQuery,
+  useGetRandomProductsQuery,
   useUploadImageMutation,
   useAddProductMutation,
 } = productsApi;

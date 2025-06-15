@@ -1,16 +1,18 @@
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useGetProductByIdQuery } from "storeRedux/productsApi";
-import styles from "./index.module.scss";
-import Minus from "assets/svg/Minus";
 import PlusSubtle from "assets/svg/PlusSubtle";
-import { useState } from "react";
+import Minus from "assets/svg/Minus";
+import styles from "./index.module.scss";
 
 const ProductCart = () => {
+  const { productId } = useParams();
   const {
     data: product,
     isLoading,
     isError,
-  } = useGetProductByIdQuery("684af5e4df559903a35058aa");
+  } = useGetProductByIdQuery(productId ?? "");
   const [count, setCount] = useState(1);
 
   const { t } = useTranslation();
@@ -29,7 +31,7 @@ const ProductCart = () => {
       <div className={styles.infoBox}>
         <h1 className={styles.title}>{name}</h1>
         <p className={styles.price}>
-          {price}
+          {price.toFixed(2)}
           {t("currency")}
         </p>
         {quantity ? (

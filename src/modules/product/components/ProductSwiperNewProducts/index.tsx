@@ -1,32 +1,39 @@
 import { SwiperSlide } from "swiper/react";
 import { useTranslation } from "react-i18next";
 import CoreSwiper from "components/CoreSwiper";
-import { slides } from "./slides";
 import { breakpoints } from "utils/constants";
+import { useGetProductsQuery } from "storeRedux/productsApi";
 import styles from "./index.module.scss";
 
 const ProductSwiperNewProducts = () => {
+  const { data: popularProducts } = useGetProductsQuery({
+    newProduct: true,
+  });
   const { t } = useTranslation();
+  console.log(popularProducts);
 
   return (
     <div className={styles.wrapper}>
       <h1>{t("newProducts")}</h1>
       <CoreSwiper navigation={true} slidesPerView={2} breakpoints={breakpoints}>
-        {slides.map(({ text, image, imageSmall, price }) => (
-          <SwiperSlide>
-            <div className={styles.itemsWrapper}>
-              <picture>
-                <source media="(max-width: 480px)" srcSet={imageSmall} />
-                <img src={image} alt={text} className={styles.image} />
-              </picture>
-            </div>
-            <div className={styles.info}>
-              <p>{text}</p>
-              <p className={styles.price}>{price}</p>
-              <a href="#">{t("goToProduct")}</a>
-            </div>
-          </SwiperSlide>
-        ))}
+        {popularProducts &&
+          popularProducts.map(({ name, image, price, _id }) => (
+            <SwiperSlide>
+              <div className={styles.itemsWrapper}>
+                <picture>
+                  <img src={image} alt="" className={styles.image} />
+                </picture>
+              </div>
+              <div className={styles.info}>
+                <p>{name}</p>
+                <p className={styles.price}>
+                  {price.toFixed(2)}
+                  {t("currency")}
+                </p>
+                <a href={`/product/${_id}`}>{t("goToProduct")}</a>
+              </div>
+            </SwiperSlide>
+          ))}
       </CoreSwiper>
     </div>
   );

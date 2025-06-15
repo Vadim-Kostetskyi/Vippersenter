@@ -2,9 +2,18 @@
 
 .productCart {
   width: 100%;
+  margin-bottom: 100px;
 
   @include media(laptop) {
     display: flex;
+  }
+}
+
+.image {
+  width: 100%;
+  margin-bottom: 15px;
+  @include media(laptop) {
+    width: 45%;
   }
 }
 
@@ -21,14 +30,9 @@
   text-transform: uppercase;
   margin-bottom: 15px;
 
-  @include media(tabletOnly) {
+  @include media(laptop) {
     font-size: 48px;
   }
-}
-
-.image {
-  max-width: 500px;
-  margin-bottom: 15px;
 }
 
 .price {
