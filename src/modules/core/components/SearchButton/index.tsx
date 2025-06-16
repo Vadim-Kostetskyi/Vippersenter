@@ -1,6 +1,8 @@
 import { useState, FC } from "react";
+import { useGetProductsQuery } from "storeRedux/productsApi";
 import Search from "assets/svg/Search";
 import styles from "./index.module.scss";
+import { useTranslation } from "react-i18next";
 
 interface SearchButtonProps {
   isLaptop?: boolean;
@@ -9,6 +11,12 @@ interface SearchButtonProps {
 const SearchButton: FC<SearchButtonProps> = ({ isLaptop }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const { data: products } = useGetProductsQuery(
+    query ? { search: query.trim() } : undefined,
+    { skip: query.trim() === "" }
+  );
+
+  const { t } = useTranslation();
 
   const toggleInput = () => setIsOpen((prev) => !prev);
   const closeInput = () => setIsOpen(false);
@@ -26,23 +34,48 @@ const SearchButton: FC<SearchButtonProps> = ({ isLaptop }) => {
       )}
 
       {isOpen && (
-        <div className={styles.inputWrapper}>
-          <Search className={styles.iconLeft} />
-          <input
-            type="text"
-            autoFocus
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            className={styles.searchInput}
-          />
-          <button
-            onClick={closeInput}
-            className={styles.clearBtn}
-            aria-label="Close search input"
-          >
-            ×
-          </button>
-        </div>
+        <>
+          <div className={styles.backdrop} onClick={closeInput} />
+          <div className={styles.inputWrapper}>
+            <div className={styles.input}>
+              <Search className={styles.iconLeft} />
+              <input
+                type="text"
+                autoFocus
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                className={styles.searchInput}
+              />
+              <button
+                onClick={closeInput}
+                className={styles.clearBtn}
+                aria-label="Close search input"
+              >
+                ×
+              </button>
+              {query.trim() && products ? (
+                <ul className={styles.searchList}>
+                  {products?.length ? (
+                    products.map(({ _id, image, name }) => (
+                      <li key={_id}>
+                        <a href={`/product/${_id}`}>
+                          <img
+                            src={image}
+                            alt={name}
+                            className={styles.searchListImage}
+                          />
+                          {name}
+                        </a>
+                      </li>
+                    ))
+                  ) : (
+                    <li>{t("filter.thereAreNoProducts")}</li>
+                  )}
+                </ul>
+              ) : null}
+            </div>
+          </div>
+        </>
       )}
     </div>
   );

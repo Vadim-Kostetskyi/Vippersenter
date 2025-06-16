@@ -22,6 +22,7 @@ export const productsApi = createApi({
         newProduct?: boolean;
         popularProduct?: boolean;
         category?: string;
+        search?: string;
       } | void
     >({
       query: (filters) => {
@@ -32,6 +33,7 @@ export const productsApi = createApi({
         if (filters.newProduct) params.append("newProduct", "true");
         if (filters.popularProduct) params.append("popularProduct", "true");
         if (filters.category) params.append("category", filters.category);
+        if (filters.search) params.append("search", filters.search);
 
         const queryString = params.toString();
         return queryString ? `products?${queryString}` : "products";

@@ -58,7 +58,8 @@
     "bend": "Вигин",
     "length": "Довжина",
     "thickness": "Товщина",
-    "volume": "Обʼєм"
+    "volume": "Обʼєм",
+    "thereAreNoProducts": "На жаль, таких товарів нема :("
   },
 
   "catalog": "Каталог",
