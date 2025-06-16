@@ -65,6 +65,7 @@
   width: 16px;
   height: 16px;
   fill: $slateGray;
+  z-index: 100;
 }
 
 .clearBtn {
@@ -72,7 +73,7 @@
   right: 8px;
   font-size: 20px;
   line-height: 1;
-  padding: 0;
+  padding: 5px;
   color: $slateGray;
   border: none;
   background: transparent;

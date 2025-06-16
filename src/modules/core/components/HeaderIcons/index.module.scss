@@ -1,6 +1,10 @@
 @use "styles/bootstrap" as *;
 
 .headerIcons {
+  position: relative;
+  display: flex;
+
+  align-items: center;
   @include media(tablet) {
     display: none;
   }
