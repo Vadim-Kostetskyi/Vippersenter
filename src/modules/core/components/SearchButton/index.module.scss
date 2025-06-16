@@ -21,3 +21,60 @@
 .search {
   width: 24px;
 }
+
+.searchWrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.searchBtn,
+.searchBtnMobile {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.inputWrapper {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  width: calc(100% - 16px);
+
+  @include media(laptop) {
+    left: 7.5rem;
+    width: calc(100% - 15rem);
+  }
+}
+
+.searchInput {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  padding: 8px 32px 8px 32px;
+  font-size: 16px;
+  border: 1px solid $silver;
+  border-radius: 4px;
+}
+
+.iconLeft {
+  position: absolute;
+  left: 8px;
+  pointer-events: none;
+  width: 16px;
+  height: 16px;
+  fill: $slateGray;
+}
+
+.clearBtn {
+  position: absolute;
+  right: 8px;
+  font-size: 20px;
+  line-height: 1;
+  padding: 0;
+  color: $slateGray;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
