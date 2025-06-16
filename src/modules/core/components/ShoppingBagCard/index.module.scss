@@ -1,0 +1,67 @@
+@use "styles/bootstrap" as *;
+
+.shoppingBagCard {
+  display: flex;
+  background-color: $pageBackground;
+
+  & img {
+    width: 140px;
+  }
+}
+
+.infoBox {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px;
+
+  & > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  & img {
+    width: 16px;
+  }
+}
+
+.quantityBox {
+  display: flex;
+  align-items: center;
+
+  & input {
+    position: relative;
+    width: 55px;
+    height: 100%;
+    padding: 10px;
+    text-align: center;
+    border: none;
+    border-bottom: 1px solid $coralPink;
+    background-color: $softBlush;
+
+    -moz-appearance: textfield;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+
+  & button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    background-color: $softBlush;
+    cursor: pointer;
+  }
+}
+
+.price {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.04rem;
+}

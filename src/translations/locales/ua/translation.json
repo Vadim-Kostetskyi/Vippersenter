@@ -18,7 +18,7 @@
     "ourAddress": "Наша Адреса",
     "Contacts": "Контакти",
     "main": "Головна",
-    "shoppingCart": "Кошик"
+    "shoppingCard": "Кошик"
   },
 
   "login": {
@@ -44,7 +44,8 @@
     "deleteAttribute": "Видалити атрибут",
     "addAttribute": "Додати атрибут",
     "description": "Опис",
-    "save": "Зберегти"
+    "save": "Зберегти",
+    "addToCard": "Додати в кошик"
   },
 
   "filter": {
@@ -60,6 +61,13 @@
     "thickness": "Товщина",
     "volume": "Обʼєм",
     "thereAreNoProducts": "На жаль, таких товарів нема :("
+  },
+
+  "shoppingCard": {
+    "card": "кошик",
+    "yourCardEmpty": "Ваш кошик порожній",
+    "returnToStore": "Повернутися в магазин",
+    "continueShopping": "Продовжити покупки"
   },
 
   "catalog": "Каталог",

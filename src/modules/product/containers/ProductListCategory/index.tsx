@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import CategoryNames from "components/CategoryNames";
 import { useGetProductsQuery } from "storeRedux/productsApi";
-import ProductListCart from "modules/product/components/ProductListCart";
+import ProductListCard from "modules/product/components/ProductListCard";
 import styles from "./index.module.scss";
 
 const ProductListCategory = () => {
@@ -20,7 +20,7 @@ const ProductListCategory = () => {
   return (
     <div className={styles.productListCategory}>
       {removerProducts?.map(({ image, price, name, _id }) => (
-        <ProductListCart image={image} price={price} name={name} id={_id} />
+        <ProductListCard image={image} price={price} name={name} id={_id} />
       ))}
     </div>
   );

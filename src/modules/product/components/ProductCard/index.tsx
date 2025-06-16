@@ -4,9 +4,10 @@ import { useTranslation } from "react-i18next";
 import { useGetProductByIdQuery } from "storeRedux/productsApi";
 import PlusSubtle from "assets/svg/PlusSubtle";
 import Minus from "assets/svg/Minus";
+import { addProductToCart } from "utils/cart";
 import styles from "./index.module.scss";
 
-const ProductCart = () => {
+const ProductCard = () => {
   const { productId } = useParams();
   const {
     data: product,
@@ -20,13 +21,13 @@ const ProductCart = () => {
   if (isLoading) return <div>...</div>;
   if (isError || !product) return <div>Data loading error</div>;
 
-  const { name, image, price, quantity, description } = product;
+  const { _id, name, image, price, quantity, description } = product;
 
   const handleIncrement = () => setCount((prev) => prev + 1);
   const handleDecrement = () => setCount((prev) => (prev > 1 ? prev - 1 : 1));
 
   return (
-    <div className={styles.productCart}>
+    <div className={styles.productCard}>
       <img src={image} alt="" className={styles.image} />
       <div className={styles.infoBox}>
         <h1 className={styles.title}>{name}</h1>
@@ -56,8 +57,9 @@ const ProductCart = () => {
             color: "white",
             marginBottom: 15,
           }}
+          onClick={() => addProductToCart(_id, price, count)}
         >
-          Add to cart
+          {t("form.addToCard")}
         </button>
         <h2 className={styles.description}>{t("form.description")}</h2>
         <p>
@@ -77,4 +79,4 @@ const ProductCart = () => {
   );
 };
 
-export default ProductCart;
+export default ProductCard;

@@ -3,3 +3,82 @@
 .icon {
   width: 22px;
 }
+
+.shoppingBagBtn {
+  position: relative;
+
+  & span {
+    position: absolute;
+    top: -3px;
+    right: -4px;
+    font-size: 12px;
+    padding: 0 3px;
+    color: $whiteColor;
+    background-color: $customRed;
+    border-radius: 50%;
+  }
+}
+
+.shoppingBagWrapper {
+  position: fixed;
+  display: flex;
+  justify-content: flex-end;
+  top: 0;
+  right: 0;
+  width: 100vw;
+  background-color: $black40;
+}
+
+.shoppingBag {
+  position: relative;
+  width: 500px;
+  height: 100vh;
+  padding: 10px;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  background-color: $pageBackground;
+
+  & h2 {
+    font-size: 16;
+    text-transform: uppercase;
+    font-weight: 300;
+    padding-bottom: 10px;
+  }
+}
+
+.shoppingBagOpen {
+  transform: translateX(0%);
+}
+
+.products {
+  background-color: $lightGray;
+
+  & > div:not(:last-child) {
+    margin-bottom: 10px;
+  }
+}
+
+.emptyBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 30px;
+
+  & img {
+    width: 170px;
+  }
+
+  & > *:not(:last-child) {
+    margin-bottom: 15px;
+  }
+}
+
+.continueShoppingBox {
+  position: absolute;
+  bottom: 40px;
+  width: calc(100% - 20px);
+  & button {
+    width: 100%;
+  }
+}

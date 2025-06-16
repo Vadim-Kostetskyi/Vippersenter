@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import Home from "assets/svg/Home";
 import Catalog from "assets/svg/Catalog";
-import ShoppingCart from "assets/svg/ShoppingCart";
+import ShoppingCard from "assets/svg/ShoppingCard";
 import styles from "./index.module.scss";
 
 const MenuBar = () => {
@@ -22,14 +22,14 @@ const MenuBar = () => {
       </li>
       <li>
         <a href="#">
-          <ShoppingCart className={styles.icon} />
-          {t("footer.shoppingCart")}
+          <ShoppingCard className={styles.icon} />
+          {t("footer.shoppingCard")}
         </a>
       </li>
       <li>
         <a href="#">
-          <ShoppingCart className={styles.icon} />
-          {t("footer.shoppingCart")}
+          <ShoppingCard className={styles.icon} />
+          {t("footer.shoppingCard")}
         </a>
       </li>
     </ul>

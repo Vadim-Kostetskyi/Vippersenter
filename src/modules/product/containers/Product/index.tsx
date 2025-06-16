@@ -1,11 +1,11 @@
-import ProductCart from "modules/product/components/ProductCart";
+import ProductCard from "modules/product/components/ProductCard";
 import AlsoLike from "modules/product/components/AlsoLike";
 import styles from "./index.module.scss";
 
 const Product = () => {
   return (
     <div className={styles.product}>
-      <ProductCart />
+      <ProductCard />
       <AlsoLike />
     </div>
   );

@@ -2,14 +2,14 @@ import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import styles from "./index.module.scss";
 
-interface ProductListCartProps {
+interface ProductListCardProps {
   id: string;
   image: string;
   price: number;
   name: string;
 }
 
-const ProductListCart: FC<ProductListCartProps> = ({
+const ProductListCard: FC<ProductListCardProps> = ({
   id,
   image,
   name,
@@ -18,7 +18,7 @@ const ProductListCart: FC<ProductListCartProps> = ({
   const { t } = useTranslation();
 
   return (
-    <div className={styles.productListCart}>
+    <div className={styles.productListCard}>
       <div className={styles.imageBox}>
         <img src={image} alt={name} />
       </div>
@@ -34,4 +34,4 @@ const ProductListCart: FC<ProductListCartProps> = ({
   );
 };
 
-export default ProductListCart;
+export default ProductListCard;

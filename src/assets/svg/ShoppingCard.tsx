@@ -1,9 +1,9 @@
 import { JSX } from "react";
 
-const ShoppingCart = ({ className }: { className?: string }): JSX.Element => (
+const ShoppingCard = ({ className }: { className?: string }): JSX.Element => (
   <svg
     className={className}
-    viewBox="0 0 35 35"
+    viewBox="-2 -3 35 35"
     fill="fff"
     xmlns="http://www.w3.org/2000/svg"
   >
@@ -11,4 +11,4 @@ const ShoppingCart = ({ className }: { className?: string }): JSX.Element => (
   </svg>
 );
 
-export default ShoppingCart;
+export default ShoppingCard;
