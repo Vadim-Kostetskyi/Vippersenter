@@ -67,7 +67,9 @@
     "card": "кошик",
     "yourCardEmpty": "Ваш кошик порожній",
     "returnToStore": "Повернутися в магазин",
-    "continueShopping": "Продовжити покупки"
+    "continueShopping": "Продовжити покупки",
+    "total": "Разом",
+    "placeAnOrder": "Оформити замовлення"
   },
 
   "catalog": "Каталог",

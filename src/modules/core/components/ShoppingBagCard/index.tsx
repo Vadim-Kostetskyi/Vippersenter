@@ -16,12 +16,14 @@ interface ShoppingBagCardProps {
   id: string;
   quantity: number;
   setProducts: (items: CartItem[]) => void;
+  delProduct: (productId: string) => void;
 }
 
 const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
   id,
   quantity,
   setProducts,
+  delProduct,
 }) => {
   const { data: product } = useGetProductByIdQuery(id);
   const { name = "", image = "", price = 0 } = product ?? {};
@@ -33,21 +35,20 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
     setCount((prev) => {
       const newCount = prev + 1;
       updateCartItemQuantity(id, newCount);
+      const cards = getCartItems();
+      setProducts(cards);
       return newCount;
     });
-
-    const cards = getCartItems();
-    setProducts(cards);
   };
 
   const handleDecrement = () => {
     setCount((prev) => {
       const newCount = prev > 1 ? prev - 1 : 1;
       updateCartItemQuantity(id, newCount);
+      const cards = getCartItems();
+      setProducts(cards);
       return newCount;
     });
-    const cards = getCartItems();
-    setProducts(cards);
   };
 
   const totalPrice = count * price;
@@ -61,6 +62,7 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
           <button
             onClick={() => {
               removeCartItem(id);
+              delProduct(id);
             }}
           >
             <img src={TrashIcon} alt="delete item" />

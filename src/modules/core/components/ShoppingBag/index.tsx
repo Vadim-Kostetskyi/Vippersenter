@@ -13,22 +13,44 @@ const ShoppingBag = () => {
 
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
+  const { t } = useTranslation();
   useEffect(() => {
     setCartItems(getCartItems());
   }, []);
 
-  const { t } = useTranslation();
+  useEffect(() => {
+    const updateCart = () => {
+      const updated = JSON.parse(localStorage.getItem("cart") || "[]");
+      setCartItems(updated);
+    };
+    console.log(123);
+
+    window.addEventListener("cartUpdated", updateCart);
+    return () => {
+      window.removeEventListener("cartUpdated", updateCart);
+    };
+  }, []);
 
   const quantityOfProducts = cartItems.reduce(
     (total, item) => total + item.quantity,
     0
   );
 
-  const getTotalCartPrice = (items: { price: number; quantity: number }[]) => {
-    return items.reduce((total, item) => total + item.price * item.quantity, 0);
+  const totalCartPrice = cartItems.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
+
+  const onSetProducts = (items: CartItem[]) => {
+    setCartItems(items);
+    window.dispatchEvent(new Event("cartUpdated"));
   };
 
-  const onSetProducts = (items: CartItem[]) => setCartItems(items);
+  const removeCartItem = (id: string) => {
+    const updatedCart = cartItems.filter((item) => item.id !== id);
+    setCartItems(updatedCart);
+    window.dispatchEvent(new Event("cartUpdated"));
+  };
 
   const onOpenBag = () => {
     setIsVisible(true);
@@ -38,6 +60,11 @@ const ShoppingBag = () => {
   const onClose = () => {
     setIsAnimating(false);
     setTimeout(() => setIsVisible(false), 300);
+  };
+
+  const onPlaceAnOrder = () => {
+    console.log(cartItems);
+    console.log("totalCartPrice", totalCartPrice);
   };
 
   return (
@@ -61,6 +88,7 @@ const ShoppingBag = () => {
                 <ShoppingBagList
                   products={cartItems}
                   setProducts={onSetProducts}
+                  delProduct={removeCartItem}
                 />
               ) : (
                 <div className={styles.emptyBox}>
@@ -73,13 +101,22 @@ const ShoppingBag = () => {
                 </div>
               )}
             </div>
-            <div>
-              <span>Разом {getTotalCartPrice(cartItems).toFixed(2)}</span>
-            </div>
             <div className={styles.continueShoppingBox}>
+              <div>
+                <span>{t("shoppingCard.total")} </span>
+                <span>
+                  {totalCartPrice.toFixed(2)}
+                  {t("currency")}
+                </span>
+              </div>
               <CardButton
                 title={t("shoppingCard.continueShopping")}
                 onClick={onClose}
+              />
+              <CardButton
+                title={t("shoppingCard.placeAnOrder")}
+                onClick={onPlaceAnOrder}
+                placeOrder={true}
               />
             </div>
           </div>

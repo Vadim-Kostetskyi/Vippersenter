@@ -4,8 +4,10 @@
   display: flex;
   background-color: $pageBackground;
 
-  & img {
+  & > img {
     width: 140px;
+    height: 140px;
+    aspect-ratio: 1 / 1;
   }
 }
 

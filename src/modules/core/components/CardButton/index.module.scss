@@ -1,12 +1,13 @@
 @use "styles/bootstrap" as *;
 
 .button {
-  padding: 10px 20px;
+  padding: 12px 20px;
   font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
   color: $whiteColor;
   background-color: $backdropColor;
+  border-radius: 4px;
   transition: all 0.5s ease;
 
   &:hover,
@@ -15,4 +16,9 @@
     background-color: $whiteColor;
     box-shadow: 2px 2px 12px 0 rgba(166, 166, 166, 0.45);
   }
+}
+
+.placeOrderButton {
+  @extend .button;
+  background: $buttonGradient;
 }

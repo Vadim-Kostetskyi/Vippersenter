@@ -35,6 +35,13 @@ $footerBackground: linear-gradient(
   rgba(249, 183, 240, 1) 100%
 );
 
+$buttonGradient: linear-gradient(
+  90deg,
+  rgba(252, 240, 188, 1) 0%,
+  rgba(252, 209, 221, 1) 75%,
+  rgba(249, 183, 240, 1) 100%
+);
+
 $brilliance: #fdfdfd;
 $blackColor: #212121;
 $blackTransparentColor: #00000033;
