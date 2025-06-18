@@ -26,6 +26,11 @@ const ProductCard = () => {
   const handleIncrement = () => setCount((prev) => prev + 1);
   const handleDecrement = () => setCount((prev) => (prev > 1 ? prev - 1 : 1));
 
+  const onAddToCart = () => {
+    addProductToCart(_id, price, count);
+    window.dispatchEvent(new Event("cartUpdated"));
+  };
+
   return (
     <div className={styles.productCard}>
       <img src={image} alt="" className={styles.image} />
@@ -57,7 +62,7 @@ const ProductCard = () => {
             color: "white",
             marginBottom: 15,
           }}
-          onClick={() => addProductToCart(_id, price, count)}
+          onClick={onAddToCart}
         >
           {t("form.addToCard")}
         </button>

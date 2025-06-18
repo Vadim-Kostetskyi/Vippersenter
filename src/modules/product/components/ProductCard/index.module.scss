@@ -6,12 +6,17 @@
 
   @include media(laptop) {
     display: flex;
+    align-items: flex-start;
+    margin-top: 300px;
   }
 }
 
 .image {
   width: 100%;
   margin-bottom: 15px;
+  height: auto;
+  object-fit: contain;
+
   @include media(laptop) {
     width: 45%;
   }
@@ -20,7 +25,6 @@
 .infoBox {
   @include media(laptop) {
     padding-left: 30px;
-    margin-top: 300px;
   }
 }
 
