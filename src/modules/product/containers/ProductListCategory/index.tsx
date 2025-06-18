@@ -15,8 +15,6 @@ const ProductListCategory = () => {
     category: categoryChosen[0].label,
   });
 
-  console.log(removerProducts);
-
   return (
     <div className={styles.productListCategory}>
       {removerProducts?.map(({ image, price, name, _id }) => (

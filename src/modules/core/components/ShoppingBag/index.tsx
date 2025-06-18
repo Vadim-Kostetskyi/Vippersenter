@@ -23,7 +23,6 @@ const ShoppingBag = () => {
       const updated = JSON.parse(localStorage.getItem("cart") || "[]");
       setCartItems(updated);
     };
-    console.log(123);
 
     window.addEventListener("cartUpdated", updateCart);
     return () => {
@@ -46,8 +45,24 @@ const ShoppingBag = () => {
     window.dispatchEvent(new Event("cartUpdated"));
   };
 
-  const removeCartItem = (id: string) => {
-    const updatedCart = cartItems.filter((item) => item.id !== id);
+  const removeCartItem = (
+    id: string,
+    attributes?: { name: string; value: string }[]
+  ) => {
+    const updatedCart = cartItems.filter((item) => {
+      if (item.id !== id) return true;
+
+      if (!item.attributes && !attributes) return true;
+      if (!item.attributes || !attributes) return false;
+      if (item.attributes.length !== attributes.length) return true;
+
+      const isSame = item.attributes.every((attr) =>
+        attributes.some((a) => a.name === attr.name && a.value === attr.value)
+      );
+
+      return !isSame;
+    });
+
     setCartItems(updatedCart);
     window.dispatchEvent(new Event("cartUpdated"));
   };
@@ -64,7 +79,7 @@ const ShoppingBag = () => {
 
   const onPlaceAnOrder = () => {
     console.log(cartItems);
-    console.log("totalCartPrice", totalCartPrice);
+    console.log("totalPrice", totalCartPrice);
   };
 
   return (

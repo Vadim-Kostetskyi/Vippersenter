@@ -1,4 +1,4 @@
-interface CartItem {
+export interface CartItem {
   id: string;
   price: number;
   quantity: number;
@@ -39,23 +39,57 @@ export const getCartItems = (): CartItem[] => {
   return storedCart ? JSON.parse(storedCart) : [];
 };
 
+const areAttributesEqual = (
+  a?: { name: string; value: string }[],
+  b?: { name: string; value: string }[]
+): boolean => {
+  if (!a && !b) return true;
+  if (!a || !b) return false;
+  if (a.length !== b.length) return false;
+
+  const sortedA = [...a].sort((x, y) => x.name.localeCompare(y.name));
+  const sortedB = [...b].sort((x, y) => x.name.localeCompare(y.name));
+
+  return sortedA.every((attr, index) => {
+    return (
+      attr.name === sortedB[index].name && attr.value === sortedB[index].value
+    );
+  });
+};
+
 export const updateCartItemQuantity = (
   productId: string,
-  newQuantity: number
+  newQuantity: number,
+  attributes?: { name: string; value: string }[]
 ) => {
   const cart: CartItem[] = JSON.parse(localStorage.getItem("cart") || "[]");
 
-  const updatedCart = cart.map((item) =>
-    item.id === productId ? { ...item, quantity: newQuantity } : item
-  );
+  const updatedCart = cart.map((item) => {
+    const sameProduct = item.id === productId;
+    const sameAttributes = areAttributesEqual(item.attributes, attributes);
+
+    return sameProduct && sameAttributes
+      ? { ...item, quantity: newQuantity }
+      : item;
+  });
 
   localStorage.setItem("cart", JSON.stringify(updatedCart));
 };
 
-export const removeCartItem = (productId: string) => {
+export const removeCartItem = (
+  productId: string,
+  attributes?: { name: string; value: string }[]
+) => {
   const storedCart = localStorage.getItem("cart");
-  const cart = storedCart ? JSON.parse(storedCart) : [];
+  const cart: CartItem[] = storedCart ? JSON.parse(storedCart) : [];
 
-  const updatedCart = cart.filter((item: any) => item.id !== productId);
+  const updatedCart = cart.filter(
+    (item) =>
+      !(
+        item.id === productId && areAttributesEqual(item.attributes, attributes)
+      )
+  );
+
   localStorage.setItem("cart", JSON.stringify(updatedCart));
+  window.dispatchEvent(new Event("cartUpdated"));
 };

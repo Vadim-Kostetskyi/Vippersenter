@@ -1,0 +1,6 @@
+@use "styles/bootstrap" as *;
+
+.shoppingBagList {
+  max-height: 700px;
+  overflow-y: scroll;
+}

@@ -16,7 +16,17 @@ interface ShoppingBagCardProps {
   id: string;
   quantity: number;
   setProducts: (items: CartItem[]) => void;
-  delProduct: (productId: string) => void;
+  delProduct: (
+    productId: string,
+    attributes?: {
+      name: string;
+      value: string;
+    }[]
+  ) => void;
+  attributes?: {
+    name: string;
+    value: string;
+  }[];
 }
 
 const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
@@ -24,6 +34,7 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
   quantity,
   setProducts,
   delProduct,
+  attributes,
 }) => {
   const { data: product } = useGetProductByIdQuery(id);
   const { name = "", image = "", price = 0 } = product ?? {};
@@ -34,7 +45,7 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
   const handleIncrement = () => {
     setCount((prev) => {
       const newCount = prev + 1;
-      updateCartItemQuantity(id, newCount);
+      updateCartItemQuantity(id, newCount, attributes);
       const cards = getCartItems();
       setProducts(cards);
       return newCount;
@@ -44,7 +55,7 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
   const handleDecrement = () => {
     setCount((prev) => {
       const newCount = prev > 1 ? prev - 1 : 1;
-      updateCartItemQuantity(id, newCount);
+      updateCartItemQuantity(id, newCount, attributes);
       const cards = getCartItems();
       setProducts(cards);
       return newCount;
@@ -55,19 +66,28 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
 
   return (
     <div className={styles.shoppingBagCard}>
-      <img src={image} alt="" />
+      <a href={`/product/${id}`}>
+        <img src={image} alt="" />
+      </a>
       <div className={styles.infoBox}>
         <div>
-          <h3>{name}</h3>
+          <a href={`/product/${id}`}>
+            <h3>{name}</h3>
+          </a>
           <button
             onClick={() => {
-              removeCartItem(id);
-              delProduct(id);
+              removeCartItem(id, attributes);
+              delProduct(id, attributes);
             }}
           >
             <img src={TrashIcon} alt="delete item" />
           </button>
         </div>
+        {attributes?.map(({ name, value }) => (
+          <div className={styles.attributes}>
+            <span>{name}:</span> <span>{value}</span>
+          </div>
+        ))}
         <div>
           <div className={styles.quantityBox}>
             <button onClick={handleDecrement}>

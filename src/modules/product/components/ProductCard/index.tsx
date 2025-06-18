@@ -19,7 +19,6 @@ const ProductCard = () => {
   const [selectedAttributes, setSelectedAttributes] = useState<
     { name: string; value: string }[]
   >([]);
-  console.log(selectedAttributes);
 
   useEffect(() => {
     if (product?.attributes && product.attributes.length > 0) {

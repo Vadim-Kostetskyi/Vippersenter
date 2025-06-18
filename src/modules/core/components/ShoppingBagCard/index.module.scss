@@ -4,7 +4,7 @@
   display: flex;
   background-color: $pageBackground;
 
-  & > img {
+  & > a img {
     width: 140px;
     height: 140px;
     aspect-ratio: 1 / 1;
@@ -19,13 +19,24 @@
   width: 100%;
   padding: 12px;
 
-  & > div {
+  & > div:not(.attributes) {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
   & img {
     width: 16px;
+  }
+}
+
+.attributes {
+  display: flex;
+  justify-content: flex-start;
+  font-style: italic;
+
+  & span:first-child {
+    margin-right: 10px;
+    font-weight: 700;
   }
 }
 
