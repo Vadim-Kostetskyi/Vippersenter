@@ -64,7 +64,7 @@ const ProductCard = () => {
         <h2 className={styles.description}>{t("form.description")}</h2>
         <p>
           {description[0]
-            .split(/-\s*/)
+            .split(/—\s*/)
             .filter(Boolean)
             .map((sentence, idx) => (
               <span key={idx}>
