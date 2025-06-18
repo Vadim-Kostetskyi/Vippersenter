@@ -33,7 +33,10 @@
     "title": "Назва",
     "price": "Ціна",
     "quantity": "Кількість",
-    "characteristics": "Характеристики"
+    "characteristics": "Характеристики",
+    "confirmDelete": "Видалити продукт",
+    "updateError": "Помилка оновлення",
+    "deleteError": "Помилка видалення"
   },
 
   "form": {

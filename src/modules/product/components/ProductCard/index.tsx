@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useGetProductByIdQuery } from "storeRedux/productsApi";
 import PlusSubtle from "assets/svg/PlusSubtle";
 import Minus from "assets/svg/Minus";
 import { addProductToCart } from "utils/card";
+import ProductAttributes from "../ProductAttributes";
 import styles from "./index.module.scss";
 
 const ProductCard = () => {
@@ -15,20 +16,49 @@ const ProductCard = () => {
     isError,
   } = useGetProductByIdQuery(productId ?? "");
   const [count, setCount] = useState(1);
+  const [selectedAttributes, setSelectedAttributes] = useState<
+    { name: string; value: string }[]
+  >([]);
+  console.log(selectedAttributes);
+
+  useEffect(() => {
+    if (product?.attributes && product.attributes.length > 0) {
+      const initialSelected = product.attributes.map(({ name, values }) => ({
+        name,
+        value: values[0],
+      }));
+      setSelectedAttributes(initialSelected);
+    }
+  }, [product]);
 
   const { t } = useTranslation();
 
   if (isLoading) return <div>...</div>;
   if (isError || !product) return <div>Data loading error</div>;
 
-  const { _id, name, image, price, quantity, description } = product;
+  const { _id, name, image, price, quantity, description, attributes } =
+    product;
 
   const handleIncrement = () => setCount((prev) => prev + 1);
   const handleDecrement = () => setCount((prev) => (prev > 1 ? prev - 1 : 1));
 
   const onAddToCart = () => {
-    addProductToCart(_id, price, count);
+    addProductToCart(_id, price, count, selectedAttributes);
     window.dispatchEvent(new Event("cartUpdated"));
+  };
+
+  const handleSelectAttribute = (name: string, value: string) => {
+    setSelectedAttributes((prev) => {
+      const existsIndex = prev.findIndex((attr) => attr.name === name);
+
+      if (existsIndex !== -1) {
+        const newArr = [...prev];
+        newArr[existsIndex] = { name, value };
+        return newArr;
+      } else {
+        return [...prev, { name, value }];
+      }
+    });
   };
 
   return (
@@ -45,31 +75,59 @@ const ProductCard = () => {
         ) : (
           <p className={styles.outStock}>Out of stock</p>
         )}
-        <p className={styles.quantity}>{t("product.quantity")}</p>
-        <div className={styles.quantityBox}>
-          <button onClick={handleDecrement}>
-            <Minus />
-          </button>
-          <input type="number" value={count} />
-          <button onClick={handleIncrement}>
-            <PlusSubtle />
-          </button>
-        </div>
-        <button
-          style={{
-            padding: 15,
-            backgroundColor: "black",
-            color: "white",
-            marginBottom: 15,
-          }}
-          onClick={onAddToCart}
-        >
-          {t("form.addToCard")}
-        </button>
+        {quantity ? (
+          <>
+            {attributes?.map(({ name, values }) => (
+              <ProductAttributes
+                key={name}
+                title={name}
+                values={values}
+                selectedValue={
+                  selectedAttributes.find((attr) => attr.name === name)?.value
+                }
+                onSelect={handleSelectAttribute}
+              />
+            ))}
+            <p className={styles.quantity}>{t("product.quantity")}</p>
+
+            <div className={styles.quantityBox}>
+              <button onClick={handleDecrement}>
+                <Minus />
+              </button>
+              <input
+                type="number"
+                value={count}
+                min={1}
+                onChange={(e) => {
+                  const val = Number(e.target.value);
+                  if (val >= 1) setCount(val);
+                }}
+              />
+
+              <button onClick={handleIncrement}>
+                <PlusSubtle />
+              </button>
+            </div>
+            <button
+              style={{
+                padding: 15,
+                backgroundColor: "black",
+                color: "white",
+                marginBottom: 15,
+              }}
+              onClick={onAddToCart}
+            >
+              {t("form.addToCard")}
+            </button>
+          </>
+        ) : null}
+
         <h2 className={styles.description}>{t("form.description")}</h2>
         <p>
-          {description[0]
-            .split(/—\s*/)
+          {(description && description.length > 0 && description[0]
+            ? description[0].split(/—\s*/)
+            : []
+          )
             .filter(Boolean)
             .map((sentence, idx) => (
               <span key={idx}>

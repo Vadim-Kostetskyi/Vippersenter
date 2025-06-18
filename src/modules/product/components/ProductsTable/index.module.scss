@@ -3,4 +3,22 @@
 .productsTable {
   width: "100%";
   margin-top: 80px;
+
+  & input[type="number"]::-webkit-outer-spin-button,
+  & input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  & input[type="number"] {
+    -moz-appearance: textfield;
+  }
+}
+
+.trashIcon {
+  width: 30px;
+  height: 30px;
+  fill: $pageBackground;
+  background-color: red;
+  border-radius: 50%;
 }

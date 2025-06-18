@@ -8,7 +8,6 @@ export const productsApi = createApi({
     baseUrl: BASE_URL,
     prepareHeaders: (headers) => {
       const token = import.meta.env.VITE_API_KEY;
-
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
@@ -27,14 +26,11 @@ export const productsApi = createApi({
     >({
       query: (filters) => {
         if (!filters) return "products";
-
         const params = new URLSearchParams();
-
         if (filters.newProduct) params.append("newProduct", "true");
         if (filters.popularProduct) params.append("popularProduct", "true");
         if (filters.category) params.append("category", filters.category);
         if (filters.search) params.append("search", filters.search);
-
         const queryString = params.toString();
         return queryString ? `products?${queryString}` : "products";
       },
@@ -47,15 +43,12 @@ export const productsApi = createApi({
 
     getProductById: builder.query<Product, string>({
       query: (id) => `product/${id}`,
-      transformResponse: (response: Product) => {
-        return {
-          ...response,
-          image: BASE_URL + response.image,
-        };
-      },
+      transformResponse: (response: Product) => ({
+        ...response,
+        image: BASE_URL + response.image,
+      }),
     }),
 
-    // запит з фільтрами / сторінками
     getProductsPaged: builder.query<
       GetProductsResponse,
       { page: number; size: number }
@@ -65,12 +58,11 @@ export const productsApi = createApi({
 
     getRandomProducts: builder.query<Product[], void>({
       query: () => `products?random=true`,
-      transformResponse: (response: Product[]) => {
-        return response.map((product) => ({
+      transformResponse: (response: Product[]) =>
+        response.map((product) => ({
           ...product,
           image: BASE_URL + product.image,
-        }));
-      },
+        })),
     }),
 
     uploadImage: builder.mutation<{ imageUrl: string }, FormData>({
@@ -88,7 +80,28 @@ export const productsApi = createApi({
         body: newProduct,
       }),
     }),
+
+    updateProductQuantity: builder.mutation<
+      Product,
+      { id: string; quantity: number }
+    >({
+      query: ({ id, quantity }) => ({
+        url: `products/${id}`,
+        method: "PATCH",
+        body: { quantity },
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: "Product", id }],
+    }),
+
+    deleteProduct: builder.mutation<{ success: boolean; id: string }, string>({
+      query: (id) => ({
+        url: `products/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, id) => [{ type: "Product", id }],
+    }),
   }),
+  tagTypes: ["Product"],
 });
 
 export const {
@@ -98,4 +111,6 @@ export const {
   useGetRandomProductsQuery,
   useUploadImageMutation,
   useAddProductMutation,
+  useUpdateProductQuantityMutation,
+  useDeleteProductMutation,
 } = productsApi;
