@@ -1,6 +1,5 @@
 import { FC } from "react";
 import styles from "./index.module.scss";
-import FilterButton from "../FilterButton";
 import { useTranslation } from "react-i18next";
 
 interface ProductCategoryModelProps {
