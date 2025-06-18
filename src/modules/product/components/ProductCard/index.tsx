@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useGetProductByIdQuery } from "storeRedux/productsApi";
 import PlusSubtle from "assets/svg/PlusSubtle";
 import Minus from "assets/svg/Minus";
-import { addProductToCart } from "utils/cart";
+import { addProductToCart } from "utils/card";
 import styles from "./index.module.scss";
 
 const ProductCard = () => {

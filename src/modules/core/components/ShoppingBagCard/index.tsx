@@ -5,19 +5,28 @@ import styles from "./index.module.scss";
 import { useTranslation } from "react-i18next";
 import Minus from "assets/svg/Minus";
 import PlusSubtle from "assets/svg/PlusSubtle";
-import { removeCartItem, updateCartItemQuantity } from "utils/cart";
+import {
+  CartItem,
+  getCartItems,
+  removeCartItem,
+  updateCartItemQuantity,
+} from "utils/card";
 
 interface ShoppingBagCardProps {
   id: string;
   quantity: number;
+  setProducts: (items: CartItem[]) => void;
 }
 
-const ShoppingBagCard: FC<ShoppingBagCardProps> = ({ id, quantity }) => {
+const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
+  id,
+  quantity,
+  setProducts,
+}) => {
   const { data: product } = useGetProductByIdQuery(id);
   const { name = "", image = "", price = 0 } = product ?? {};
   const [count, setCount] = useState(quantity);
 
-  console.log(product);
   const { t } = useTranslation();
 
   const handleIncrement = () => {
@@ -26,6 +35,9 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({ id, quantity }) => {
       updateCartItemQuantity(id, newCount);
       return newCount;
     });
+
+    const cards = getCartItems();
+    setProducts(cards);
   };
 
   const handleDecrement = () => {
@@ -34,9 +46,11 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({ id, quantity }) => {
       updateCartItemQuantity(id, newCount);
       return newCount;
     });
+    const cards = getCartItems();
+    setProducts(cards);
   };
 
-  const totalPrice = quantity * price;
+  const totalPrice = count * price;
 
   return (
     <div className={styles.shoppingBagCard}>

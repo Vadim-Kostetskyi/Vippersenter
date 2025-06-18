@@ -4,7 +4,7 @@ import ShoppingCard from "assets/svg/ShoppingCard";
 import emptyImg from "assets/svg/EmptyCart.svg";
 import CardButton from "../CardButton";
 import ShoppingBagList from "../ShoppingBagList";
-import { CartItem, getCartItems } from "utils/cart";
+import { CartItem, getCartItems } from "utils/card";
 import styles from "./index.module.scss";
 
 const ShoppingBag = () => {
@@ -15,7 +15,7 @@ const ShoppingBag = () => {
 
   useEffect(() => {
     setCartItems(getCartItems());
-  }, [getCartItems]);
+  }, []);
 
   const { t } = useTranslation();
 
@@ -27,6 +27,8 @@ const ShoppingBag = () => {
   const getTotalCartPrice = (items: { price: number; quantity: number }[]) => {
     return items.reduce((total, item) => total + item.price * item.quantity, 0);
   };
+
+  const onSetProducts = (items: CartItem[]) => setCartItems(items);
 
   const onOpenBag = () => {
     setIsVisible(true);
@@ -56,7 +58,10 @@ const ShoppingBag = () => {
             <h2>{t("shoppingCard.card")}</h2>
             <div className={styles.products}>
               {quantityOfProducts ? (
-                <ShoppingBagList />
+                <ShoppingBagList
+                  products={cartItems}
+                  setProducts={onSetProducts}
+                />
               ) : (
                 <div className={styles.emptyBox}>
                   <img src={emptyImg} alt="" />

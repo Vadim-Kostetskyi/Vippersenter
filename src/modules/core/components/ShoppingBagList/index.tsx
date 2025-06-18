@@ -1,16 +1,21 @@
-import { getCartItems } from "utils/cart";
+import { FC } from "react";
+import { CartItem } from "utils/card";
 import ShoppingBagCard from "../ShoppingBagCard";
 
-const ShoppingBagList = () => {
-  const cartItems = getCartItems();
+interface ShoppingBagListProps {
+  products: CartItem[];
+  setProducts: (items: CartItem[]) => void;
+}
 
-  return (
-    <>
-      {cartItems.map(({ id, quantity }) => (
-        <ShoppingBagCard id={id} quantity={quantity} />
-      ))}
-    </>
-  );
-};
+const ShoppingBagList: FC<ShoppingBagListProps> = ({
+  products,
+  setProducts,
+}) => (
+  <>
+    {products.map(({ id, quantity }) => (
+      <ShoppingBagCard id={id} quantity={quantity} setProducts={setProducts} />
+    ))}
+  </>
+);
 
 export default ShoppingBagList;
