@@ -1,5 +1,8 @@
 @use "styles/bootstrap" as *;
 
 .product {
+  display: flex;
+  flex-direction: column;
   margin-top: 100px;
+  width: 100%;
 }

@@ -1,29 +1,27 @@
-import { SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper/modules";
 import { useTranslation } from "react-i18next";
-import CoreSwiper from "components/CoreSwiper";
-import { breakpoints } from "utils/constants";
 import styles from "./index.module.scss";
-import { useGetProductsQuery } from "storeRedux/productsApi";
+import CoreSwiper from "components/CoreSwiper";
+import { Pagination } from "swiper/modules";
+import { breakpoints } from "utils/constants";
+import { useGetRandomProductsQuery } from "storeRedux/productsApi";
+import { SwiperSlide } from "swiper/react";
 
-const ProductSwiperPopular = () => {
-  const { data: popularProducts } = useGetProductsQuery({
-    popularProduct: true,
-  });
+const AlsoLikeSwiper = () => {
+  const { data: products } = useGetRandomProductsQuery();
   const { t } = useTranslation();
 
   return (
-    <div className={styles.wrapper}>
-      <h1>{t("popularProducts")}</h1>
+    <div className={styles.alsoLike}>
+      <h2 className={styles.title}>{t("youMayAlsoLike")}</h2>
       <CoreSwiper
         modules={[Pagination]}
         navigation={true}
         slidesPerView={2}
         breakpoints={breakpoints}
       >
-        {popularProducts &&
-          popularProducts.map(({ name, image, price, _id }) => (
-            <SwiperSlide>
+        {products &&
+          products.map(({ name, image, price, _id }) => (
+            <SwiperSlide key={_id}>
               <div className={styles.itemsWrapper}>
                 <picture>
                   <img src={image} alt={name} className={styles.image} />
@@ -44,4 +42,4 @@ const ProductSwiperPopular = () => {
   );
 };
 
-export default ProductSwiperPopular;
+export default AlsoLikeSwiper;

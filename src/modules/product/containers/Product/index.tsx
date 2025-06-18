@@ -1,5 +1,5 @@
 import ProductCard from "modules/product/components/ProductCard";
-import AlsoLike from "modules/product/components/AlsoLike";
+import AlsoLike from "../AlsoLike";
 import styles from "./index.module.scss";
 
 const Product = () => {
