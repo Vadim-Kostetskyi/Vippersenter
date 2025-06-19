@@ -6,10 +6,12 @@ import CardButton from "../CardButton";
 import ShoppingBagList from "../ShoppingBagList";
 import { CartItem, getCartItems } from "utils/card";
 import styles from "./index.module.scss";
+import { usePlaceOrderMutation } from "storeRedux/productsApi";
 
 const ShoppingBag = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [placeOrder] = usePlaceOrderMutation();
 
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
@@ -77,9 +79,22 @@ const ShoppingBag = () => {
     setTimeout(() => setIsVisible(false), 300);
   };
 
-  const onPlaceAnOrder = () => {
-    console.log(cartItems);
-    console.log("totalPrice", totalCartPrice);
+  const onPlaceAnOrder = async () => {
+    const orderData = {
+      items: cartItems.map(({ id, quantity }) => ({
+        productId: id,
+        quantity,
+      })),
+      totalPrice: totalCartPrice,
+    };
+
+    try {
+      const res = await placeOrder(orderData).unwrap();
+      console.log("Order placed:", res);
+      setCartItems([]);
+    } catch (err) {
+      console.error("Order error:", err);
+    }
   };
 
   return (
@@ -118,7 +133,7 @@ const ShoppingBag = () => {
             </div>
             <div className={styles.continueShoppingBox}>
               <div>
-                <span>{t("shoppingCard.total")} </span>
+                <span>{t("shoppingCard.total")}</span>
                 <span>
                   {totalCartPrice.toFixed(2)}
                   {t("currency")}

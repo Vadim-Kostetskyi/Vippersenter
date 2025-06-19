@@ -66,9 +66,6 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
     });
   };
 
-  console.log(quantity);
-  console.log(count);
-
   const totalPrice = count * price;
 
   return (

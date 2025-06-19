@@ -100,6 +100,20 @@ export const productsApi = createApi({
       }),
       invalidatesTags: (_result, _error, id) => [{ type: "Product", id }],
     }),
+
+    placeOrder: builder.mutation<
+      { success: boolean },
+      {
+        items: { productId: string; quantity: number }[];
+        totalPrice: number;
+      }
+    >({
+      query: (orderData) => ({
+        url: "order/place",
+        method: "POST",
+        body: orderData,
+      }),
+    }),
   }),
   tagTypes: ["Product"],
 });
@@ -113,4 +127,5 @@ export const {
   useAddProductMutation,
   useUpdateProductQuantityMutation,
   useDeleteProductMutation,
+  usePlaceOrderMutation,
 } = productsApi;
