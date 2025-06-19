@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import DropdownFilter from "../DropdownFilter";
-import styles from "./index.module.scss";
 import { categories, subCategories } from "./data";
+import styles from "./index.module.scss";
 
 const Filter = () => {
   const { t } = useTranslation();
