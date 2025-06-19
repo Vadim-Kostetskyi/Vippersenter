@@ -1,6 +1,7 @@
 @use "styles/bootstrap" as *;
 
 .productWrapper {
+  width: 100%;
   @include media(laptop) {
     display: flex;
     align-items: flex-start;

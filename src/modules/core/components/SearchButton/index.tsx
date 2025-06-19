@@ -22,10 +22,12 @@ const SearchButton: FC<SearchButtonProps> = ({ isLaptop }) => {
   const closeInput = () => setIsOpen(false);
 
   return (
-    <div className={styles.searchWrapper}>
+    <div
+      className={isLaptop ? styles.searchWrapper : styles.searchWrapperMobile}
+    >
       {!isOpen && (
         <button
-          className={isLaptop ? styles.searchBtn : styles.searchBtnMobile}
+          className={styles.searchBtn}
           onClick={toggleInput}
           aria-label="Open search input"
         >
@@ -37,7 +39,7 @@ const SearchButton: FC<SearchButtonProps> = ({ isLaptop }) => {
         <>
           <div className={styles.backdrop} onClick={closeInput} />
           <div className={styles.inputWrapper}>
-            <div className={styles.input}>
+            <div className={styles.inputBox}>
               <Search className={styles.iconLeft} />
               <input
                 type="text"

@@ -90,7 +90,7 @@ export const productsApi = createApi({
         method: "PATCH",
         body: { quantity },
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: "Product", id }],
+      invalidatesTags: (_result, _error, { id }) => [{ type: "Product", id }],
     }),
 
     deleteProduct: builder.mutation<{ success: boolean; id: string }, string>({
@@ -98,7 +98,7 @@ export const productsApi = createApi({
         url: `products/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: (result, error, id) => [{ type: "Product", id }],
+      invalidatesTags: (_result, _error, id) => [{ type: "Product", id }],
     }),
   }),
   tagTypes: ["Product"],

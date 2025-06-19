@@ -1,10 +1,6 @@
 @use "styles/bootstrap" as *;
 
-.searchBtnMobile {
-  &:hover {
-    scale: 1.1;
-  }
-
+.searchWrapperMobile {
   @include media(laptop) {
     display: none;
   }
@@ -34,6 +30,10 @@
   border: none;
   cursor: pointer;
   padding: 0;
+
+  &:hover {
+    scale: 1.1;
+  }
 }
 
 .backdrop {
@@ -48,15 +48,20 @@
 
 .inputWrapper {
   position: fixed;
+  top: 0;
   left: 0;
   width: 100vw;
   height: 64px;
   padding: 0 15px;
   background-color: $pageBackground;
   z-index: 100;
+
+  @include media(laptop) {
+    padding: 0;
+  }
 }
 
-.input {
+.inputBox {
   position: relative;
   display: flex;
   align-items: center;
