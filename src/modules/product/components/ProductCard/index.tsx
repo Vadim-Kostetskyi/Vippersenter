@@ -97,13 +97,18 @@ const ProductCard = () => {
                 type="number"
                 value={count}
                 min={1}
+                max={quantity}
                 onChange={(e) => {
                   const val = Number(e.target.value);
-                  if (val >= 1) setCount(val);
+                  if (val >= 1 && val <= quantity) {
+                    setCount(val);
+                  } else if (val > quantity) {
+                    setCount(quantity);
+                  }
                 }}
               />
 
-              <button onClick={handleIncrement}>
+              <button onClick={handleIncrement} disabled={count >= quantity}>
                 <PlusSubtle />
               </button>
             </div>

@@ -24,7 +24,7 @@ const ShoppingBagList: FC<ShoppingBagListProps> = ({
     {products.map(({ id, quantity, attributes }) => (
       <ShoppingBagCard
         id={id}
-        quantity={quantity}
+        assignedQuantity={quantity}
         setProducts={setProducts}
         delProduct={delProduct}
         attributes={attributes}

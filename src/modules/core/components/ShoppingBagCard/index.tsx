@@ -14,7 +14,7 @@ import {
 
 interface ShoppingBagCardProps {
   id: string;
-  quantity: number;
+  assignedQuantity: number;
   setProducts: (items: CartItem[]) => void;
   delProduct: (
     productId: string,
@@ -31,18 +31,18 @@ interface ShoppingBagCardProps {
 
 const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
   id,
-  quantity,
+  assignedQuantity,
   setProducts,
   delProduct,
   attributes,
 }) => {
   const { data: product } = useGetProductByIdQuery(id);
-  const { name = "", image = "", price = 0 } = product ?? {};
-  const [count, setCount] = useState(quantity);
+  const { name = "", image = "", price = 0, quantity = 0 } = product ?? {};
+  const [count, setCount] = useState(assignedQuantity);
 
   useEffect(() => {
-    setCount(quantity);
-  }, [quantity]);
+    setCount(assignedQuantity);
+  }, [assignedQuantity]);
 
   const { t } = useTranslation();
 
@@ -65,6 +65,9 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
       return newCount;
     });
   };
+
+  console.log(quantity);
+  console.log(count);
 
   const totalPrice = count * price;
 
@@ -98,7 +101,7 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
               <Minus />
             </button>
             <input type="number" value={count} />
-            <button onClick={handleIncrement}>
+            <button onClick={handleIncrement} disabled={count >= quantity}>
               <PlusSubtle />
             </button>
           </div>
