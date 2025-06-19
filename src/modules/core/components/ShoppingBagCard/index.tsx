@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useGetProductByIdQuery } from "storeRedux/productsApi";
 import TrashIcon from "assets/svg/TrashCan.svg";
 import styles from "./index.module.scss";
@@ -39,6 +39,10 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
   const { data: product } = useGetProductByIdQuery(id);
   const { name = "", image = "", price = 0 } = product ?? {};
   const [count, setCount] = useState(quantity);
+
+  useEffect(() => {
+    setCount(quantity);
+  }, [quantity]);
 
   const { t } = useTranslation();
 
