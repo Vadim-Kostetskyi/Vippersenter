@@ -1,10 +1,15 @@
+import { FC } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import DropdownFilter from "../DropdownFilter";
 import { categories, subCategories } from "./data";
 import styles from "./index.module.scss";
 
-const Filter = () => {
+interface FilterProps {
+  filtration: (attributeName: string, value: string, checked: boolean) => void;
+}
+
+const Filter: FC<FilterProps> = ({ filtration }) => {
   const { t } = useTranslation();
 
   const { category } = useParams();
@@ -36,7 +41,11 @@ const Filter = () => {
           })}
         </div>
         {filteredValuesSubCategory.map(({ label, items }) => (
-          <DropdownFilter title={t(`filter.${label}`)} items={items} />
+          <DropdownFilter
+            title={t(`filter.${label}`)}
+            items={items}
+            onFilter={filtration}
+          />
         ))}
       </form>
     </div>

@@ -5,9 +5,14 @@ import Arrow from "assets/svg/Arrow";
 interface DropdownFilterProps {
   title: string;
   items: string[];
+  onFilter: (attributeName: string, value: string, checked: boolean) => void;
 }
 
-const DropdownFilter: FC<DropdownFilterProps> = ({ title, items }) => {
+const DropdownFilter: FC<DropdownFilterProps> = ({
+  title,
+  items,
+  onFilter,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState("0px");
@@ -47,7 +52,10 @@ const DropdownFilter: FC<DropdownFilterProps> = ({ title, items }) => {
       >
         {items.map((item) => (
           <label>
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              onChange={(e) => onFilter(title, item, e.target.checked)}
+            />
             <span>{item}</span>
           </label>
         ))}

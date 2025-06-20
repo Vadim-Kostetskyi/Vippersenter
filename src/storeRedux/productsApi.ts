@@ -22,18 +22,31 @@ export const productsApi = createApi({
         popularProduct?: boolean;
         category?: string;
         search?: string;
+        [key: string]: string | Record<string, string[]> | boolean | undefined;
       } | void
     >({
       query: (filters) => {
         if (!filters) return "products";
         const params = new URLSearchParams();
-        if (filters.newProduct) params.append("newProduct", "true");
-        if (filters.popularProduct) params.append("popularProduct", "true");
-        if (filters.category) params.append("category", filters.category);
-        if (filters.search) params.append("search", filters.search);
+
+        Object.entries(filters).forEach(([key, value]) => {
+          if (key === "newProduct" && value)
+            params.append("newProduct", "true");
+          else if (key === "popularProduct" && value)
+            params.append("popularProduct", "true");
+          else if (key === "category" && typeof value === "string")
+            params.append("category", value);
+          else if (key === "search" && typeof value === "string")
+            params.append("search", value);
+          else if (key === "attributes" && typeof value === "object") {
+            params.append("attributes", JSON.stringify(value));
+          }
+        });
+
         const queryString = params.toString();
         return queryString ? `products?${queryString}` : "products";
       },
+
       transformResponse: (response: Product[]) =>
         response.map((product) => ({
           ...product,

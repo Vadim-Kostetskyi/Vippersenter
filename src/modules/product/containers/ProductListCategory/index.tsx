@@ -1,27 +1,18 @@
-import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
-import CategoryNames from "components/CategoryNames";
-import { useGetProductsQuery } from "storeRedux/productsApi";
+import { FC } from "react";
 import ProductListCard from "modules/product/components/ProductListCard";
+import { Product } from "storeRedux/types";
 import styles from "./index.module.scss";
 
-const ProductListCategory = () => {
-  const { category } = useParams();
-  const { t } = useTranslation();
-  const { list } = CategoryNames(t);
+interface ProductCategoryProps {
+  products: Product[] | undefined;
+}
 
-  const categoryChosen = list.filter(({ key }) => key === category);
-  const { data: removerProducts } = useGetProductsQuery({
-    category: categoryChosen[0].label,
-  });
-
-  return (
-    <div className={styles.productListCategory}>
-      {removerProducts?.map(({ image, price, name, _id }) => (
-        <ProductListCard image={image} price={price} name={name} id={_id} />
-      ))}
-    </div>
-  );
-};
+const ProductListCategory: FC<ProductCategoryProps> = ({ products }) => (
+  <div className={styles.productListCategory}>
+    {products?.map(({ image, price, name, _id }) => (
+      <ProductListCard image={image} price={price} name={name} id={_id} />
+    ))}
+  </div>
+);
 
 export default ProductListCategory;
