@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, FC } from "react";
-import styles from "./index.module.scss";
 import Arrow from "assets/svg/Arrow";
+import styles from "./index.module.scss";
 
 interface DropdownFilterProps {
   title: string;

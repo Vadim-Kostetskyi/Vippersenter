@@ -1,13 +1,13 @@
+import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import ProductCategoryModel from "modules/product/components/ProductCategoryModel";
 import ProductListCategory from "../ProductListCategory";
-import { images } from "./data";
 import FilterButton from "modules/product/components/FilterButton";
-import styles from "./index.module.scss";
-import { useTranslation } from "react-i18next";
 import CategoryNames from "components/CategoryNames";
 import { useGetProductsQuery } from "storeRedux/productsApi";
-import { useState } from "react";
+import { images } from "./data";
+import styles from "./index.module.scss";
 
 type CategoryKey = keyof typeof images;
 
