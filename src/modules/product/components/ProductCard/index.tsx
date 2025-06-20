@@ -16,9 +16,21 @@ const ProductCard = () => {
     isError,
   } = useGetProductByIdQuery(productId ?? "");
   const [count, setCount] = useState(1);
+  const [maxCount, setMaxCount] = useState(0);
   const [selectedAttributes, setSelectedAttributes] = useState<
     { name: string; value: string }[]
   >([]);
+
+  useEffect(() => {
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+    const productInCart = cart.find((p: any) => p.id === productId);
+
+    const alreadyInCart = productInCart?.quantity || 0;
+    const available = product?.quantity ?? 0;
+
+    const maxAddable = Math.max(available - alreadyInCart, 0);
+    setMaxCount(maxAddable);
+  }, [productId, product?.quantity, count]);
 
   useEffect(() => {
     if (product?.attributes && product.attributes.length > 0) {
@@ -43,6 +55,7 @@ const ProductCard = () => {
 
   const onAddToCart = () => {
     addProductToCart(_id, price, count, selectedAttributes);
+    setMaxCount((prev) => prev - count);
     window.dispatchEvent(new Event("cartUpdated"));
   };
 
@@ -97,18 +110,18 @@ const ProductCard = () => {
                 type="number"
                 value={count}
                 min={1}
-                max={quantity}
+                max={maxCount}
                 onChange={(e) => {
                   const val = Number(e.target.value);
-                  if (val >= 1 && val <= quantity) {
+                  if (val >= 1 && val <= maxCount) {
                     setCount(val);
-                  } else if (val > quantity) {
-                    setCount(quantity);
+                  } else if (val > maxCount) {
+                    setCount(maxCount);
                   }
                 }}
               />
 
-              <button onClick={handleIncrement} disabled={count >= quantity}>
+              <button onClick={handleIncrement} disabled={count >= maxCount}>
                 <PlusSubtle />
               </button>
             </div>
@@ -120,6 +133,7 @@ const ProductCard = () => {
                 marginBottom: 15,
               }}
               onClick={onAddToCart}
+              disabled={count > maxCount}
             >
               {t("form.addToCard")}
             </button>
