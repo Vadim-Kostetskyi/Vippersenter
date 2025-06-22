@@ -23,7 +23,7 @@ const ProductCard = () => {
 
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-    const productInCart = cart.find((p: any) => p.id === productId);
+    const productInCart = cart.find((p: any) => p.slug === productId);
 
     const alreadyInCart = productInCart?.quantity || 0;
     const available = product?.quantity ?? 0;
@@ -54,6 +54,8 @@ const ProductCard = () => {
   const handleDecrement = () => setCount((prev) => (prev > 1 ? prev - 1 : 1));
 
   const onAddToCart = () => {
+    console.log(maxCount);
+
     addProductToCart(slug, price, count, selectedAttributes);
     setMaxCount((prev) => prev - count);
     window.dispatchEvent(new Event("cartUpdated"));
@@ -72,6 +74,8 @@ const ProductCard = () => {
       }
     });
   };
+  console.log(count);
+  console.log(maxCount);
 
   return (
     <div className={styles.productCard}>
