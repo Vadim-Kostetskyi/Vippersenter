@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { useGetProductByIdQuery } from "storeRedux/productsApi";
+import { useGetProductBySlugQuery } from "storeRedux/productsApi";
 import TrashIcon from "assets/svg/TrashCan.svg";
 import styles from "./index.module.scss";
 import { useTranslation } from "react-i18next";
@@ -13,7 +13,7 @@ import {
 } from "utils/card";
 
 interface ShoppingBagCardProps {
-  id: string;
+  slug: string;
   assignedQuantity: number;
   setProducts: (items: CartItem[]) => void;
   delProduct: (
@@ -30,13 +30,13 @@ interface ShoppingBagCardProps {
 }
 
 const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
-  id,
+  slug,
   assignedQuantity,
   setProducts,
   delProduct,
   attributes,
 }) => {
-  const { data: product } = useGetProductByIdQuery(id);
+  const { data: product } = useGetProductBySlugQuery(slug);
   const { name = "", image = "", price = 0, quantity = 0 } = product ?? {};
   const [count, setCount] = useState(assignedQuantity);
 
@@ -49,7 +49,7 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
   const handleIncrement = () => {
     setCount((prev) => {
       const newCount = prev + 1;
-      updateCartItemQuantity(id, newCount, attributes);
+      updateCartItemQuantity(slug, newCount, attributes);
       const cards = getCartItems();
       setProducts(cards);
       return newCount;
@@ -59,7 +59,7 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
   const handleDecrement = () => {
     setCount((prev) => {
       const newCount = prev > 1 ? prev - 1 : 1;
-      updateCartItemQuantity(id, newCount, attributes);
+      updateCartItemQuantity(slug, newCount, attributes);
       const cards = getCartItems();
       setProducts(cards);
       return newCount;
@@ -70,18 +70,18 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
 
   return (
     <div className={styles.shoppingBagCard}>
-      <a href={`/product/${id}`}>
+      <a href={`/product/${slug}`}>
         <img src={image} alt="" />
       </a>
       <div className={styles.infoBox}>
         <div>
-          <a href={`/product/${id}`}>
+          <a href={`/product/${slug}`}>
             <h3>{name}</h3>
           </a>
           <button
             onClick={() => {
-              removeCartItem(id, attributes);
-              delProduct(id, attributes);
+              removeCartItem(slug, attributes);
+              delProduct(slug, attributes);
             }}
           >
             <img src={TrashIcon} alt="delete item" />

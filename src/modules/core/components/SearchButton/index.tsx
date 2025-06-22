@@ -58,9 +58,9 @@ const SearchButton: FC<SearchButtonProps> = ({ isLaptop }) => {
               {query.trim() && products ? (
                 <ul className={styles.searchList}>
                   {products?.length ? (
-                    products.map(({ _id, image, name }) => (
-                      <li key={_id}>
-                        <a href={`/product/${_id}`}>
+                    products.map(({ image, name, slug }) => (
+                      <li key={slug}>
+                        <a href={`/product/${slug}`}>
                           <img
                             src={image}
                             alt={name}

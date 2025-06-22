@@ -16,7 +16,7 @@ const ProductSwiperNewProducts = () => {
       <h1>{t("newProducts")}</h1>
       <CoreSwiper navigation={true} slidesPerView={2} breakpoints={breakpoints}>
         {popularProducts &&
-          popularProducts.map(({ name, image, price, _id }) => (
+          popularProducts.map(({ name, image, price, slug }) => (
             <SwiperSlide>
               <div className={styles.itemsWrapper}>
                 <picture>
@@ -29,7 +29,7 @@ const ProductSwiperNewProducts = () => {
                   {price.toFixed(2)}
                   {t("currency")}
                 </p>
-                <a href={`/product/${_id}`}>{t("goToProduct")}</a>
+                <a href={`/product/${slug}`}>{t("goToProduct")}</a>
               </div>
             </SwiperSlide>
           ))}

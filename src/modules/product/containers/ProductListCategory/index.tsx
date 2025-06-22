@@ -9,8 +9,8 @@ interface ProductCategoryProps {
 
 const ProductListCategory: FC<ProductCategoryProps> = ({ products }) => (
   <div className={styles.productListCategory}>
-    {products?.map(({ image, price, name, _id }) => (
-      <ProductListCard image={image} price={price} name={name} id={_id} />
+    {products?.map(({ image, price, name, slug }) => (
+      <ProductListCard image={image} price={price} name={name} slug={slug} />
     ))}
   </div>
 );

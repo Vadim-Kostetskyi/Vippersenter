@@ -25,10 +25,6 @@ const ProductCategory = () => {
     attributes,
   });
 
-  console.log(attributes);
-
-  console.log(data);
-
   const onFiltrationAttributes = (
     attributeName: string,
     value: string,
@@ -52,8 +48,6 @@ const ProductCategory = () => {
       return newAttributes;
     });
   };
-
-  console.log(data);
 
   return (
     <>

@@ -20,8 +20,8 @@ const AlsoLikeSwiper = () => {
         breakpoints={breakpoints}
       >
         {products &&
-          products.map(({ name, image, price, _id }) => (
-            <SwiperSlide key={_id}>
+          products.map(({ name, image, price, slug }) => (
+            <SwiperSlide key={slug}>
               <div className={styles.itemsWrapper}>
                 <picture>
                   <img src={image} alt={name} className={styles.image} />
@@ -33,7 +33,7 @@ const AlsoLikeSwiper = () => {
                   {price.toFixed(2)}
                   {t("currency")}
                 </p>
-                <a href={`/product/${_id}`}>{t("goToProduct")}</a>
+                <a href={`/product/${slug}`}>{t("goToProduct")}</a>
               </div>
             </SwiperSlide>
           ))}

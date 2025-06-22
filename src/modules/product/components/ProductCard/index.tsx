@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useGetProductByIdQuery } from "storeRedux/productsApi";
+import { useGetProductBySlugQuery } from "storeRedux/productsApi";
 import PlusSubtle from "assets/svg/PlusSubtle";
 import Minus from "assets/svg/Minus";
 import { addProductToCart } from "utils/card";
@@ -14,7 +14,7 @@ const ProductCard = () => {
     data: product,
     isLoading,
     isError,
-  } = useGetProductByIdQuery(productId ?? "");
+  } = useGetProductBySlugQuery(productId ?? "");
   const [count, setCount] = useState(1);
   const [maxCount, setMaxCount] = useState(0);
   const [selectedAttributes, setSelectedAttributes] = useState<
@@ -47,14 +47,14 @@ const ProductCard = () => {
   if (isLoading) return <div>...</div>;
   if (isError || !product) return <div>Data loading error</div>;
 
-  const { _id, name, image, price, quantity, description, attributes } =
+  const { slug, name, image, price, quantity, description, attributes } =
     product;
 
   const handleIncrement = () => setCount((prev) => prev + 1);
   const handleDecrement = () => setCount((prev) => (prev > 1 ? prev - 1 : 1));
 
   const onAddToCart = () => {
-    addProductToCart(_id, price, count, selectedAttributes);
+    addProductToCart(slug, price, count, selectedAttributes);
     setMaxCount((prev) => prev - count);
     window.dispatchEvent(new Event("cartUpdated"));
   };

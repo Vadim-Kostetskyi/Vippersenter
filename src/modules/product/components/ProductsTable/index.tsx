@@ -22,7 +22,7 @@ const ProductsTable = () => {
     if (products) {
       const initialQuantities: Record<string, number> = {};
       products.forEach((p) => {
-        initialQuantities[p._id] = p.quantity;
+        initialQuantities[p.slug] = p.quantity;
       });
       setQuantities(initialQuantities);
     }
@@ -87,22 +87,22 @@ const ProductsTable = () => {
               </td>
             </tr>
             {items.map((product) => (
-              <tr key={product._id}>
+              <tr key={product.slug}>
                 <td>{product.name}</td>
                 <td style={{ textAlign: "center" }}>{product.price}</td>
                 <td style={{ textAlign: "center" }}>
                   <input
                     type="number"
                     min={0}
-                    value={quantities[product._id] ?? product.quantity}
+                    value={quantities[product.slug] ?? product.quantity}
                     onChange={(e) =>
-                      handleQuantityChange(product._id, e.target.value)
+                      handleQuantityChange(product.slug, e.target.value)
                     }
-                    onBlur={() => handleQuantityBlur(product._id)}
+                    onBlur={() => handleQuantityBlur(product.slug)}
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
                         e.currentTarget.blur();
-                        handleQuantityBlur(product._id);
+                        handleQuantityBlur(product.slug);
                       }
                     }}
                     style={{ width: 40, textAlign: "center" }}
@@ -131,7 +131,7 @@ const ProductsTable = () => {
                   ))}
                 </td>
                 <td style={{ textAlign: "center" }}>
-                  <button onClick={() => handleDelete(product._id)}>
+                  <button onClick={() => handleDelete(product.slug)}>
                     <Cross className={styles.trashIcon} />
                   </button>
                 </td>

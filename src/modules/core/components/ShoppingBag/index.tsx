@@ -5,8 +5,8 @@ import emptyImg from "assets/svg/EmptyCart.svg";
 import CardButton from "../CardButton";
 import ShoppingBagList from "../ShoppingBagList";
 import { CartItem, getCartItems } from "utils/card";
-import styles from "./index.module.scss";
 import { usePlaceOrderMutation } from "storeRedux/productsApi";
+import styles from "./index.module.scss";
 
 const ShoppingBag = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -48,11 +48,11 @@ const ShoppingBag = () => {
   };
 
   const removeCartItem = (
-    id: string,
+    slug: string,
     attributes?: { name: string; value: string }[]
   ) => {
     const updatedCart = cartItems.filter((item) => {
-      if (item.id !== id) return true;
+      if (item.slug !== slug) return true;
 
       if (!item.attributes && !attributes) return true;
       if (!item.attributes || !attributes) return false;
@@ -81,8 +81,8 @@ const ShoppingBag = () => {
 
   const onPlaceAnOrder = async () => {
     const orderData = {
-      items: cartItems.map(({ id, quantity }) => ({
-        productId: id,
+      items: cartItems.map(({ slug, quantity }) => ({
+        productId: slug,
         quantity,
       })),
       totalPrice: totalCartPrice,

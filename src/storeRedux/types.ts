@@ -14,6 +14,7 @@ export interface Product {
   attributes?: Attribute[];
   newProduct?: boolean;
   popularProduct?: boolean;
+  slug: string;
 }
 
 export interface GetProductsResponse {

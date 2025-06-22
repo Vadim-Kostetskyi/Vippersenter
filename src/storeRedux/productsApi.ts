@@ -54,8 +54,8 @@ export const productsApi = createApi({
         })),
     }),
 
-    getProductById: builder.query<Product, string>({
-      query: (id) => `product/${id}`,
+    getProductBySlug: builder.query<Product, string>({
+      query: (slug) => `product/slug/${slug}`,
       transformResponse: (response: Product) => ({
         ...response,
         image: BASE_URL + response.image,
@@ -133,7 +133,7 @@ export const productsApi = createApi({
 
 export const {
   useGetProductsQuery,
-  useGetProductByIdQuery,
+  useGetProductBySlugQuery,
   useGetProductsPagedQuery,
   useGetRandomProductsQuery,
   useUploadImageMutation,

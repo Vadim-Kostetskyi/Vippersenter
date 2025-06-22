@@ -3,14 +3,14 @@ import { useTranslation } from "react-i18next";
 import styles from "./index.module.scss";
 
 interface ProductListCardProps {
-  id: string;
+  slug: string;
   image: string;
   price: number;
   name: string;
 }
 
 const ProductListCard: FC<ProductListCardProps> = ({
-  id,
+  slug,
   image,
   name,
   price,
@@ -28,7 +28,7 @@ const ProductListCard: FC<ProductListCardProps> = ({
           {price.toFixed(2)}
           {t("currency")}
         </p>
-        <a href={`/product/${id}`}>{t("goToProduct")}</a>
+        <a href={`/product/${slug}`}>{t("goToProduct")}</a>
       </div>
     </div>
   );

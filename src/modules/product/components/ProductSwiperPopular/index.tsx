@@ -11,6 +11,7 @@ const ProductSwiperPopular = () => {
     popularProduct: true,
   });
   const { t } = useTranslation();
+  console.log(popularProducts);
 
   return (
     <div className={styles.wrapper}>
@@ -22,7 +23,7 @@ const ProductSwiperPopular = () => {
         breakpoints={breakpoints}
       >
         {popularProducts &&
-          popularProducts.map(({ name, image, price, _id }) => (
+          popularProducts.map(({ name, image, price, slug }) => (
             <SwiperSlide>
               <div className={styles.itemsWrapper}>
                 <picture>
@@ -35,7 +36,7 @@ const ProductSwiperPopular = () => {
                   {price.toFixed(2)}
                   {t("currency")}
                 </p>
-                <a href={`/product/${_id}`}>{t("goToProduct")}</a>
+                <a href={`/product/${slug}`}>{t("goToProduct")}</a>
               </div>
             </SwiperSlide>
           ))}

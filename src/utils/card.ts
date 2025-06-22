@@ -1,12 +1,12 @@
 export interface CartItem {
-  id: string;
   price: number;
   quantity: number;
   attributes?: { name: string; value: string }[];
+  slug: string;
 }
 
 export const addProductToCart = (
-  id: string,
+  slug: string,
   price: number,
   quantity: number = 1,
   attributes?: { name: string; value: string }[]
@@ -15,7 +15,7 @@ export const addProductToCart = (
   const cart: CartItem[] = storedCart ? JSON.parse(storedCart) : [];
 
   const existingItemIndex = cart.findIndex((item) => {
-    if (item.id !== id) return false;
+    if (item.slug !== slug) return false;
     if (!item.attributes && !attributes) return true;
     if (!item.attributes || !attributes) return false;
     if (item.attributes.length !== attributes.length) return false;
@@ -28,7 +28,7 @@ export const addProductToCart = (
   if (existingItemIndex !== -1) {
     cart[existingItemIndex].quantity += quantity;
   } else {
-    cart.push({ id, price, quantity, attributes });
+    cart.push({ slug, price, quantity, attributes });
   }
 
   localStorage.setItem("cart", JSON.stringify(cart));
@@ -58,14 +58,14 @@ const areAttributesEqual = (
 };
 
 export const updateCartItemQuantity = (
-  productId: string,
+  slug: string,
   newQuantity: number,
   attributes?: { name: string; value: string }[]
 ) => {
   const cart: CartItem[] = JSON.parse(localStorage.getItem("cart") || "[]");
 
   const updatedCart = cart.map((item) => {
-    const sameProduct = item.id === productId;
+    const sameProduct = item.slug === slug;
     const sameAttributes = areAttributesEqual(item.attributes, attributes);
 
     return sameProduct && sameAttributes
@@ -77,7 +77,7 @@ export const updateCartItemQuantity = (
 };
 
 export const removeCartItem = (
-  productId: string,
+  slug: string,
   attributes?: { name: string; value: string }[]
 ) => {
   const storedCart = localStorage.getItem("cart");
@@ -85,9 +85,7 @@ export const removeCartItem = (
 
   const updatedCart = cart.filter(
     (item) =>
-      !(
-        item.id === productId && areAttributesEqual(item.attributes, attributes)
-      )
+      !(item.slug === slug && areAttributesEqual(item.attributes, attributes))
   );
 
   localStorage.setItem("cart", JSON.stringify(updatedCart));
