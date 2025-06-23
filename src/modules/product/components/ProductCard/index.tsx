@@ -54,8 +54,6 @@ const ProductCard = () => {
   const handleDecrement = () => setCount((prev) => (prev > 1 ? prev - 1 : 1));
 
   const onAddToCart = () => {
-    console.log(maxCount);
-
     addProductToCart(slug, price, count, selectedAttributes);
     setMaxCount((prev) => prev - count);
     window.dispatchEvent(new Event("cartUpdated"));
@@ -74,8 +72,6 @@ const ProductCard = () => {
       }
     });
   };
-  console.log(count);
-  console.log(maxCount);
 
   return (
     <div className={styles.productCard}>
