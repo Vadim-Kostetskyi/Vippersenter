@@ -11,6 +11,7 @@ import {
   removeCartItem,
   updateCartItemQuantity,
 } from "utils/card";
+import { Values } from "storeRedux/types";
 
 interface ShoppingBagCardProps {
   slug: string;
@@ -20,12 +21,12 @@ interface ShoppingBagCardProps {
     productId: string,
     attributes?: {
       name: string;
-      value: string;
+      value: Values;
     }[]
   ) => void;
   attributes?: {
     name: string;
-    value: string;
+    value: Values;
   }[];
 }
 
@@ -39,10 +40,6 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
   const { data: product } = useGetProductBySlugQuery(slug);
   const { name = "", image = "", price = 0, quantity = 0 } = product ?? {};
   const [count, setCount] = useState(assignedQuantity);
-
-  useEffect(() => {
-    setCount(assignedQuantity);
-  }, [assignedQuantity]);
 
   const { t } = useTranslation();
 
@@ -66,7 +63,14 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
     });
   };
 
-  const totalPrice = count * price;
+  const ePrice = attributes?.map((el) => el.value.extraPrice);
+
+  const extraPrice = ePrice?.reduce((acc, val) => {
+    const num = parseFloat(val) || 0;
+    return acc + num;
+  }, 0);
+
+  const totalPrice = extraPrice ? extraPrice + count * price : count * price;
 
   return (
     <div className={styles.shoppingBagCard}>
@@ -89,7 +93,7 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
         </div>
         {attributes?.map(({ name, value }) => (
           <div className={styles.attributes}>
-            <span>{name}:</span> <span>{value}</span>
+            <span>{name}:</span> <span>{value.attributeName}</span>
           </div>
         ))}
         <div>
