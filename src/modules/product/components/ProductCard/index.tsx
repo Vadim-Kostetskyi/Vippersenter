@@ -7,6 +7,7 @@ import Minus from "assets/svg/Minus";
 import { addProductToCart } from "utils/card";
 import ProductAttributes from "../ProductAttributes";
 import styles from "./index.module.scss";
+import { Values } from "storeRedux/types";
 
 const ProductCard = () => {
   const { productId } = useParams();
@@ -18,8 +19,15 @@ const ProductCard = () => {
   const [count, setCount] = useState(1);
   const [maxCount, setMaxCount] = useState(0);
   const [selectedAttributes, setSelectedAttributes] = useState<
-    { name: string; value: string }[]
+    { name: string; value: Values }[]
   >([]);
+
+  const ePrice = selectedAttributes.map((el) => el.value.extraPrice);
+
+  const extraPrice = ePrice.reduce((acc, val) => {
+    const num = parseFloat(val) || 0;
+    return acc + num;
+  }, 0);
 
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
@@ -59,17 +67,24 @@ const ProductCard = () => {
     window.dispatchEvent(new Event("cartUpdated"));
   };
 
-  const handleSelectAttribute = (name: string, value: string) => {
-    setSelectedAttributes((prev) => {
-      const existsIndex = prev.findIndex((attr) => attr.name === name);
+  const handleSelectAttribute = (
+    name: string,
+    value: string,
+    extraPrice: string
+  ) => {
+    const valueAsValues: Values = {
+      attributeName: value,
+      extraPrice,
+    };
 
-      if (existsIndex !== -1) {
-        const newArr = [...prev];
-        newArr[existsIndex] = { name, value };
-        return newArr;
-      } else {
-        return [...prev, { name, value }];
+    setSelectedAttributes((prev) => {
+      const index = prev.findIndex((attr) => attr.name === name);
+      if (index !== -1) {
+        const updated = [...prev];
+        updated[index] = { name, value: valueAsValues };
+        return updated;
       }
+      return [...prev, { name, value: valueAsValues }];
     });
   };
 
@@ -79,7 +94,7 @@ const ProductCard = () => {
       <div className={styles.infoBox}>
         <h1 className={styles.title}>{name}</h1>
         <p className={styles.price}>
-          {price.toFixed(2)}
+          {(+price + +extraPrice).toFixed(2)}
           {t("currency")}
         </p>
         {quantity ? (
@@ -96,6 +111,7 @@ const ProductCard = () => {
                 values={values}
                 selectedValue={
                   selectedAttributes.find((attr) => attr.name === name)?.value
+                    .attributeName
                 }
                 onSelect={handleSelectAttribute}
               />

@@ -112,11 +112,15 @@ const ProductsTable = () => {
                   {Array.isArray(product.attributes) &&
                   product.attributes.length > 0 ? (
                     <div>
-                      {product.attributes.map((attr, i) => (
+                      {product.attributes.map(({ name, values }, i) => (
                         <div key={i}>
-                          <strong>{attr.name}:</strong>{" "}
-                          {Array.isArray(attr.values) && attr.values.length > 0
-                            ? attr.values.join(", ")
+                          <strong>{name}:</strong>{" "}
+                          {Array.isArray(values) && values.length > 0
+                            ? values.map(({ attributeName }) => (
+                                <>
+                                  <span>{attributeName}, </span>
+                                </>
+                              ))
                             : "-"}
                         </div>
                       ))}

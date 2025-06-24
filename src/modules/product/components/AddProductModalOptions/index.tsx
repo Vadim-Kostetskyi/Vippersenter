@@ -1,15 +1,12 @@
 import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
+import slugify from "slugify";
+import { Values } from "storeRedux/types";
 import styles from "./index.module.scss";
 import {
   useAddProductMutation,
   useUploadImageMutation,
 } from "storeRedux/productsApi";
-
-interface Values {
-  attributeName: string;
-  extraPrice: string;
-}
 
 interface Attribute {
   name: string;
@@ -145,9 +142,12 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
     try {
       const uploadImageResult = await uploadImage(formData).unwrap();
 
+      const slug = slugify(name, { lower: true, strict: true });
+
       const productData = {
         image: uploadImageResult.imageUrl.replace(/^\/api\/v1/, ""),
         name,
+        slug,
         price: Number(price),
         quantity: Number(quantity),
         category: selectedCategory,
@@ -167,9 +167,7 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
         description,
       };
 
-      console.log(productData);
-
-      // await addProduct(productData).unwrap();
+      await addProduct(productData).unwrap();
       alert("Товар успішно додано!");
       onModalClose();
     } catch (err) {
@@ -251,7 +249,6 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
                   placeholder="Додаткова ціна"
                   value={val.extraPrice}
                   onChange={(e) => updateValuePrice(i, idx, e.target.value)}
-                  required
                   style={{ flexGrow: 1 }}
                 />
                 <button type="button" onClick={() => removeValue(i, idx)}>

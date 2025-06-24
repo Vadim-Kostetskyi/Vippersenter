@@ -1,4 +1,4 @@
-interface Values {
+export interface Values {
   attributeName: string;
   extraPrice: string;
 }
