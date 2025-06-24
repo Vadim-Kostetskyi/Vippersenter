@@ -6,9 +6,14 @@ import {
   useUploadImageMutation,
 } from "storeRedux/productsApi";
 
+interface Values {
+  attributeName: string;
+  extraPrice: string;
+}
+
 interface Attribute {
   name: string;
-  values: string[];
+  values: Values[];
 }
 
 interface AddProductModalOptionsProps {
@@ -30,45 +35,69 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
   const [newProduct, setNewProduct] = useState(false);
   const [popularProduct, setPopularProduct] = useState(false);
 
+  console.log(attributes);
+
   const [addProduct] = useAddProductMutation();
   const [uploadImage] = useUploadImageMutation();
 
   const { t } = useTranslation();
 
-  const addAttribute = () => {
-    setAttributes((prev) => [...prev, { name: "", values: [""] }]);
-  };
-
-  const updateAttributeName = (index: number, newName: string) => {
-    setAttributes((prev) => {
-      const newAttrs = [...prev];
-      newAttrs[index].name = newName;
-      return newAttrs;
-    });
-  };
-
   const addValue = (attrIndex: number) => {
     setAttributes((prev) => {
       const newAttrs = [...prev];
+      const values = newAttrs[attrIndex].values;
+      const last = values[values.length - 1];
+
       if (
-        newAttrs[attrIndex].values[newAttrs[attrIndex].values.length - 1] !== ""
+        !last ||
+        last.attributeName.trim() === ""
+        // last.extraPrice.trim() === ""
       ) {
-        newAttrs[attrIndex].values.push("");
+        return newAttrs;
       }
+
+      values.push({ attributeName: "", extraPrice: "" });
       return newAttrs;
     });
   };
 
-  const updateValue = (
+  const updateValueName = (
     attrIndex: number,
     valueIndex: number,
-    newValue: string
+    newName: string
   ) => {
     setAttributes((prev) => {
       const newAttrs = [...prev];
-      newAttrs[attrIndex].values[valueIndex] = newValue;
+      newAttrs[attrIndex].values[valueIndex].attributeName = newName;
       return newAttrs;
     });
+  };
+
+  const updateValuePrice = (
+    attrIndex: number,
+    valueIndex: number,
+    newPrice: string
+  ) => {
+    setAttributes((prev) => {
+      const newAttrs = [...prev];
+      newAttrs[attrIndex].values[valueIndex].extraPrice = newPrice;
+      return newAttrs;
+    });
+  };
+
+  const updateAttributeName = (attrIndex: number, newName: string) => {
+    setAttributes((prev) => {
+      const newAttrs = [...prev];
+      newAttrs[attrIndex].name = newName;
+      return newAttrs;
+    });
+  };
+
+  const addAttribute = () => {
+    setAttributes((prev) => [
+      ...prev,
+      { name: "", values: [{ attributeName: "", extraPrice: "" }] },
+    ]);
   };
 
   const removeValue = (attrIndex: number, valueIndex: number) => {
@@ -79,7 +108,7 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
 
       newValues.splice(valueIndex, 1);
       if (newValues.length === 0) {
-        newValues.push("");
+        newValues.push({ attributeName: "", extraPrice: "" });
       }
 
       attr.values = newValues;
@@ -100,45 +129,53 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const formData = new FormData();
-
     if (selectedCategory === t("category")) {
-      alert("Please select an category first");
+      alert("Please select a category first");
       return;
-    } else if (!selectedImage) {
+    }
+
+    if (!selectedImage) {
       alert("Please select an image first");
       return;
     }
 
+    const formData = new FormData();
     formData.append("image", selectedImage);
 
-    const uploadImageResult = await uploadImage(formData).unwrap();
-
-    const productData = {
-      image: uploadImageResult.imageUrl.replace(/^\/api\/v1/, ""),
-      name,
-      price: Number(price),
-      quantity: Number(quantity),
-      category: selectedCategory,
-      newProduct,
-      popularProduct,
-      attributes: attributes
-        .filter((a) => a.name.trim() !== "")
-        .map((a) => ({
-          name: a.name,
-          values: a.values.filter((v) => v.trim() !== ""),
-        })),
-      description,
-    };
-
     try {
-      await addProduct(productData).unwrap();
+      const uploadImageResult = await uploadImage(formData).unwrap();
+
+      const productData = {
+        image: uploadImageResult.imageUrl.replace(/^\/api\/v1/, ""),
+        name,
+        price: Number(price),
+        quantity: Number(quantity),
+        category: selectedCategory,
+        newProduct,
+        popularProduct,
+        attributes: attributes
+          .filter((a) => a.name.trim() !== "")
+          .map((a) => ({
+            name: a.name.trim(),
+            values: a.values
+              .filter((v) => v.attributeName.trim() !== "")
+              .map((v) => ({
+                attributeName: v.attributeName.trim(),
+                extraPrice: v.extraPrice.trim(),
+              })),
+          })),
+        description,
+      };
+
+      console.log(productData);
+
+      // await addProduct(productData).unwrap();
       alert("Товар успішно додано!");
+      onModalClose();
     } catch (err) {
       console.error("Error adding a product", err);
+      alert("Сталася помилка при додаванні товару.");
     }
-
-    onModalClose();
   };
 
   return (
@@ -203,9 +240,17 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
               >
                 <input
                   type="text"
-                  placeholder={t("form.value")}
-                  value={val}
-                  onChange={(e) => updateValue(i, idx, e.target.value)}
+                  placeholder="Значення"
+                  value={val.attributeName}
+                  onChange={(e) => updateValueName(i, idx, e.target.value)}
+                  required
+                  style={{ flexGrow: 1 }}
+                />
+                <input
+                  type="text"
+                  placeholder="Додаткова ціна"
+                  value={val.extraPrice}
+                  onChange={(e) => updateValuePrice(i, idx, e.target.value)}
                   required
                   style={{ flexGrow: 1 }}
                 />

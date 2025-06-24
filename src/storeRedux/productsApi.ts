@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_URL } from "./routes";
-import { GetProductsResponse, Product } from "./types";
+import { Attribute, GetProductsResponse, Product } from "./types";
 
 export const productsApi = createApi({
   reducerPath: "productsApi",
@@ -86,7 +86,10 @@ export const productsApi = createApi({
       }),
     }),
 
-    addProduct: builder.mutation<Product, Partial<Product>>({
+    addProduct: builder.mutation<
+      Product,
+      Partial<Omit<Product, "attributes"> & { attributes: Attribute[] }>
+    >({
       query: (newProduct) => ({
         url: "products",
         method: "POST",

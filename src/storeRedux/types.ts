@@ -1,7 +1,12 @@
-export type Attribute = {
+interface Values {
+  attributeName: string;
+  extraPrice: string;
+}
+
+export interface Attribute {
   name: string;
-  values: string[];
-};
+  values: Values[];
+}
 
 export interface Product {
   _id: string;

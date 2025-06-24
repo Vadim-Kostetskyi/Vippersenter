@@ -30,3 +30,15 @@
     margin-right: 30px;
   }
 }
+
+.valueBox {
+  display: "flex";
+  flex-direction: column;
+  gap: 8;
+  margin-bottom: 5;
+
+  & > div {
+    display: flex;
+    flex-grow: 1;
+  }
+}
