@@ -101,14 +101,11 @@ export const productsApi = createApi({
       Product,
       { id: string; quantity: number; attributeName: string }
     >({
-      query: ({ id, quantity, attributeName }) => {
-        console.log("Updating quantity:", { id, quantity, attributeName });
-        return {
-          url: `products/${id}`,
-          method: "PATCH",
-          body: { attributeName, quantity },
-        };
-      },
+      query: ({ id, quantity, attributeName }) => ({
+        url: `products/${id}`,
+        method: "PATCH",
+        body: { attributeName, quantity },
+      }),
 
       invalidatesTags: (_result, _error, { id }) => [{ type: "Product", id }],
     }),

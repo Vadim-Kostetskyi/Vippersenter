@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { useGetProductBySlugQuery } from "storeRedux/productsApi";
 import TrashIcon from "assets/svg/TrashCan.svg";
 import styles from "./index.module.scss";

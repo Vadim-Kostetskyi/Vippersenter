@@ -63,8 +63,6 @@ const ProductCard = () => {
 
   const onAddToCart = () => {
     addProductToCart(slug, price, count, selectedAttributes);
-    console.log(selectedAttributes);
-
     setMaxCount((prev) => prev - count);
     window.dispatchEvent(new Event("cartUpdated"));
   };

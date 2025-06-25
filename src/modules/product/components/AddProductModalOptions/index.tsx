@@ -183,8 +183,6 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
         description,
       };
 
-      console.log(productData);
-
       await addProduct(productData).unwrap();
       alert("Товар успішно додано!");
       onModalClose();
