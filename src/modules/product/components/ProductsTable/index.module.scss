@@ -15,10 +15,36 @@
   }
 }
 
+.attributeNameQuantity {
+  margin-bottom: 15px;
+  visibility: hidden;
+}
+
+.attributeBoxQuantity {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .trashIcon {
   width: 30px;
   height: 30px;
   fill: $pageBackground;
   background-color: red;
   border-radius: 50%;
+}
+
+.attributes {
+  text-align: center;
+}
+
+.attributeName {
+  font-weight: 900;
+  margin-bottom: 15px;
+}
+
+.attributeBox {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }

@@ -16,39 +16,44 @@ const ProductsTable = () => {
   const [updateQuantity] = useUpdateProductQuantityMutation();
   const [deleteProduct] = useDeleteProductMutation();
 
-  const [quantities, setQuantities] = useState<Record<string, number>>({});
+  const [quantities, setQuantities] = useState<Record<string, string>>({});
 
   useEffect(() => {
     if (products) {
-      const initialQuantities: Record<string, number> = {};
-      products.forEach((p) => {
-        initialQuantities[p.slug] = p.quantity;
+      const initialQuantities: Record<string, string> = {};
+      products.forEach((product) => {
+        product.attributes?.forEach((attr) => {
+          attr.values.forEach((val) => {
+            const key = `${product.slug}_${val.attributeName}`;
+            initialQuantities[key] = val.extraPrice ?? 0;
+          });
+        });
       });
+      console.log(initialQuantities);
+
       setQuantities(initialQuantities);
     }
   }, [products]);
 
-  if (isLoading) return <div>...</div>;
-  if (isError || !products) return <div>Data loading error</div>;
-
-  const grouped = products.reduce<Record<string, Product[]>>((acc, product) => {
-    acc[product.category] = acc[product.category] || [];
-    acc[product.category].push(product);
-    return acc;
-  }, {});
-
-  const handleQuantityChange = (id: string, value: string) => {
+  const handleQuantityChange = (key: string, value: string) => {
     const num = parseInt(value);
     if (!isNaN(num) && num >= 0) {
-      setQuantities((prev) => ({ ...prev, [id]: num }));
+      setQuantities((prev) => ({ ...prev, [key]: String(num) }));
     }
   };
 
-  const handleQuantityBlur = async (id: string) => {
-    const quantity = quantities[id];
+  const handleQuantityBlur = async (
+    productId: string,
+    quantity: number,
+    attributeName: string
+  ) => {
     try {
-      await updateQuantity({ id, quantity }).unwrap();
-    } catch (e) {
+      await updateQuantity({
+        id: productId,
+        quantity,
+        // attributeName,
+      }).unwrap();
+    } catch {
       alert(t("product.updateError") || "Error updating quantity");
     }
   };
@@ -62,6 +67,15 @@ const ProductsTable = () => {
       }
     }
   };
+
+  if (isLoading) return <div>...</div>;
+  if (isError || !products) return <div>Data loading error</div>;
+
+  const grouped = products.reduce<Record<string, Product[]>>((acc, product) => {
+    acc[product.category] = acc[product.category] || [];
+    acc[product.category].push(product);
+    return acc;
+  }, {});
 
   return (
     <table border={1} cellPadding={8} className={styles.productsTable}>
@@ -90,23 +104,58 @@ const ProductsTable = () => {
               <tr key={product.slug}>
                 <td>{product.name}</td>
                 <td style={{ textAlign: "center" }}>{product.price}</td>
-                <td style={{ textAlign: "center" }}>
-                  <input
-                    type="number"
-                    min={0}
-                    value={quantities[product.slug] ?? product.quantity}
-                    onChange={(e) =>
-                      handleQuantityChange(product.slug, e.target.value)
-                    }
-                    onBlur={() => handleQuantityBlur(product.slug)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        e.currentTarget.blur();
-                        handleQuantityBlur(product.slug);
-                      }
-                    }}
-                    style={{ width: 40, textAlign: "center" }}
-                  />
+                <td className={styles.attributes}>
+                  {Array.isArray(product.attributes) &&
+                  product.attributes.length > 0 ? (
+                    product.attributes.map(({ name, values }, i) => (
+                      <>
+                        <p className={styles.attributeNameQuantity}>{name}</p>
+                        <div className={styles.attributeBoxQuantity}>
+                          {values.map((val, j) => {
+                            const key = `${product.slug}_${val.attributeName}`;
+                            console.log(name);
+
+                            return (
+                              <div key={`${i}_${j}`}>
+                                <input
+                                  type="number"
+                                  min={0}
+                                  value={quantities[key] ?? val.extraPrice ?? 0}
+                                  onChange={(e) =>
+                                    handleQuantityChange(key, e.target.value)
+                                  }
+                                  onBlur={() =>
+                                    handleQuantityBlur(
+                                      product.slug,
+                                      +quantities[key],
+                                      val.attributeName
+                                    )
+                                  }
+                                  onKeyDown={(e) => {
+                                    if (e.key === "Enter") {
+                                      e.currentTarget.blur();
+                                      handleQuantityBlur(
+                                        product.slug,
+                                        +quantities[key],
+                                        val.attributeName
+                                      );
+                                    }
+                                  }}
+                                  style={{
+                                    width: 40,
+                                    marginLeft: 5,
+                                    textAlign: "center",
+                                  }}
+                                />
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </>
+                    ))
+                  ) : (
+                    <span>-</span>
+                  )}
                 </td>
                 <td>
                   {Array.isArray(product.attributes) &&
@@ -114,14 +163,17 @@ const ProductsTable = () => {
                     <div>
                       {product.attributes.map(({ name, values }, i) => (
                         <div key={i}>
-                          <strong>{name}:</strong>{" "}
-                          {Array.isArray(values) && values.length > 0
-                            ? values.map(({ attributeName }) => (
-                                <>
-                                  <span>{attributeName}, </span>
-                                </>
-                              ))
-                            : "-"}
+                          <p className={styles.attributeName}>{name}:</p>
+                          <div className={styles.attributeBox}>
+                            {Array.isArray(values) && values.length > 0
+                              ? values.map(({ attributeName }, j) => (
+                                  <span key={j}>
+                                    {attributeName}
+                                    {j < values.length - 1 ? " q " : ""}
+                                  </span>
+                                ))
+                              : "-"}
+                          </div>
                         </div>
                       ))}
                     </div>
