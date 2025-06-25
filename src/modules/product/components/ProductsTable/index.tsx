@@ -16,29 +16,47 @@ const ProductsTable = () => {
   const [updateQuantity] = useUpdateProductQuantityMutation();
   const [deleteProduct] = useDeleteProductMutation();
 
-  const [quantities, setQuantities] = useState<Record<string, string>>({});
+  const [quantities, setQuantities] = useState<
+    Record<
+      string,
+      { quantity: number; attributeName: string; extraPrice: string }
+    >
+  >({});
 
   useEffect(() => {
     if (products) {
-      const initialQuantities: Record<string, string> = {};
+      const initialQuantities: Record<
+        string,
+        { quantity: number; attributeName: string; extraPrice: string }
+      > = {};
+
       products.forEach((product) => {
         product.attributes?.forEach((attr) => {
-          attr.values.forEach((val) => {
-            const key = `${product.slug}_${val.attributeName}`;
-            initialQuantities[key] = val.extraPrice ?? 0;
+          attr.values?.forEach((val) => {
+            const key = `${product._id}_${val.attributeName}`;
+            initialQuantities[key] = {
+              quantity: val.quantity ?? 0,
+              attributeName: val.attributeName,
+              extraPrice: val.extraPrice ?? "",
+            };
           });
         });
       });
-      console.log(initialQuantities);
 
       setQuantities(initialQuantities);
     }
   }, [products]);
 
-  const handleQuantityChange = (key: string, value: string) => {
-    const num = parseInt(value);
+  const handleQuantityChange = (key: string, newQuantity: string) => {
+    const num = parseInt(newQuantity);
     if (!isNaN(num) && num >= 0) {
-      setQuantities((prev) => ({ ...prev, [key]: String(num) }));
+      setQuantities((prev) => ({
+        ...prev,
+        [key]: {
+          ...prev[key],
+          quantity: num,
+        },
+      }));
     }
   };
 
@@ -51,7 +69,7 @@ const ProductsTable = () => {
       await updateQuantity({
         id: productId,
         quantity,
-        // attributeName,
+        attributeName,
       }).unwrap();
     } catch {
       alert(t("product.updateError") || "Error updating quantity");
@@ -108,26 +126,25 @@ const ProductsTable = () => {
                   {Array.isArray(product.attributes) &&
                   product.attributes.length > 0 ? (
                     product.attributes.map(({ name, values }, i) => (
-                      <>
+                      <div key={name}>
                         <p className={styles.attributeNameQuantity}>{name}</p>
                         <div className={styles.attributeBoxQuantity}>
                           {values.map((val, j) => {
-                            const key = `${product.slug}_${val.attributeName}`;
-                            console.log(name);
+                            const key = `${product._id}_${val.attributeName}`;
 
                             return (
                               <div key={`${i}_${j}`}>
                                 <input
                                   type="number"
                                   min={0}
-                                  value={quantities[key] ?? val.extraPrice ?? 0}
+                                  value={quantities[key]?.quantity ?? 0}
                                   onChange={(e) =>
                                     handleQuantityChange(key, e.target.value)
                                   }
                                   onBlur={() =>
                                     handleQuantityBlur(
-                                      product.slug,
-                                      +quantities[key],
+                                      product._id,
+                                      quantities[key]?.quantity ?? 0,
                                       val.attributeName
                                     )
                                   }
@@ -135,8 +152,8 @@ const ProductsTable = () => {
                                     if (e.key === "Enter") {
                                       e.currentTarget.blur();
                                       handleQuantityBlur(
-                                        product.slug,
-                                        +quantities[key],
+                                        product._id,
+                                        quantities[key]?.quantity ?? 0,
                                         val.attributeName
                                       );
                                     }
@@ -151,7 +168,7 @@ const ProductsTable = () => {
                             );
                           })}
                         </div>
-                      </>
+                      </div>
                     ))
                   ) : (
                     <span>-</span>
@@ -169,7 +186,7 @@ const ProductsTable = () => {
                               ? values.map(({ attributeName }, j) => (
                                   <span key={j}>
                                     {attributeName}
-                                    {j < values.length - 1 ? " q " : ""}
+                                    {j < values.length - 1 ? "  " : ""}
                                   </span>
                                 ))
                               : "-"}
@@ -187,7 +204,7 @@ const ProductsTable = () => {
                   ))}
                 </td>
                 <td style={{ textAlign: "center" }}>
-                  <button onClick={() => handleDelete(product.slug)}>
+                  <button onClick={() => handleDelete(product._id)}>
                     <Cross className={styles.trashIcon} />
                   </button>
                 </td>

@@ -1,6 +1,7 @@
 export interface Values {
   attributeName: string;
   extraPrice: string;
+  quantity?: number;
 }
 
 export interface Attribute {
