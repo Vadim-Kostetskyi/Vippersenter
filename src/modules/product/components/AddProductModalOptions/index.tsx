@@ -82,9 +82,12 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
     valueIndex: number,
     newQuantity: string
   ) => {
+    const parsed = parseInt(newQuantity);
+    if (isNaN(parsed) || parsed < 0) return;
+
     setAttributes((prev) => {
       const newAttrs = [...prev];
-      newAttrs[attrIndex].values[valueIndex].quantity = newQuantity;
+      newAttrs[attrIndex].values[valueIndex].quantity = parsed;
       return newAttrs;
     });
   };
