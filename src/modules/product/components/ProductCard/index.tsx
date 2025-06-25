@@ -37,11 +37,6 @@ const ProductCard = () => {
     const available = product?.quantity ?? 0;
 
     const maxAddable = Math.max(available - alreadyInCart, 0);
-    const maxProductPrice = {
-      product: product?.name,
-      maxPrice: maxAddable,
-    };
-    localStorage.setItem("products", JSON.stringify(maxProductPrice));
     setMaxCount(maxAddable);
   }, [productId, product?.quantity, count]);
 
