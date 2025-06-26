@@ -26,24 +26,31 @@ export const productsApi = createApi({
       } | void
     >({
       query: (filters) => {
-        if (!filters) return "products";
-        const params = new URLSearchParams();
+        if (!filters) return "products/";
+
+        if (filters.newProduct === true && Object.keys(filters).length === 1) {
+          return "products/newProduct";
+        }
+        if (
+          filters.popularProduct === true &&
+          Object.keys(filters).length === 1
+        ) {
+          return "products/popularProduct";
+        }
+
+        const parts: string[] = [];
 
         Object.entries(filters).forEach(([key, value]) => {
-          if (key === "newProduct" && value)
-            params.append("newProduct", "true");
-          else if (key === "popularProduct" && value)
-            params.append("popularProduct", "true");
-          else if (key === "category" && typeof value === "string")
-            params.append("category", value);
-          else if (key === "search" && typeof value === "string")
-            params.append("search", value);
-          else if (key === "attributes" && typeof value === "object") {
-            params.append("attributes", JSON.stringify(value));
+          if (key === "category" && typeof value === "string") {
+            parts.push(`${key}=${encodeURIComponent(value)}`);
+          } else if (key === "search" && typeof value === "string") {
+            parts.push(`${key}=${encodeURIComponent(value)}`);
+          } else if (key === "attributes" && typeof value === "object") {
+            parts.push(`${key}=${encodeURIComponent(JSON.stringify(value))}`);
           }
         });
 
-        const queryString = params.toString();
+        const queryString = parts.join("&");
         return queryString ? `products?${queryString}` : "products";
       },
 
@@ -55,7 +62,7 @@ export const productsApi = createApi({
     }),
 
     getProductBySlug: builder.query<Product, string>({
-      query: (slug) => `product/slug/${slug}`,
+      query: (slug) => `products/${slug}`,
       transformResponse: (response: Product) => ({
         ...response,
         image: BASE_URL + response.image,
