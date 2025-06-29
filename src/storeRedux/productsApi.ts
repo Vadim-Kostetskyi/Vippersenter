@@ -119,14 +119,16 @@ export const productsApi = createApi({
 
     updateProductQuantity: builder.mutation<
       Product,
-      { id: string; quantity: number }
+      { slug: string; quantity: number }
     >({
-      query: ({ id, quantity }) => ({
-        url: `products/${id}`,
+      query: ({ slug, quantity }) => ({
+        url: `products/${slug}`,
         method: "PATCH",
         body: { quantity },
       }),
-      invalidatesTags: (_result, _error, { id }) => [{ type: "Product", id }],
+      invalidatesTags: (_result, _error, { slug }) => [
+        { type: "Product", slug },
+      ],
     }),
 
     deleteProduct: builder.mutation<{ success: boolean; id: string }, string>({

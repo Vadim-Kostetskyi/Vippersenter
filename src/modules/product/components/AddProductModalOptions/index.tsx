@@ -1,16 +1,22 @@
 import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
-import styles from "./index.module.scss";
+import slugify from "slugify";
 import {
   useAddProductMutation,
-  useAddProductWithImageMutation,
   useUploadImageMutation,
 } from "storeRedux/productsApi";
-import slugify from "slugify";
+import styles from "./index.module.scss";
+
+interface Values {
+  attributeName: string;
+  extraPrice: string;
+  quantity?: number;
+}
 
 interface Attribute {
   name: string;
-  values: string[];
+  price?: string;
+  values: Values[];
 }
 
 interface AddProductModalOptionsProps {
@@ -33,44 +39,69 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
   const [popularProduct, setPopularProduct] = useState(false);
 
   const [addProduct] = useAddProductMutation();
-  const [addProductWithImage] = useAddProductWithImageMutation();
 
   const [uploadImage] = useUploadImageMutation();
 
   const { t } = useTranslation();
 
-  const addAttribute = () => {
-    setAttributes((prev) => [...prev, { name: "", values: [""] }]);
-  };
-
-  const updateAttributeName = (index: number, newName: string) => {
-    setAttributes((prev) => {
-      const newAttrs = [...prev];
-      newAttrs[index].name = newName;
-      return newAttrs;
-    });
-  };
-
   const addValue = (attrIndex: number) => {
     setAttributes((prev) => {
       const newAttrs = [...prev];
-      if (
-        newAttrs[attrIndex].values[newAttrs[attrIndex].values.length - 1] !== ""
-      ) {
-        newAttrs[attrIndex].values.push("");
+      const values = newAttrs[attrIndex].values;
+      const last = values[values.length - 1];
+
+      if (!last || last.attributeName.trim() === "") {
+        return newAttrs;
       }
+
+      values.push({ attributeName: "", extraPrice: "", quantity: 0 });
       return newAttrs;
     });
   };
 
-  const updateValue = (
+  const updateValueName = (
     attrIndex: number,
     valueIndex: number,
-    newValue: string
+    newName: string
   ) => {
     setAttributes((prev) => {
       const newAttrs = [...prev];
-      newAttrs[attrIndex].values[valueIndex] = newValue;
+      newAttrs[attrIndex].values[valueIndex].attributeName = newName;
+      return newAttrs;
+    });
+  };
+
+  const updateValuePrice = (
+    attrIndex: number,
+    valueIndex: number,
+    newPrice: string
+  ) => {
+    setAttributes((prev) => {
+      const newAttrs = [...prev];
+      newAttrs[attrIndex].values[valueIndex].extraPrice = newPrice;
+      return newAttrs;
+    });
+  };
+
+  const updateValueQuantity = (
+    attrIndex: number,
+    valueIndex: number,
+    newQuantity: string
+  ) => {
+    const parsed = parseInt(newQuantity);
+    if (isNaN(parsed) || parsed < 0) return;
+
+    setAttributes((prev) => {
+      const newAttrs = [...prev];
+      newAttrs[attrIndex].values[valueIndex].quantity = parsed;
+      return newAttrs;
+    });
+  };
+
+  const updateAttributeName = (attrIndex: number, newName: string) => {
+    setAttributes((prev) => {
+      const newAttrs = [...prev];
+      newAttrs[attrIndex].name = newName;
       return newAttrs;
     });
   };
@@ -83,7 +114,7 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
 
       newValues.splice(valueIndex, 1);
       if (newValues.length === 0) {
-        newValues.push("");
+        newValues.push({ attributeName: "", extraPrice: "", quantity: 0 });
       }
 
       attr.values = newValues;
@@ -91,6 +122,17 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
 
       return newAttrs;
     });
+  };
+
+  const addAttribute = () => {
+    setAttributes((prev) => [
+      ...prev,
+      {
+        name: "",
+        price: "",
+        values: [{ attributeName: "", extraPrice: "", quantity: 0 }],
+      },
+    ]);
   };
 
   const removeAttribute = (index: number) => {
@@ -118,28 +160,12 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
 
     const uploadImageResult = await uploadImage(image).unwrap();
 
-    console.log(uploadImageResult.imageUrl);
-
-    // const productData = {
-    //   action: "addProduct",
-    //   name,
-    //   slug: slugify(name),
-    //   price: Number(price),
-    //   quantity: Number(quantity),
-    //   category: selectedCategory,
-    //   newProduct,
-    //   popularProduct,
-    //   image: uploadImageResult.imageUrl,
-    //   attributes: attributes
-    //     .filter((a) => a.name.trim() !== "")
-    //     .map((a) => ({
-    //       name: a.name,
-    //       values: a.values.filter((v) => v.trim() !== ""),
-    //     })),
-    //   description,
-    // };
-
     const formData = new FormData();
+
+    console.log(
+      "selectedCategory перед append:",
+      JSON.stringify(selectedCategory)
+    );
 
     formData.append("action", "createProduct");
     formData.append("name", name);
@@ -158,14 +184,23 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
           .filter((attr) => attr.name.trim() !== "")
           .map((attr) => ({
             name: attr.name,
-            values: attr.values.filter((v) => v.trim() !== ""),
+            values: attr.values
+              .filter((v) => v.attributeName.trim() !== "")
+              .map((v) => ({
+                attributeName: v.attributeName,
+                extraPrice: v.extraPrice,
+                quantity: v.quantity,
+              })),
           }))
       )
     );
 
-    try {
-      console.log(attributes);
+    console.log(
+      "selectedCategory перед append:",
+      JSON.stringify(selectedCategory)
+    );
 
+    try {
       const res = await addProduct(formData).unwrap();
       console.log("Успіх:", res);
       alert("Товар успішно додано!");
@@ -179,7 +214,7 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
       alert("Помилка при додаванні товару. Подивись консоль.");
     }
 
-    // onModalClose();
+    onModalClose();
   };
 
   return (
@@ -244,11 +279,26 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
               >
                 <input
                   type="text"
-                  placeholder={t("form.value")}
-                  value={val}
-                  onChange={(e) => updateValue(i, idx, e.target.value)}
+                  placeholder="Значення"
+                  value={val.attributeName}
+                  onChange={(e) => updateValueName(i, idx, e.target.value)}
                   required
                   style={{ flexGrow: 1 }}
+                />
+                <input
+                  type="text"
+                  placeholder="Додаткова ціна"
+                  value={val.extraPrice}
+                  onChange={(e) => updateValuePrice(i, idx, e.target.value)}
+                  style={{ flexGrow: 1 }}
+                />
+                <input
+                  type="number"
+                  min={0}
+                  placeholder="Кількість"
+                  value={val.quantity ?? ""}
+                  onChange={(e) => updateValueQuantity(i, idx, e.target.value)}
+                  style={{ width: 90 }}
                 />
                 <button type="button" onClick={() => removeValue(i, idx)}>
                   ❌

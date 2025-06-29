@@ -1,19 +1,21 @@
 export type Attribute = {
-  name: string;
-  values: string[];
+  forEach(arg0: (val: any) => void): unknown;
+  attribute: string;
+  extraPrice: string;
+  quantity: string;
+  value: string;
 };
 
 export interface Product {
-  _id: string;
   name: string;
-  price: number;
+  price: string;
   image: string;
-  quantity: number;
+  quantity: string;
   category: string;
-  description: string[];
+  description: string;
   attributes?: Attribute[];
-  newProduct?: boolean;
-  popularProduct?: boolean;
+  newProduct?: string;
+  popularProduct?: string;
   slug: string;
 }
 
