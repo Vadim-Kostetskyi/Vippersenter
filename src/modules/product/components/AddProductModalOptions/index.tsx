@@ -3,8 +3,10 @@ import { useTranslation } from "react-i18next";
 import styles from "./index.module.scss";
 import {
   useAddProductMutation,
+  useAddProductWithImageMutation,
   useUploadImageMutation,
 } from "storeRedux/productsApi";
+import slugify from "slugify";
 
 interface Attribute {
   name: string;
@@ -31,6 +33,8 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
   const [popularProduct, setPopularProduct] = useState(false);
 
   const [addProduct] = useAddProductMutation();
+  const [addProductWithImage] = useAddProductWithImageMutation();
+
   const [uploadImage] = useUploadImageMutation();
 
   const { t } = useTranslation();
@@ -100,8 +104,6 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const formData = new FormData();
-
     if (selectedCategory === t("category")) {
       alert("Please select an category first");
       return;
@@ -110,35 +112,74 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
       return;
     }
 
-    formData.append("image", selectedImage);
+    const image = new FormData();
+    image.append("action", "uploadImage");
+    image.append("image", selectedImage);
 
-    const uploadImageResult = await uploadImage(formData).unwrap();
+    const uploadImageResult = await uploadImage(image).unwrap();
 
-    const productData = {
-      image: uploadImageResult.imageUrl.replace(/^\/api\/v1/, ""),
-      name,
-      price: Number(price),
-      quantity: Number(quantity),
-      category: selectedCategory,
-      newProduct,
-      popularProduct,
-      attributes: attributes
-        .filter((a) => a.name.trim() !== "")
-        .map((a) => ({
-          name: a.name,
-          values: a.values.filter((v) => v.trim() !== ""),
-        })),
-      description,
-    };
+    console.log(uploadImageResult.imageUrl);
+
+    // const productData = {
+    //   action: "addProduct",
+    //   name,
+    //   slug: slugify(name),
+    //   price: Number(price),
+    //   quantity: Number(quantity),
+    //   category: selectedCategory,
+    //   newProduct,
+    //   popularProduct,
+    //   image: uploadImageResult.imageUrl,
+    //   attributes: attributes
+    //     .filter((a) => a.name.trim() !== "")
+    //     .map((a) => ({
+    //       name: a.name,
+    //       values: a.values.filter((v) => v.trim() !== ""),
+    //     })),
+    //   description,
+    // };
+
+    const formData = new FormData();
+
+    formData.append("action", "createProduct");
+    formData.append("name", name);
+    formData.append("slug", slugify(name));
+    formData.append("price", price.toString());
+    formData.append("quantity", quantity.toString());
+    formData.append("imageUrl", uploadImageResult.imageUrl);
+    formData.append("category", selectedCategory);
+    formData.append("newProduct", newProduct.toString());
+    formData.append("popularProduct", popularProduct.toString());
+    formData.append("description", description.join("\n"));
+    formData.append(
+      "attributes",
+      JSON.stringify(
+        attributes
+          .filter((attr) => attr.name.trim() !== "")
+          .map((attr) => ({
+            name: attr.name,
+            values: attr.values.filter((v) => v.trim() !== ""),
+          }))
+      )
+    );
 
     try {
-      await addProduct(productData).unwrap();
+      console.log(attributes);
+
+      const res = await addProduct(formData).unwrap();
+      console.log("Успіх:", res);
       alert("Товар успішно додано!");
-    } catch (err) {
+    } catch (err: any) {
       console.error("Error adding a product", err);
+
+      if (err?.data) {
+        console.error("Response data:", err.data);
+      }
+
+      alert("Помилка при додаванні товару. Подивись консоль.");
     }
 
-    onModalClose();
+    // onModalClose();
   };
 
   return (

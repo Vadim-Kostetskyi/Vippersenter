@@ -18,10 +18,10 @@ const Banner = () => {
   const { data: product } = useGetProductBySlugQuery("siiiiir");
   console.log(product);
 
-  // fetch("http://localhost/vise-data-base/api/v1/products/sir")
-  //   .then((r) => r.json())
-  //   .then((data) => console.log(data))
-  //   .catch((error) => console.error("Fetch error:", error));
+  fetch("http://localhost/vise-data-base/api/v1/products/sir")
+    .then((r) => r.json())
+    .then((data) => console.log(data))
+    .catch((error) => console.error("Fetch error:", error));
 
   return (
     <div className={styles.wrapper}>

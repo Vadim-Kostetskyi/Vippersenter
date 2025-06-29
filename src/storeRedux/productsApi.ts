@@ -87,17 +87,33 @@ export const productsApi = createApi({
 
     uploadImage: builder.mutation<{ imageUrl: string }, FormData>({
       query: (formData) => ({
-        url: "images/upload",
+        url: "products/",
         method: "POST",
         body: formData,
       }),
     }),
 
-    addProduct: builder.mutation<Product, Partial<Product>>({
-      query: (newProduct) => ({
-        url: "products",
+    // addProduct: builder.mutation<Product, Partial<Product>>({
+    //   query: (newProduct) => ({
+    //     url: "products/",
+    //     method: "POST",
+    //     body: newProduct,
+    //   }),
+    // }),
+
+    addProduct: builder.mutation({
+      query: (formData: FormData) => ({
+        url: "products/",
         method: "POST",
-        body: newProduct,
+        body: formData,
+      }),
+    }),
+
+    addProductWithImage: builder.mutation<Product, FormData>({
+      query: (formData) => ({
+        url: "products/",
+        method: "POST",
+        body: formData,
       }),
     }),
 
@@ -145,6 +161,7 @@ export const {
   useGetRandomProductsQuery,
   useUploadImageMutation,
   useAddProductMutation,
+  useAddProductWithImageMutation,
   useUpdateProductQuantityMutation,
   useDeleteProductMutation,
   usePlaceOrderMutation,

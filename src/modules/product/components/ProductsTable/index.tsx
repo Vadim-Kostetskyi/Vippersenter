@@ -15,27 +15,28 @@ const ProductsTable = () => {
   const { data: products, isLoading, isError } = useGetProductsQuery();
   const [updateQuantity] = useUpdateProductQuantityMutation();
   const [deleteProduct] = useDeleteProductMutation();
+  console.log(products);
 
   const [quantities, setQuantities] = useState<Record<string, number>>({});
 
-  useEffect(() => {
-    if (products) {
-      const initialQuantities: Record<string, number> = {};
-      products.forEach((p) => {
-        initialQuantities[p.slug] = p.quantity;
-      });
-      setQuantities(initialQuantities);
-    }
-  }, [products]);
+  // useEffect(() => {
+  //   if (products) {
+  //     const initialQuantities: Record<string, number> = {};
+  //     products.forEach((p) => {
+  //       initialQuantities[p.slug] = p.quantity;
+  //     });
+  //     setQuantities(initialQuantities);
+  //   }
+  // }, [products]);
 
-  if (isLoading) return <div>...</div>;
-  if (isError || !products) return <div>Data loading error</div>;
+  // if (isLoading) return <div>...</div>;
+  // if (isError || !products) return <div>Data loading error</div>;
 
-  const grouped = products.reduce<Record<string, Product[]>>((acc, product) => {
-    acc[product.category] = acc[product.category] || [];
-    acc[product.category].push(product);
-    return acc;
-  }, {});
+  // const grouped = products.reduce<Record<string, Product[]>>((acc, product) => {
+  //   acc[product.category] = acc[product.category] || [];
+  //   acc[product.category].push(product);
+  //   return acc;
+  // }, {});
 
   const handleQuantityChange = (id: string, value: string) => {
     const num = parseInt(value);
@@ -64,83 +65,84 @@ const ProductsTable = () => {
   };
 
   return (
-    <table border={1} cellPadding={8} className={styles.productsTable}>
-      <thead>
-        <tr>
-          <th>{t("product.title")}</th>
-          <th>{t("product.price")}</th>
-          <th>{t("product.quantity")}</th>
-          <th>{t("product.characteristics")}</th>
-          <th>{t("form.description")}</th>
-          <th>{t("actions")}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {Object.entries(grouped).map(([category, items]) => (
-          <React.Fragment key={category}>
-            <tr>
-              <td
-                colSpan={6}
-                style={{ fontWeight: "bold", backgroundColor: "#eee" }}
-              >
-                {category}
-              </td>
-            </tr>
-            {items.map((product) => (
-              <tr key={product.slug}>
-                <td>{product.name}</td>
-                <td style={{ textAlign: "center" }}>{product.price}</td>
-                <td style={{ textAlign: "center" }}>
-                  <input
-                    type="number"
-                    min={0}
-                    value={quantities[product.slug] ?? product.quantity}
-                    onChange={(e) =>
-                      handleQuantityChange(product.slug, e.target.value)
-                    }
-                    onBlur={() => handleQuantityBlur(product.slug)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        e.currentTarget.blur();
-                        handleQuantityBlur(product.slug);
-                      }
-                    }}
-                    style={{ width: 40, textAlign: "center" }}
-                  />
-                </td>
-                <td>
-                  {Array.isArray(product.attributes) &&
-                  product.attributes.length > 0 ? (
-                    <div>
-                      {product.attributes.map((attr, i) => (
-                        <div key={i}>
-                          <strong>{attr.name}:</strong>{" "}
-                          {Array.isArray(attr.values) && attr.values.length > 0
-                            ? attr.values.join(", ")
-                            : "-"}
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    "-"
-                  )}
-                </td>
-                <td>
-                  {product.description.map((line, i) => (
-                    <div key={i}>{line}</div>
-                  ))}
-                </td>
-                <td style={{ textAlign: "center" }}>
-                  <button onClick={() => handleDelete(product.slug)}>
-                    <Cross className={styles.trashIcon} />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </React.Fragment>
-        ))}
-      </tbody>
-    </table>
+    // <table border={1} cellPadding={8} className={styles.productsTable}>
+    //   <thead>
+    //     <tr>
+    //       <th>{t("product.title")}</th>
+    //       <th>{t("product.price")}</th>
+    //       <th>{t("product.quantity")}</th>
+    //       <th>{t("product.characteristics")}</th>
+    //       <th>{t("form.description")}</th>
+    //       <th>{t("actions")}</th>
+    //     </tr>
+    //   </thead>
+    //   <tbody>
+    //     {Object.entries(grouped).map(([category, items]) => (
+    //       <React.Fragment key={category}>
+    //         <tr>
+    //           <td
+    //             colSpan={6}
+    //             style={{ fontWeight: "bold", backgroundColor: "#eee" }}
+    //           >
+    //             {category}
+    //           </td>
+    //         </tr>
+    //         {items.map((product) => (
+    //           <tr key={product.slug}>
+    //             <td>{product.name}</td>
+    //             <td style={{ textAlign: "center" }}>{product.price}</td>
+    //             <td style={{ textAlign: "center" }}>
+    //               <input
+    //                 type="number"
+    //                 min={0}
+    //                 value={quantities[product.slug] ?? product.quantity}
+    //                 onChange={(e) =>
+    //                   handleQuantityChange(product.slug, e.target.value)
+    //                 }
+    //                 onBlur={() => handleQuantityBlur(product.slug)}
+    //                 onKeyDown={(e) => {
+    //                   if (e.key === "Enter") {
+    //                     e.currentTarget.blur();
+    //                     handleQuantityBlur(product.slug);
+    //                   }
+    //                 }}
+    //                 style={{ width: 40, textAlign: "center" }}
+    //               />
+    //             </td>
+    //             <td>
+    //               {Array.isArray(product.attributes) &&
+    //               product.attributes.length > 0 ? (
+    //                 <div>
+    //                   {product.attributes.map((attr, i) => (
+    //                     <div key={i}>
+    //                       <strong>{attr.name}:</strong>{" "}
+    //                       {Array.isArray(attr.values) && attr.values.length > 0
+    //                         ? attr.values.join(", ")
+    //                         : "-"}
+    //                     </div>
+    //                   ))}
+    //                 </div>
+    //               ) : (
+    //                 "-"
+    //               )}
+    //             </td>
+    //             <td>
+    //               {product.description.map((line, i) => (
+    //                 <div key={i}>{line}</div>
+    //               ))}
+    //             </td>
+    //             <td style={{ textAlign: "center" }}>
+    //               <button onClick={() => handleDelete(product.slug)}>
+    //                 <Cross className={styles.trashIcon} />
+    //               </button>
+    //             </td>
+    //           </tr>
+    //         ))}
+    //       </React.Fragment>
+    //     ))}
+    //   </tbody>
+    // </table>
+    <></>
   );
 };
 
