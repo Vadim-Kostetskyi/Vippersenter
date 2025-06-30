@@ -34,7 +34,7 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
   const [price, setPrice] = useState<number | "">("");
   const [quantity, setQuantity] = useState<number | "">("");
   const [attributes, setAttributes] = useState<Attribute[]>([]);
-  const [description, setDescription] = useState<string[]>([]);
+  const [description, setDescription] = useState<string>("");
   const [newProduct, setNewProduct] = useState(false);
   const [popularProduct, setPopularProduct] = useState(false);
 
@@ -140,7 +140,7 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
   };
 
   const onSetDescription = (value: string) => {
-    setDescription((prev) => [...prev, value]);
+    setDescription(value);
   };
 
   const onSubmit = async (e: React.FormEvent) => {
@@ -176,7 +176,7 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
     formData.append("category", selectedCategory);
     formData.append("newProduct", newProduct.toString());
     formData.append("popularProduct", popularProduct.toString());
-    formData.append("description", description.join("\n"));
+    formData.append("description", description);
     formData.append(
       "attributes",
       JSON.stringify(

@@ -15,7 +15,6 @@ const ProductsTable = () => {
   const { data: products, isLoading, isError } = useGetProductsQuery();
   const [updateQuantity] = useUpdateProductQuantityMutation();
   const [deleteProduct] = useDeleteProductMutation();
-  console.log(products);
 
   const [quantities, setQuantities] = useState<
     Record<
@@ -23,7 +22,7 @@ const ProductsTable = () => {
       { quantity: number; attributeName: string; extraPrice: string }
     >
   >({});
-  console.log("products", products);
+  // console.log("products", products);
 
   useEffect(() => {
     if (products) {
@@ -34,10 +33,6 @@ const ProductsTable = () => {
 
       products.forEach((product) => {
         product.attributes?.forEach((attr) => {
-          console.log(3434);
-
-          console.log(attr.attribute);
-
           const key = `${product.slug}_${attr.value}`;
           initialQuantities[key] = {
             quantity: Number(attr.quantity) ?? 0,
@@ -46,9 +41,6 @@ const ProductsTable = () => {
           };
         });
       });
-      console.log(343443);
-      console.log(initialQuantities);
-
       setQuantities(initialQuantities);
     }
   }, [products]);
@@ -71,11 +63,13 @@ const ProductsTable = () => {
     quantity: number,
     attribute: string
   ) => {
+    console.log(attribute);
+
     try {
       await updateQuantity({
         slug: productSlug,
         quantity,
-        // attribute,
+        attribute,
       }).unwrap();
     } catch {
       alert(t("product.updateError") || "Error updating quantity");
@@ -100,8 +94,6 @@ const ProductsTable = () => {
     acc[product.category].push(product);
     return acc;
   }, {});
-
-  console.log(grouped);
 
   return (
     <table border={1} cellPadding={8} className={styles.productsTable}>

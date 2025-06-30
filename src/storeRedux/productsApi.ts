@@ -54,6 +54,14 @@ export const productsApi = createApi({
         return queryString ? `products?${queryString}` : "products";
       },
 
+      providesTags: (result) =>
+        result
+          ? result.map((product) => ({
+              type: "Product" as const,
+              id: product.slug,
+            }))
+          : [{ type: "Product", id: "LIST" }],
+
       transformResponse: (response: Product[]) =>
         response.map((product) => ({
           ...product,
@@ -93,20 +101,13 @@ export const productsApi = createApi({
       }),
     }),
 
-    // addProduct: builder.mutation<Product, Partial<Product>>({
-    //   query: (newProduct) => ({
-    //     url: "products/",
-    //     method: "POST",
-    //     body: newProduct,
-    //   }),
-    // }),
-
     addProduct: builder.mutation({
       query: (formData: FormData) => ({
         url: "products/",
         method: "POST",
         body: formData,
       }),
+      invalidatesTags: [{ type: "Product", id: "LIST" }],
     }),
 
     addProductWithImage: builder.mutation<Product, FormData>({
@@ -119,25 +120,31 @@ export const productsApi = createApi({
 
     updateProductQuantity: builder.mutation<
       Product,
-      { slug: string; quantity: number }
+      { slug: string; quantity: number; attribute: string }
     >({
-      query: ({ slug, quantity }) => ({
+      query: ({ slug, quantity, attribute }) => ({
         url: `products/${slug}`,
         method: "PATCH",
-        body: { quantity },
+        body: { quantity, attribute },
       }),
+
       invalidatesTags: (_result, _error, { slug }) => [
         { type: "Product", slug },
       ],
     }),
 
-    deleteProduct: builder.mutation<{ success: boolean; id: string }, string>({
-      query: (id) => ({
-        url: `products/${id}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: (_result, _error, id) => [{ type: "Product", id }],
-    }),
+    deleteProduct: builder.mutation<{ success: boolean; slug: string }, string>(
+      {
+        query: (slug) => ({
+          url: `products/${slug}`,
+          method: "DELETE",
+        }),
+        invalidatesTags: (_result, _error, slug) => [
+          { type: "Product", id: slug },
+          { type: "Product", id: "LIST" },
+        ],
+      }
+    ),
 
     placeOrder: builder.mutation<
       { success: boolean },
