@@ -119,6 +119,18 @@
   margin-bottom: 40px;
 }
 
+.valueBox {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  align-items: flex-end;
+
+  & h3 {
+    align-self: flex-start;
+  }
+}
+
 .description {
   text-transform: uppercase;
 }

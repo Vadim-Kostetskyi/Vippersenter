@@ -191,7 +191,7 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
     );
 
     try {
-      const res = await addProduct(formData).unwrap();
+      await addProduct(formData).unwrap();
       alert("Товар успішно додано!");
     } catch (err: any) {
       console.error("Error adding a product", err);

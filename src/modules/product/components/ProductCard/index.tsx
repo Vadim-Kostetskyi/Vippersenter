@@ -8,6 +8,23 @@ import { addProductToCart } from "utils/card";
 import ProductAttributes from "../ProductAttributes";
 import styles from "./index.module.scss";
 
+const groupAttributes = (
+  attrs: { attribute: string; value: string }[]
+): { name: string; values: string[] }[] => {
+  const grouped: { name: string; values: string[] }[] = [];
+
+  attrs.forEach(({ attribute, value }) => {
+    const existing = grouped.find((item) => item.name === attribute);
+    if (existing) {
+      existing.values.push(value);
+    } else {
+      grouped.push({ name: attribute, values: [value] });
+    }
+  });
+
+  return grouped;
+};
+
 const ProductCard = () => {
   const { productId } = useParams();
   const {
@@ -28,17 +45,29 @@ const ProductCard = () => {
     const alreadyInCart = productInCart?.quantity || 0;
     const available = product?.quantity ?? 0;
 
-    const maxAddable = Math.max(available - alreadyInCart, 0);
+    const maxAddable = Math.max(+available - alreadyInCart, 0);
     setMaxCount(maxAddable);
   }, [productId, product?.quantity, count]);
 
   useEffect(() => {
     if (product?.attributes && product.attributes.length > 0) {
-      const initialSelected = product.attributes.map(({ name, values }) => ({
-        name,
-        value: values[0],
-      }));
-      setSelectedAttributes(initialSelected);
+      const initial: { name: string; value: string }[] = [];
+
+      const grouped: { [key: string]: string[] } = {};
+
+      product.attributes.forEach(({ attribute, value }) => {
+        if (!grouped[attribute]) {
+          grouped[attribute] = [];
+        }
+        grouped[attribute].push(value);
+      });
+
+      for (const name in grouped) {
+        const firstValue = grouped[name][0];
+        initial.push({ name, value: firstValue });
+      }
+
+      setSelectedAttributes(initial);
     }
   }, [product]);
 
@@ -53,8 +82,10 @@ const ProductCard = () => {
   const handleIncrement = () => setCount((prev) => prev + 1);
   const handleDecrement = () => setCount((prev) => (prev > 1 ? prev - 1 : 1));
 
+  const grouped = groupAttributes(attributes || []);
+
   const onAddToCart = () => {
-    addProductToCart(slug, price, count, selectedAttributes);
+    addProductToCart(slug, +price, count, selectedAttributes);
     setMaxCount((prev) => prev - count);
     window.dispatchEvent(new Event("cartUpdated"));
   };
@@ -64,12 +95,12 @@ const ProductCard = () => {
       const existsIndex = prev.findIndex((attr) => attr.name === name);
 
       if (existsIndex !== -1) {
-        const newArr = [...prev];
-        newArr[existsIndex] = { name, value };
-        return newArr;
-      } else {
-        return [...prev, { name, value }];
+        const updated = [...prev];
+        updated[existsIndex] = { name, value };
+        return updated;
       }
+
+      return [...prev, { name, value }];
     });
   };
 
@@ -79,7 +110,7 @@ const ProductCard = () => {
       <div className={styles.infoBox}>
         <h1 className={styles.title}>{name}</h1>
         <p className={styles.price}>
-          {price.toFixed(2)}
+          {Number(price).toFixed(2)}
           {t("currency")}
         </p>
         {quantity ? (
@@ -89,7 +120,7 @@ const ProductCard = () => {
         )}
         {quantity ? (
           <>
-            {attributes?.map(({ name, values }) => (
+            {grouped?.map(({ name, values }) => (
               <ProductAttributes
                 key={name}
                 title={name}

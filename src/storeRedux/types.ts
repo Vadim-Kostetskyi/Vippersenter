@@ -1,5 +1,4 @@
 export type Attribute = {
-  forEach(arg0: (val: any) => void): unknown;
   attribute: string;
   extraPrice: string;
   quantity: string;
