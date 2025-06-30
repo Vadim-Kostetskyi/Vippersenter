@@ -22,7 +22,6 @@ const ProductsTable = () => {
       { quantity: number; attributeName: string; extraPrice: string }
     >
   >({});
-  // console.log("products", products);
 
   useEffect(() => {
     if (products) {
@@ -63,8 +62,6 @@ const ProductsTable = () => {
     quantity: number,
     attribute: string
   ) => {
-    console.log(attribute);
-
     try {
       await updateQuantity({
         slug: productSlug,

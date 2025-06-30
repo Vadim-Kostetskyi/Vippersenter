@@ -162,11 +162,6 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
 
     const formData = new FormData();
 
-    console.log(
-      "selectedCategory перед append:",
-      JSON.stringify(selectedCategory)
-    );
-
     formData.append("action", "createProduct");
     formData.append("name", name);
     formData.append("slug", slugify(name));
@@ -195,14 +190,8 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
       )
     );
 
-    console.log(
-      "selectedCategory перед append:",
-      JSON.stringify(selectedCategory)
-    );
-
     try {
       const res = await addProduct(formData).unwrap();
-      console.log("Успіх:", res);
       alert("Товар успішно додано!");
     } catch (err: any) {
       console.error("Error adding a product", err);
