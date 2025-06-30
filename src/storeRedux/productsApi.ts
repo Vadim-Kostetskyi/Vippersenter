@@ -77,13 +77,44 @@ export const productsApi = createApi({
       }),
     }),
 
-    getProductsByCategory: builder.query<Product[], string>({
-      query: (categoryName) => `products/category/${categoryName}`,
+    // getProductsByCategory: builder.query<Product[], string>({
+    //   query: (categoryName) => `products/category/${categoryName}`,
+    //   transformResponse: (response: Product[]) =>
+    //     response.map((product) => ({
+    //       ...product,
+    //       image: BASE_URL + product.image,
+    //     })),
+    //   providesTags: (result) =>
+    //     result
+    //       ? result.map((product) => ({
+    //           type: "Product" as const,
+    //           id: product.slug,
+    //         }))
+    //       : [{ type: "Product", id: "LIST" }],
+    // }),
+
+    getProductsByCategory: builder.query<
+      Product[],
+      { category: string; filters?: Record<string, string> }
+    >({
+      query: ({ category, filters }) => {
+        let path = `products/category/${encodeURIComponent(category)}`;
+
+        if (filters) {
+          for (const [key, value] of Object.entries(filters)) {
+            path += `/${encodeURIComponent(key)}/${encodeURIComponent(value)}`;
+          }
+        }
+
+        return path;
+      },
+
       transformResponse: (response: Product[]) =>
         response.map((product) => ({
           ...product,
           image: BASE_URL + product.image,
         })),
+
       providesTags: (result) =>
         result
           ? result.map((product) => ({

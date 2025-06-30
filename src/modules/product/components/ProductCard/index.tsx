@@ -7,6 +7,7 @@ import Minus from "assets/svg/Minus";
 import { addProductToCart } from "utils/card";
 import ProductAttributes from "../ProductAttributes";
 import styles from "./index.module.scss";
+import { parseDescription } from "utils/text";
 
 const groupAttributes = (
   attrs: { attribute: string; value: string }[]
@@ -172,19 +173,8 @@ const ProductCard = () => {
         ) : null}
 
         <h2 className={styles.description}>{t("form.description")}</h2>
-        <p>
-          {(description && description.length > 0 && description[0]
-            ? description[0].split(/—\s*/)
-            : []
-          )
-            .filter(Boolean)
-            .map((sentence, idx) => (
-              <span key={idx}>
-                {idx === 0 ? sentence.trim() : "– " + sentence.trim()}
-                <br />
-                <br />
-              </span>
-            ))}
+        <p className={styles.descriptionText}>
+          {parseDescription(description)}
         </p>
       </div>
     </div>

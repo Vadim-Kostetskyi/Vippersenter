@@ -134,3 +134,13 @@
 .description {
   text-transform: uppercase;
 }
+
+.descriptionText {
+  & p:not(:last-child) {
+    margin-bottom: 20px;
+  }
+
+  & strong {
+    font-weight: 800;
+  }
+}

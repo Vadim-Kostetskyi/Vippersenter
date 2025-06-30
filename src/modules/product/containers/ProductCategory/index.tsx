@@ -19,10 +19,18 @@ const ProductCategory = () => {
   if (!category || !(category in images)) return null;
 
   const categoryChosen = list.filter(({ key }) => key === category);
+  const filtersSingle: Record<string, string> = {};
 
-  const { data: products } = useGetProductsByCategoryQuery(
-    categoryChosen[0].label
-  );
+  for (const key in attributes) {
+    if (attributes[key].length > 0) {
+      filtersSingle[key] = attributes[key][0];
+    }
+  }
+
+  const { data: products } = useGetProductsByCategoryQuery({
+    category: categoryChosen[0].label,
+    filters: filtersSingle,
+  });
 
   const onFiltrationAttributes = (
     attributeName: string,
