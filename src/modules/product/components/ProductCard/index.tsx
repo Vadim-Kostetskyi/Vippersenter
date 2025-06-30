@@ -47,7 +47,7 @@ const ProductCard = () => {
 
     const maxAddable = Math.max(+available - alreadyInCart, 0);
     setMaxCount(maxAddable);
-  }, [productId, product?.quantity, count]);
+  }, [productId, product?.quantity, count, selectedAttributes]);
 
   useEffect(() => {
     if (product?.attributes && product.attributes.length > 0) {
