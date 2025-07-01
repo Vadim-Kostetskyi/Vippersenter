@@ -69,6 +69,16 @@ export const productsApi = createApi({
         })),
     }),
 
+    getProductsBySearch: builder.query<Product[], string>({
+      query: (searchTerm) =>
+        `products/search=${encodeURIComponent(searchTerm)}`,
+      transformResponse: (response: Product[]) =>
+        response.map((product) => ({
+          ...product,
+          image: BASE_URL + product.image,
+        })),
+    }),
+
     getProductBySlug: builder.query<Product, string>({
       query: (slug) => `products/${slug}`,
       transformResponse: (response: Product) => ({
@@ -76,22 +86,6 @@ export const productsApi = createApi({
         image: BASE_URL + response.image,
       }),
     }),
-
-    // getProductsByCategory: builder.query<Product[], string>({
-    //   query: (categoryName) => `products/category/${categoryName}`,
-    //   transformResponse: (response: Product[]) =>
-    //     response.map((product) => ({
-    //       ...product,
-    //       image: BASE_URL + product.image,
-    //     })),
-    //   providesTags: (result) =>
-    //     result
-    //       ? result.map((product) => ({
-    //           type: "Product" as const,
-    //           id: product.slug,
-    //         }))
-    //       : [{ type: "Product", id: "LIST" }],
-    // }),
 
     getProductsByCategory: builder.query<
       Product[],
@@ -216,6 +210,7 @@ export const {
   useGetProductsPagedQuery,
   useGetRandomProductsQuery,
   useGetProductsByCategoryQuery,
+  useGetProductsBySearchQuery,
   useUploadImageMutation,
   useAddProductMutation,
   useAddProductWithImageMutation,

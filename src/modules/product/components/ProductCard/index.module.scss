@@ -17,6 +17,13 @@
   height: auto;
   object-fit: contain;
 
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+
+  &.loaded {
+    opacity: 1;
+  }
+
   @include media(laptop) {
     width: 45%;
   }

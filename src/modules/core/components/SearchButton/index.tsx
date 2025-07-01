@@ -1,5 +1,5 @@
 import { useState, FC } from "react";
-import { useGetProductsQuery } from "storeRedux/productsApi";
+import { useGetProductsBySearchQuery } from "storeRedux/productsApi";
 import Search from "assets/svg/Search";
 import styles from "./index.module.scss";
 import { useTranslation } from "react-i18next";
@@ -11,10 +11,7 @@ interface SearchButtonProps {
 const SearchButton: FC<SearchButtonProps> = ({ isLaptop }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const { data: products } = useGetProductsQuery(
-    query ? { search: query.trim() } : undefined,
-    { skip: query.trim() === "" }
-  );
+  const { data: products } = useGetProductsBySearchQuery(query.trim());
 
   const { t } = useTranslation();
 

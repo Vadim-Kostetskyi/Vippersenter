@@ -33,6 +33,7 @@ const ProductCard = () => {
     isLoading,
     isError,
   } = useGetProductBySlugQuery(productId ?? "");
+  const [loaded, setLoaded] = useState(false);
   const [count, setCount] = useState(1);
   const [maxCount, setMaxCount] = useState(0);
   const [selectedAttributes, setSelectedAttributes] = useState<
@@ -107,7 +108,12 @@ const ProductCard = () => {
 
   return (
     <div className={styles.productCard}>
-      <img src={image} alt="" className={styles.image} />
+      <img
+        src={image}
+        alt=""
+        className={`${styles.image} ${loaded ? styles.loaded : ""}`}
+        onLoad={() => setLoaded(true)}
+      />
       <div className={styles.infoBox}>
         <h1 className={styles.title}>{name}</h1>
         <p className={styles.price}>
@@ -173,9 +179,9 @@ const ProductCard = () => {
         ) : null}
 
         <h2 className={styles.description}>{t("form.description")}</h2>
-        <p className={styles.descriptionText}>
+        <div className={styles.descriptionText}>
           {parseDescription(description)}
-        </p>
+        </div>
       </div>
     </div>
   );
