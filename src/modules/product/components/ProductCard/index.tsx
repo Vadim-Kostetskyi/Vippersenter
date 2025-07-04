@@ -40,6 +40,8 @@ const ProductCard = () => {
     { name: string; value: string }[]
   >([]);
 
+  console.log(product);
+
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
     const productInCart = cart.find((p: any) => p.id === productId);
