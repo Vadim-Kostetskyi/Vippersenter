@@ -5,7 +5,7 @@ import ProductCategoryModel from "modules/product/components/ProductCategoryMode
 import ProductListCategory from "../ProductListCategory";
 import FilterButton from "modules/product/components/FilterButton";
 import CategoryNames from "components/CategoryNames";
-import { useGetProductsQuery } from "storeRedux/productsApi";
+import { useGetProductsByCategoryQuery } from "storeRedux/productsApi";
 import { images } from "./data";
 import styles from "./index.module.scss";
 
@@ -19,10 +19,17 @@ const ProductCategory = () => {
   if (!category || !(category in images)) return null;
 
   const categoryChosen = list.filter(({ key }) => key === category);
+  const filtersSingle: Record<string, string> = {};
 
-  const { data } = useGetProductsQuery({
+  for (const key in attributes) {
+    if (attributes[key].length > 0) {
+      filtersSingle[key] = attributes[key][0];
+    }
+  }
+
+  const { data: products } = useGetProductsByCategoryQuery({
     category: categoryChosen[0].label,
-    attributes,
+    filters: filtersSingle,
   });
 
   const onFiltrationAttributes = (
@@ -57,7 +64,7 @@ const ProductCategory = () => {
       />
       <div className={styles.productWrapper}>
         <FilterButton filtration={onFiltrationAttributes} />
-        <ProductListCategory products={data} />
+        <ProductListCategory products={products} />
       </div>
     </>
   );

@@ -32,7 +32,7 @@ const ProductSwiperPopular = () => {
               <div className={styles.info}>
                 <p>{name}</p>
                 <p className={styles.price}>
-                  {price.toFixed(2)}
+                  {Number(price).toFixed(2)}
                   {t("currency")}
                 </p>
                 <a href={`/product/${slug}`}>{t("goToProduct")}</a>

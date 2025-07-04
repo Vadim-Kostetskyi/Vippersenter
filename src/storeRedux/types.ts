@@ -1,25 +1,24 @@
-export interface Values {
-  attributeName: string;
+export type Attribute = {
+  attribute_main: string;
+  value_main: string;
+  attribute_secondary?: string;
+  value_secondary?: string;
+  attribute_tertiary?: string;
+  value_tertiary?: string;
   extraPrice: string;
-  quantity?: number;
-}
-
-export interface Attribute {
-  name: string;
-  values: Values[];
-}
+  quantity: string;
+};
 
 export interface Product {
-  _id: string;
   name: string;
-  price: number;
+  price: string;
   image: string;
-  quantity: number;
+  quantity: string;
   category: string;
-  description: string[];
+  description: string;
   attributes?: Attribute[];
-  newProduct?: boolean;
-  popularProduct?: boolean;
+  newProduct?: string;
+  popularProduct?: string;
   slug: string;
 }
 

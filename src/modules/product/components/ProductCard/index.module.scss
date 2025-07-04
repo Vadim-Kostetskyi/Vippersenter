@@ -17,6 +17,13 @@
   height: auto;
   object-fit: contain;
 
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+
+  &.loaded {
+    opacity: 1;
+  }
+
   @include media(laptop) {
     width: 45%;
   }
@@ -120,6 +127,28 @@
   margin-bottom: 40px;
 }
 
+.valueBox {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  align-items: flex-end;
+
+  & h3 {
+    align-self: flex-start;
+  }
+}
+
 .description {
   text-transform: uppercase;
+}
+
+.descriptionText {
+  & p:not(:last-child) {
+    margin-bottom: 20px;
+  }
+
+  & strong {
+    font-weight: 800;
+  }
 }

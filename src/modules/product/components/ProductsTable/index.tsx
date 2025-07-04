@@ -32,14 +32,12 @@ const ProductsTable = () => {
 
       products.forEach((product) => {
         product.attributes?.forEach((attr) => {
-          attr.values?.forEach((val) => {
-            const key = `${product._id}_${val.attributeName}`;
-            initialQuantities[key] = {
-              quantity: val.quantity ?? 0,
-              attributeName: val.attributeName,
-              extraPrice: val.extraPrice ?? "",
-            };
-          });
+          const key = `${product.slug}_${attr.value_main}`;
+          initialQuantities[key] = {
+            quantity: Number(attr.quantity) ?? 0,
+            attributeName: attr.attribute_main,
+            extraPrice: attr.extraPrice ?? "",
+          };
         });
       });
 
@@ -61,15 +59,15 @@ const ProductsTable = () => {
   };
 
   const handleQuantityBlur = async (
-    productId: string,
+    productSlug: string,
     quantity: number,
-    attributeName: string
+    attribute: string
   ) => {
     try {
       await updateQuantity({
-        id: productId,
+        slug: productSlug,
         quantity,
-        attributeName,
+        attribute,
       }).unwrap();
     } catch {
       alert(t("product.updateError") || "Error updating quantity");
@@ -125,15 +123,23 @@ const ProductsTable = () => {
                 <td className={styles.attributes}>
                   {Array.isArray(product.attributes) &&
                   product.attributes.length > 0 ? (
-                    product.attributes.map(({ name, values }, i) => (
-                      <div key={name}>
-                        <p className={styles.attributeNameQuantity}>{name}</p>
-                        <div className={styles.attributeBoxQuantity}>
-                          {values.map((val, j) => {
-                            const key = `${product._id}_${val.attributeName}`;
+                    (() => {
+                      const seenAttributes = new Set<string>();
+                      return product.attributes.map(
+                        ({ attribute_main, value_main }, i) => {
+                          const key = `${product.slug}_${value_main}`;
+                          const showAttribute =
+                            !seenAttributes.has(attribute_main);
+                          if (showAttribute) seenAttributes.add(attribute_main);
 
-                            return (
-                              <div key={`${i}_${j}`}>
+                          return (
+                            <div key={i}>
+                              {showAttribute && (
+                                <p className={styles.attributeNameQuantity}>
+                                  {attribute_main}
+                                </p>
+                              )}
+                              <div className={styles.attributeBoxQuantity}>
                                 <input
                                   type="number"
                                   min={0}
@@ -143,33 +149,32 @@ const ProductsTable = () => {
                                   }
                                   onBlur={() =>
                                     handleQuantityBlur(
-                                      product._id,
+                                      product.slug,
                                       quantities[key]?.quantity ?? 0,
-                                      val.attributeName
+                                      value_main
                                     )
                                   }
                                   onKeyDown={(e) => {
                                     if (e.key === "Enter") {
                                       e.currentTarget.blur();
                                       handleQuantityBlur(
-                                        product._id,
+                                        product.slug,
                                         quantities[key]?.quantity ?? 0,
-                                        val.attributeName
+                                        value_main
                                       );
                                     }
                                   }}
                                   style={{
                                     width: 40,
-                                    marginLeft: 5,
                                     textAlign: "center",
                                   }}
                                 />
                               </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    ))
+                            </div>
+                          );
+                        }
+                      );
+                    })()
                   ) : (
                     <span>-</span>
                   )}
@@ -178,30 +183,35 @@ const ProductsTable = () => {
                   {Array.isArray(product.attributes) &&
                   product.attributes.length > 0 ? (
                     <div>
-                      {product.attributes.map(({ name, values }, i) => (
-                        <div key={i}>
-                          <p className={styles.attributeName}>{name}:</p>
-                          <div className={styles.attributeBox}>
-                            {Array.isArray(values) && values.length > 0
-                              ? values.map(({ attributeName }, j) => (
-                                  <span key={j}>
-                                    {attributeName}
-                                    {j < values.length - 1 ? "  " : ""}
-                                  </span>
-                                ))
-                              : "-"}
-                          </div>
-                        </div>
-                      ))}
+                      {(() => {
+                        const seenAttributes = new Set<string>();
+                        return product.attributes.map(
+                          ({ attribute_main, value_main }, i) => {
+                            const showAttribute =
+                              !seenAttributes.has(attribute_main);
+                            seenAttributes.add(attribute_main);
+                            return (
+                              <div key={i}>
+                                {showAttribute && (
+                                  <p className={styles.attributeName}>
+                                    {attribute_main}:
+                                  </p>
+                                )}
+                                <div className={styles.attributeBox}>
+                                  <span>{value_main}</span>
+                                </div>
+                              </div>
+                            );
+                          }
+                        );
+                      })()}
                     </div>
                   ) : (
                     "-"
                   )}
                 </td>
                 <td>
-                  {product.description.map((line, i) => (
-                    <div key={i}>{line}</div>
-                  ))}
+                  <p>{product.description}</p>
                 </td>
                 <td style={{ textAlign: "center" }}>
                   <button onClick={() => handleDelete(product._id)}>

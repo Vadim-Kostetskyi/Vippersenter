@@ -63,14 +63,7 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
     });
   };
 
-  const ePrice = attributes?.map((el) => el.value.extraPrice);
-
-  const extraPrice = ePrice?.reduce((acc, val) => {
-    const num = parseFloat(val) || 0;
-    return acc + num;
-  }, 0);
-
-  const totalPrice = extraPrice ? extraPrice + count * price : count * price;
+  const totalPrice = count * +price;
 
   return (
     <div className={styles.shoppingBagCard}>
@@ -102,7 +95,7 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
               <Minus />
             </button>
             <input type="number" value={count} />
-            <button onClick={handleIncrement} disabled={count >= quantity}>
+            <button onClick={handleIncrement} disabled={count >= +quantity}>
               <PlusSubtle />
             </button>
           </div>

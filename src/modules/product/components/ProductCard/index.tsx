@@ -7,7 +7,24 @@ import Minus from "assets/svg/Minus";
 import { addProductToCart } from "utils/card";
 import ProductAttributes from "../ProductAttributes";
 import styles from "./index.module.scss";
-import { Values } from "storeRedux/types";
+import { parseDescription } from "utils/text";
+
+const groupAttributes = (
+  attrs: { attribute_main: string; value_main: string }[]
+): { name: string; values: string[] }[] => {
+  const grouped: { name: string; values: string[] }[] = [];
+
+  attrs.forEach(({ attribute_main, value_main }) => {
+    const existing = grouped.find((item) => item.name === attribute_main);
+    if (existing) {
+      existing.values.push(value_main);
+    } else {
+      grouped.push({ name: attribute_main, values: [value_main] });
+    }
+  });
+
+  return grouped;
+};
 
 const ProductCard = () => {
   const { productId } = useParams();
@@ -16,18 +33,14 @@ const ProductCard = () => {
     isLoading,
     isError,
   } = useGetProductBySlugQuery(productId ?? "");
+  const [loaded, setLoaded] = useState(false);
   const [count, setCount] = useState(1);
   const [maxCount, setMaxCount] = useState(0);
   const [selectedAttributes, setSelectedAttributes] = useState<
     { name: string; value: Values }[]
   >([]);
 
-  const ePrice = selectedAttributes.map((el) => el.value.extraPrice);
-
-  const extraPrice = ePrice.reduce((acc, val) => {
-    const num = parseFloat(val) || 0;
-    return acc + num;
-  }, 0);
+  console.log(product);
 
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
@@ -36,17 +49,29 @@ const ProductCard = () => {
     const alreadyInCart = productInCart?.quantity || 0;
     const available = product?.quantity ?? 0;
 
-    const maxAddable = Math.max(available - alreadyInCart, 0);
+    const maxAddable = Math.max(+available - alreadyInCart, 0);
     setMaxCount(maxAddable);
-  }, [productId, product?.quantity, count]);
+  }, [productId, product?.quantity, count, selectedAttributes]);
 
   useEffect(() => {
     if (product?.attributes && product.attributes.length > 0) {
-      const initialSelected = product.attributes.map(({ name, values }) => ({
-        name,
-        value: values[0],
-      }));
-      setSelectedAttributes(initialSelected);
+      const initial: { name: string; value: string }[] = [];
+
+      const grouped: { [key: string]: string[] } = {};
+
+      product.attributes.forEach(({ attribute_main, value_main }) => {
+        if (!grouped[attribute_main]) {
+          grouped[attribute_main] = [];
+        }
+        grouped[attribute_main].push(value_main);
+      });
+
+      for (const name in grouped) {
+        const firstValue = grouped[name][0];
+        initial.push({ name, value: firstValue });
+      }
+
+      setSelectedAttributes(initial);
     }
   }, [product]);
 
@@ -61,8 +86,10 @@ const ProductCard = () => {
   const handleIncrement = () => setCount((prev) => prev + 1);
   const handleDecrement = () => setCount((prev) => (prev > 1 ? prev - 1 : 1));
 
+  const grouped = groupAttributes(attributes || []);
+
   const onAddToCart = () => {
-    addProductToCart(slug, price, count, selectedAttributes);
+    addProductToCart(slug, +price, count, selectedAttributes);
     setMaxCount((prev) => prev - count);
     window.dispatchEvent(new Event("cartUpdated"));
   };
@@ -78,23 +105,30 @@ const ProductCard = () => {
     };
 
     setSelectedAttributes((prev) => {
-      const index = prev.findIndex((attr) => attr.name === name);
-      if (index !== -1) {
+      const existsIndex = prev.findIndex((attr) => attr.name === name);
+
+      if (existsIndex !== -1) {
         const updated = [...prev];
-        updated[index] = { name, value: valueAsValues };
+        updated[existsIndex] = { name, value };
         return updated;
       }
-      return [...prev, { name, value: valueAsValues }];
+
+      return [...prev, { name, value }];
     });
   };
 
   return (
     <div className={styles.productCard}>
-      <img src={image} alt="" className={styles.image} />
+      <img
+        src={image}
+        alt=""
+        className={`${styles.image} ${loaded ? styles.loaded : ""}`}
+        onLoad={() => setLoaded(true)}
+      />
       <div className={styles.infoBox}>
         <h1 className={styles.title}>{name}</h1>
         <p className={styles.price}>
-          {(+price + +extraPrice).toFixed(2)}
+          {Number(price).toFixed(2)}
           {t("currency")}
         </p>
         {quantity ? (
@@ -104,7 +138,7 @@ const ProductCard = () => {
         )}
         {quantity ? (
           <>
-            {attributes?.map(({ name, values }) => (
+            {grouped?.map(({ name, values }) => (
               <ProductAttributes
                 key={name}
                 title={name}
@@ -157,20 +191,9 @@ const ProductCard = () => {
         ) : null}
 
         <h2 className={styles.description}>{t("form.description")}</h2>
-        <p>
-          {(description && description.length > 0 && description[0]
-            ? description[0].split(/—\s*/)
-            : []
-          )
-            .filter(Boolean)
-            .map((sentence, idx) => (
-              <span key={idx}>
-                {idx === 0 ? sentence.trim() : "– " + sentence.trim()}
-                <br />
-                <br />
-              </span>
-            ))}
-        </p>
+        <div className={styles.descriptionText}>
+          {parseDescription(description)}
+        </div>
       </div>
     </div>
   );

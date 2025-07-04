@@ -26,26 +26,41 @@ export const productsApi = createApi({
       } | void
     >({
       query: (filters) => {
-        if (!filters) return "products";
-        const params = new URLSearchParams();
+        if (!filters) return "products/";
+
+        if (filters.newProduct === true && Object.keys(filters).length === 1) {
+          return "products/newProduct";
+        }
+        if (
+          filters.popularProduct === true &&
+          Object.keys(filters).length === 1
+        ) {
+          return "products/popularProduct";
+        }
+
+        const parts: string[] = [];
 
         Object.entries(filters).forEach(([key, value]) => {
-          if (key === "newProduct" && value)
-            params.append("newProduct", "true");
-          else if (key === "popularProduct" && value)
-            params.append("popularProduct", "true");
-          else if (key === "category" && typeof value === "string")
-            params.append("category", value);
-          else if (key === "search" && typeof value === "string")
-            params.append("search", value);
-          else if (key === "attributes" && typeof value === "object") {
-            params.append("attributes", JSON.stringify(value));
+          if (key === "category" && typeof value === "string") {
+            parts.push(`${key}=${encodeURIComponent(value)}`);
+          } else if (key === "search" && typeof value === "string") {
+            parts.push(`${key}=${encodeURIComponent(value)}`);
+          } else if (key === "attributes" && typeof value === "object") {
+            parts.push(`${key}=${encodeURIComponent(JSON.stringify(value))}`);
           }
         });
 
-        const queryString = params.toString();
+        const queryString = parts.join("&");
         return queryString ? `products?${queryString}` : "products";
       },
+
+      providesTags: (result) =>
+        result
+          ? result.map((product) => ({
+              type: "Product" as const,
+              id: product.slug,
+            }))
+          : [{ type: "Product", id: "LIST" }],
 
       transformResponse: (response: Product[]) =>
         response.map((product) => ({
@@ -54,12 +69,53 @@ export const productsApi = createApi({
         })),
     }),
 
+    getProductsBySearch: builder.query<Product[], string>({
+      query: (searchTerm) =>
+        `products/search=${encodeURIComponent(searchTerm)}`,
+      transformResponse: (response: Product[]) =>
+        response.map((product) => ({
+          ...product,
+          image: BASE_URL + product.image,
+        })),
+    }),
+
     getProductBySlug: builder.query<Product, string>({
-      query: (slug) => `product/slug/${slug}`,
+      query: (slug) => `products/${slug}`,
       transformResponse: (response: Product) => ({
         ...response,
         image: BASE_URL + response.image,
       }),
+    }),
+
+    getProductsByCategory: builder.query<
+      Product[],
+      { category: string; filters?: Record<string, string> }
+    >({
+      query: ({ category, filters }) => {
+        let path = `products/category/${encodeURIComponent(category)}`;
+
+        if (filters) {
+          for (const [key, value] of Object.entries(filters)) {
+            path += `/${encodeURIComponent(key)}/${encodeURIComponent(value)}`;
+          }
+        }
+
+        return path;
+      },
+
+      transformResponse: (response: Product[]) =>
+        response.map((product) => ({
+          ...product,
+          image: BASE_URL + product.image,
+        })),
+
+      providesTags: (result) =>
+        result
+          ? result.map((product) => ({
+              type: "Product" as const,
+              id: product.slug,
+            }))
+          : [{ type: "Product", id: "LIST" }],
     }),
 
     getProductsPaged: builder.query<
@@ -70,7 +126,7 @@ export const productsApi = createApi({
     }),
 
     getRandomProducts: builder.query<Product[], void>({
-      query: () => `products?random=true`,
+      query: () => `products/randomProducts`,
       transformResponse: (response: Product[]) =>
         response.map((product) => ({
           ...product,
@@ -80,43 +136,56 @@ export const productsApi = createApi({
 
     uploadImage: builder.mutation<{ imageUrl: string }, FormData>({
       query: (formData) => ({
-        url: "images/upload",
+        url: "products/",
         method: "POST",
         body: formData,
       }),
     }),
 
-    addProduct: builder.mutation<
-      Product,
-      Partial<Omit<Product, "attributes"> & { attributes: Attribute[] }>
-    >({
-      query: (newProduct) => ({
-        url: "products",
+    addProduct: builder.mutation({
+      query: (formData: FormData) => ({
+        url: "products/",
         method: "POST",
-        body: newProduct,
+        body: formData,
+      }),
+      invalidatesTags: [{ type: "Product", id: "LIST" }],
+    }),
+
+    addProductWithImage: builder.mutation<Product, FormData>({
+      query: (formData) => ({
+        url: "products/",
+        method: "POST",
+        body: formData,
       }),
     }),
 
     updateProductQuantity: builder.mutation<
       Product,
-      { id: string; quantity: number; attributeName: string }
+      { slug: string; quantity: number; attribute: string }
     >({
-      query: ({ id, quantity, attributeName }) => ({
-        url: `products/${id}`,
+      query: ({ slug, quantity, attribute }) => ({
+        url: `products/${slug}`,
         method: "PATCH",
-        body: { attributeName, quantity },
+        body: { quantity, attribute },
       }),
 
-      invalidatesTags: (_result, _error, { id }) => [{ type: "Product", id }],
+      invalidatesTags: (_result, _error, { slug }) => [
+        { type: "Product", slug },
+      ],
     }),
 
-    deleteProduct: builder.mutation<{ success: boolean; id: string }, string>({
-      query: (id) => ({
-        url: `products/${id}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: (_result, _error, id) => [{ type: "Product", id }],
-    }),
+    deleteProduct: builder.mutation<{ success: boolean; slug: string }, string>(
+      {
+        query: (slug) => ({
+          url: `products/${slug}`,
+          method: "DELETE",
+        }),
+        invalidatesTags: (_result, _error, slug) => [
+          { type: "Product", id: slug },
+          { type: "Product", id: "LIST" },
+        ],
+      }
+    ),
 
     placeOrder: builder.mutation<
       { success: boolean },
@@ -140,8 +209,11 @@ export const {
   useGetProductBySlugQuery,
   useGetProductsPagedQuery,
   useGetRandomProductsQuery,
+  useGetProductsByCategoryQuery,
+  useGetProductsBySearchQuery,
   useUploadImageMutation,
   useAddProductMutation,
+  useAddProductWithImageMutation,
   useUpdateProductQuantityMutation,
   useDeleteProductMutation,
   usePlaceOrderMutation,

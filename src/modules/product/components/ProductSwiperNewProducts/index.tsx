@@ -6,7 +6,7 @@ import { useGetProductsQuery } from "storeRedux/productsApi";
 import styles from "./index.module.scss";
 
 const ProductSwiperNewProducts = () => {
-  const { data: popularProducts } = useGetProductsQuery({
+  const { data: newProducts } = useGetProductsQuery({
     newProduct: true,
   });
   const { t } = useTranslation();
@@ -15,8 +15,8 @@ const ProductSwiperNewProducts = () => {
     <div className={styles.wrapper}>
       <h1>{t("newProducts")}</h1>
       <CoreSwiper navigation={true} slidesPerView={2} breakpoints={breakpoints}>
-        {popularProducts &&
-          popularProducts.map(({ name, image, price, slug }) => (
+        {newProducts &&
+          newProducts.map(({ name, image, price, slug }) => (
             <SwiperSlide>
               <div className={styles.itemsWrapper}>
                 <picture>
@@ -26,7 +26,7 @@ const ProductSwiperNewProducts = () => {
               <div className={styles.info}>
                 <p>{name}</p>
                 <p className={styles.price}>
-                  {price.toFixed(2)}
+                  {Number(price).toFixed(2)}
                   {t("currency")}
                 </p>
                 <a href={`/product/${slug}`}>{t("goToProduct")}</a>
