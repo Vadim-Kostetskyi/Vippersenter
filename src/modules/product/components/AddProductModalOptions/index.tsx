@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import slugify from "slugify";
 import {
@@ -7,16 +7,10 @@ import {
 } from "storeRedux/productsApi";
 import styles from "./index.module.scss";
 
-interface Values {
-  attributeName: string;
-  extraPrice: string;
-  quantity?: number;
-}
-
-interface Attribute {
-  name: string;
-  price?: string;
-  values: Values[];
+interface Variant {
+  combination: { [key: string]: string };
+  price: string;
+  quantity: string;
 }
 
 interface AddProductModalOptionsProps {
@@ -30,316 +24,357 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
   selectedCategory,
   selectedImage,
 }) => {
+  const { t } = useTranslation();
   const [name, setName] = useState("");
-  const [price, setPrice] = useState<number | "">("");
-  const [quantity, setQuantity] = useState<number | "">("");
-  const [attributes, setAttributes] = useState<Attribute[]>([]);
-  const [description, setDescription] = useState<string>("");
+  const [price, setPrice] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [description, setDescription] = useState("");
   const [newProduct, setNewProduct] = useState(false);
   const [popularProduct, setPopularProduct] = useState(false);
 
-  const [addProduct] = useAddProductMutation();
+  const [attributeNames, setAttributeNames] = useState<string[]>([]);
+  const [attributeValues, setAttributeValues] = useState<{
+    [key: string]: string[];
+  }>({});
+  const [selectedCombination, setSelectedCombination] = useState<{
+    [key: string]: string;
+  }>({});
+  const [variants, setVariants] = useState<Variant[]>([]);
 
+  const [addProduct] = useAddProductMutation();
   const [uploadImage] = useUploadImageMutation();
 
-  const { t } = useTranslation();
+  const addAttributeName = () => {
+    if (
+      attributeNames.length > 0 &&
+      attributeNames[attributeNames.length - 1].trim() === ""
+    )
+      return;
+    setAttributeNames((prev) => [...prev, ""]);
+  };
 
-  const addValue = (attrIndex: number) => {
-    setAttributes((prev) => {
-      const newAttrs = [...prev];
-      const values = newAttrs[attrIndex].values;
-      const last = values[values.length - 1];
+  const updateAttributeName = (index: number, name: string) => {
+    const updated = [...attributeNames];
+    updated[index] = name;
+    setAttributeNames(updated);
+  };
 
-      if (!last || last.attributeName.trim() === "") {
-        return newAttrs;
-      }
-
-      values.push({ attributeName: "", extraPrice: "", quantity: 0 });
-      return newAttrs;
+  const removeAttributeName = (index: number) => {
+    const nameToRemove = attributeNames[index];
+    const newAttrs = attributeNames.filter((_, i) => i !== index);
+    const newValues = { ...attributeValues };
+    delete newValues[nameToRemove];
+    setAttributeNames(newAttrs);
+    setAttributeValues(newValues);
+    setSelectedCombination((prev) => {
+      const updated = { ...prev };
+      delete updated[nameToRemove];
+      return updated;
     });
   };
 
-  const updateValueName = (
-    attrIndex: number,
-    valueIndex: number,
-    newName: string
-  ) => {
-    setAttributes((prev) => {
-      const newAttrs = [...prev];
-      newAttrs[attrIndex].values[valueIndex].attributeName = newName;
-      return newAttrs;
-    });
-  };
-
-  const updateValuePrice = (
-    attrIndex: number,
-    valueIndex: number,
-    newPrice: string
-  ) => {
-    setAttributes((prev) => {
-      const newAttrs = [...prev];
-      newAttrs[attrIndex].values[valueIndex].extraPrice = newPrice;
-      return newAttrs;
-    });
-  };
-
-  const updateValueQuantity = (
-    attrIndex: number,
-    valueIndex: number,
-    newQuantity: string
-  ) => {
-    const parsed = parseInt(newQuantity);
-    if (isNaN(parsed) || parsed < 0) return;
-
-    setAttributes((prev) => {
-      const newAttrs = [...prev];
-      newAttrs[attrIndex].values[valueIndex].quantity = parsed;
-      return newAttrs;
-    });
-  };
-
-  const updateAttributeName = (attrIndex: number, newName: string) => {
-    setAttributes((prev) => {
-      const newAttrs = [...prev];
-      newAttrs[attrIndex].name = newName;
-      return newAttrs;
-    });
-  };
-
-  const removeValue = (attrIndex: number, valueIndex: number) => {
-    setAttributes((prev) => {
-      const newAttrs = [...prev];
-      const attr = { ...newAttrs[attrIndex] };
-      const newValues = [...attr.values];
-
-      newValues.splice(valueIndex, 1);
-      if (newValues.length === 0) {
-        newValues.push({ attributeName: "", extraPrice: "", quantity: 0 });
-      }
-
-      attr.values = newValues;
-      newAttrs[attrIndex] = attr;
-
-      return newAttrs;
-    });
-  };
-
-  const addAttribute = () => {
-    setAttributes((prev) => [
+  const addAttributeValue = (attrName: string) => {
+    const values = attributeValues[attrName] || [];
+    if (values.length > 0 && values[values.length - 1].trim() === "") return;
+    setAttributeValues((prev) => ({
       ...prev,
-      {
-        name: "",
-        price: "",
-        values: [{ attributeName: "", extraPrice: "", quantity: 0 }],
-      },
-    ]);
+      [attrName]: [...values, ""],
+    }));
   };
 
-  const removeAttribute = (index: number) => {
-    setAttributes((prev) => prev.filter((_, i) => i !== index));
+  const updateAttributeValue = (
+    attrName: string,
+    index: number,
+    value: string
+  ) => {
+    setAttributeValues((prev) => {
+      const updatedValues = [...(prev[attrName] || [])];
+      updatedValues[index] = value;
+      return {
+        ...prev,
+        [attrName]: updatedValues,
+      };
+    });
   };
 
-  const onSetDescription = (value: string) => {
-    setDescription(value);
+  const removeAttributeValue = (attrName: string, index: number) => {
+    setAttributeValues((prev) => {
+      const updated = { ...prev };
+      updated[attrName] = updated[attrName].filter((_, i) => i !== index);
+      return updated;
+    });
+    setSelectedCombination((prev) => {
+      if (
+        prev[attrName] &&
+        attributeValues[attrName][index] === prev[attrName]
+      ) {
+        const updated = { ...prev };
+        delete updated[attrName];
+        return updated;
+      }
+      return prev;
+    });
   };
+
+  const toggleValueSelection = (attrName: string, value: string) => {
+    setSelectedCombination((prev) => {
+      const updated = { ...prev };
+      updated[attrName] = value;
+      return updated;
+    });
+  };
+
+  useEffect(() => {
+    const allSelected = attributeNames.every((attr) =>
+      selectedCombination[attr]?.trim()
+    );
+    if (!allSelected) return;
+
+    const comboKey = JSON.stringify(selectedCombination);
+
+    setVariants((prev) => {
+      const existsIndex = prev.findIndex(
+        (v) => JSON.stringify(v.combination) === comboKey
+      );
+      if (existsIndex !== -1) return prev;
+
+      return [
+        ...prev,
+        {
+          combination: { ...selectedCombination },
+          price: "0",
+          quantity: "0",
+        },
+      ];
+    });
+  }, [selectedCombination, attributeNames]);
+
+  const updateVariant = (field: "price" | "quantity", value: string) => {
+    const comboKey = JSON.stringify(selectedCombination);
+    setVariants((prev) => {
+      const updated = prev.map((v) =>
+        JSON.stringify(v.combination) === comboKey
+          ? { ...v, [field]: value }
+          : v
+      );
+      return updated;
+    });
+  };
+
+  const getCurrentVariant = (): Variant | undefined => {
+    const comboKey = JSON.stringify(selectedCombination);
+    return variants.find((v) => JSON.stringify(v.combination) === comboKey);
+  };
+
+  const cartesianProduct = (arrays: string[][]): string[][] => {
+    return arrays.reduce(
+      (acc, curr) =>
+        acc
+          .map((x) => curr.map((y) => x.concat([y])))
+          .reduce((a, b) => a.concat(b), []),
+      [[]] as string[][]
+    );
+  }
+  
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (selectedCategory === t("category")) {
-      alert("Please select an category first");
-      return;
-    } else if (!selectedImage) {
-      alert("Please select an image first");
-      return;
-    }
+    const keys = attributeNames;
+    const valuesArrays = keys.map((key) => attributeValues[key] || []);
 
-    const image = new FormData();
-    image.append("action", "uploadImage");
-    image.append("image", selectedImage);
+    const allCombinations = cartesianProduct(valuesArrays);
 
-    const uploadImageResult = await uploadImage(image).unwrap();
+    const allVariants = allCombinations.map((comboValues) => {
+      const combination: { [key: string]: string } = {};
+      keys.forEach((key, idx) => {
+        combination[key] = comboValues[idx];
+      });
+
+      // Знайти у існуючих variants чи є ця комбінація
+      const found = variants.find(
+        (v) => JSON.stringify(v.combination) === JSON.stringify(combination)
+      );
+
+      return {
+        combination,
+        price: found?.price || "0",
+        quantity: found?.quantity || "0",
+      };
+    });
+
+    const imageForm = new FormData();
+    imageForm.append("action", "uploadImage");
+    if (selectedImage) imageForm.append("image", selectedImage);
+    const uploaded = selectedImage
+      ? await uploadImage(imageForm).unwrap()
+      : { imageUrl: "" };
 
     const formData = new FormData();
-
     formData.append("action", "createProduct");
     formData.append("name", name);
     formData.append("slug", slugify(name));
-    formData.append("price", price.toString());
-    formData.append("quantity", quantity.toString());
-    formData.append("imageUrl", uploadImageResult.imageUrl);
+    formData.append("price", price);
+    formData.append("quantity", quantity);
+    formData.append("imageUrl", uploaded.imageUrl);
     formData.append("category", selectedCategory);
     formData.append("newProduct", newProduct.toString());
     formData.append("popularProduct", popularProduct.toString());
     formData.append("description", description);
     formData.append(
       "attributes",
-      JSON.stringify(
-        attributes
-          .filter((attr) => attr.name.trim() !== "")
-          .map((attr) => ({
-            name: attr.name,
-            values: attr.values
-              .filter((v) => v.attributeName.trim() !== "")
-              .map((v) => ({
-                attributeName: v.attributeName,
-                extraPrice: v.extraPrice,
-                quantity: v.quantity,
-              })),
-          }))
-      )
+      JSON.stringify({
+        attributeNames,
+        attributeValues,
+        variants: allVariants,
+      })
     );
 
-    try {
-      await addProduct(formData).unwrap();
-      alert("Товар успішно додано!");
-    } catch (err: any) {
-      console.error("Error adding a product", err);
-
-      if (err?.data) {
-        console.error("Response data:", err.data);
-      }
-
-      alert("Помилка при додаванні товару. Подивись консоль.");
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ": " + pair[1]);
     }
 
-    onModalClose();
+    // try {
+    //   await addProduct(formData).unwrap();
+    //   alert("Товар успішно додано!");
+    //   onModalClose();
+    // } catch (err) {
+    //   console.error("Error:", err);
+    //   alert("Помилка при додаванні товару.");
+    // }
   };
 
   return (
     <form onSubmit={onSubmit} className={styles.form}>
-      <label>
-        <input
-          type="text"
-          value={name}
-          placeholder={t("product.title")}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-      </label>
+      <input
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Назва товару"
+        required
+      />
+      <input
+        type="number"
+        value={price}
+        onChange={(e) => setPrice(e.target.value)}
+        placeholder="Ціна"
+        required
+      />
+      <input
+        type="number"
+        value={quantity}
+        onChange={(e) => setQuantity(e.target.value)}
+        placeholder="Кількість"
+        required
+      />
 
-      <label>
-        <input
-          type="number"
-          step="0.01"
-          value={price}
-          min={0}
-          placeholder={t("product.price")}
-          onChange={(e) =>
-            setPrice(e.target.value === "" ? "" : Number(e.target.value))
-          }
-          required
-        />
-      </label>
+      {attributeNames.map((attr, i) => (
+        <div key={i}>
+          <input
+            value={attr}
+            onChange={(e) => updateAttributeName(i, e.target.value)}
+            placeholder="Назва параметра"
+          />
+          <button type="button" onClick={() => removeAttributeName(i)}>
+            ❌
+          </button>
 
-      <label>
-        <input
-          type="number"
-          value={quantity}
-          min={1}
-          placeholder={t("product.quantity")}
-          onChange={(e) =>
-            setQuantity(e.target.value === "" ? "" : Number(e.target.value))
-          }
-          required
-        />
-      </label>
-
-      <fieldset className={styles.fieldset}>
-        <legend>{t("form.attributes")}:</legend>
-        {attributes.map((attr, i) => (
-          <div
-            key={i}
-            style={{ border: "1px solid #ccc", padding: 10, marginBottom: 15 }}
-          >
-            <input
-              type="text"
-              placeholder={t("form.attributeName")}
-              value={attr.name}
-              onChange={(e) => updateAttributeName(i, e.target.value)}
-              required
-              style={{ display: "block", marginBottom: 8, width: "100%" }}
-            />
-
-            {attr.values.map((val, idx) => (
-              <div
-                key={idx}
-                style={{ display: "flex", gap: 8, marginBottom: 5 }}
+          {(attributeValues[attr] || []).map((val, j) => (
+            <div key={j}>
+              <input
+                value={val}
+                onChange={(e) => updateAttributeValue(attr, j, e.target.value)}
+                placeholder="Значення"
+              />
+              <button
+                type="button"
+                onClick={() => removeAttributeValue(attr, j)}
               >
-                <input
-                  type="text"
-                  placeholder="Значення"
-                  value={val.attributeName}
-                  onChange={(e) => updateValueName(i, idx, e.target.value)}
-                  required
-                  style={{ flexGrow: 1 }}
-                />
-                <input
-                  type="text"
-                  placeholder="Додаткова ціна"
-                  value={val.extraPrice}
-                  onChange={(e) => updateValuePrice(i, idx, e.target.value)}
-                  style={{ flexGrow: 1 }}
-                />
-                <input
-                  type="number"
-                  min={0}
-                  placeholder="Кількість"
-                  value={val.quantity ?? ""}
-                  onChange={(e) => updateValueQuantity(i, idx, e.target.value)}
-                  style={{ width: 90 }}
-                />
-                <button type="button" onClick={() => removeValue(i, idx)}>
-                  ❌
-                </button>
-              </div>
-            ))}
+                ❌
+              </button>
+            </div>
+          ))}
 
-            <button type="button" onClick={() => addValue(i)}>
-              {t("form.addValue")}
-            </button>
-            <button
-              type="button"
-              onClick={() => removeAttribute(i)}
-              style={{ marginLeft: 10, color: "red" }}
-            >
-              {t("form.deleteAttribute")}
-            </button>
+          <button type="button" onClick={() => addAttributeValue(attr)}>
+            + Значення
+          </button>
+        </div>
+      ))}
+
+      <button type="button" onClick={addAttributeName}>
+        + Параметр
+      </button>
+
+      <div>
+        {attributeNames.map((attrName) => (
+          <div key={attrName}>
+            <strong>{attrName}</strong>
+            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+              {(attributeValues[attrName] || []).map((val) => (
+                <button
+                  key={val}
+                  type="button"
+                  style={{
+                    backgroundColor:
+                      selectedCombination[attrName] === val ? "#ccc" : "#eee",
+                  }}
+                  onClick={() => toggleValueSelection(attrName, val)}
+                >
+                  {val}
+                </button>
+              ))}
+            </div>
           </div>
         ))}
-
-        <button type="button" onClick={addAttribute}>
-          {t("form.addAttribute")}
-        </button>
-      </fieldset>
-
-      <div className={styles.newSettings}>
-        <label>
-          <input
-            type="checkbox"
-            onChange={(e) => setPopularProduct(e.target.checked)}
-          />
-          Популярні товари
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            onChange={(e) => setNewProduct(e.target.checked)}
-          />
-          <span>Новинки</span>
-        </label>
       </div>
 
-      <label className={styles.description}>
-        {t("form.description")}:
-        <textarea
-          value={description}
-          onChange={(e) => onSetDescription(e.target.value)}
-          rows={4}
-        />
+      {attributeNames.every((attr) => selectedCombination[attr]?.trim()) && (
+        <div>
+          <div>
+            <strong>Комбінація:</strong>{" "}
+            {attributeNames
+              .map((k) => `${k}: ${selectedCombination[k]}`)
+              .join(" | ")}
+          </div>
+          <input
+            type="text"
+            placeholder="Ціна"
+            value={getCurrentVariant()?.price || ""}
+            onChange={(e) => updateVariant("price", e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Кількість"
+            value={getCurrentVariant()?.quantity || ""}
+            onChange={(e) => updateVariant("quantity", e.target.value)}
+          />
+        </div>
+      )}
+
+      <textarea
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        placeholder="Опис"
+      />
+
+      <label>
+        <input
+          type="checkbox"
+          checked={newProduct}
+          onChange={(e) => setNewProduct(e.target.checked)}
+        />{" "}
+        Новинка
+      </label>
+      <label>
+        <input
+          type="checkbox"
+          checked={popularProduct}
+          onChange={(e) => setPopularProduct(e.target.checked)}
+        />{" "}
+        Популярне
       </label>
 
-      <button type="submit">{t("form.save")}</button>
+      <button type="submit">Зберегти</button>
     </form>
   );
 };

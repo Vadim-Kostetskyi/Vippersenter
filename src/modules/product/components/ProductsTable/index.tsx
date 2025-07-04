@@ -32,10 +32,10 @@ const ProductsTable = () => {
 
       products.forEach((product) => {
         product.attributes?.forEach((attr) => {
-          const key = `${product.slug}_${attr.value}`;
+          const key = `${product.slug}_${attr.value_main}`;
           initialQuantities[key] = {
             quantity: Number(attr.quantity) ?? 0,
-            attributeName: attr.attribute,
+            attributeName: attr.attribute_main,
             extraPrice: attr.extraPrice ?? "",
           };
         });
@@ -125,16 +125,17 @@ const ProductsTable = () => {
                     (() => {
                       const seenAttributes = new Set<string>();
                       return product.attributes.map(
-                        ({ attribute, value }, i) => {
-                          const key = `${product.slug}_${value}`;
-                          const showAttribute = !seenAttributes.has(attribute);
-                          if (showAttribute) seenAttributes.add(attribute);
+                        ({ attribute_main, value_main }, i) => {
+                          const key = `${product.slug}_${value_main}`;
+                          const showAttribute =
+                            !seenAttributes.has(attribute_main);
+                          if (showAttribute) seenAttributes.add(attribute_main);
 
                           return (
                             <div key={i}>
                               {showAttribute && (
                                 <p className={styles.attributeNameQuantity}>
-                                  {attribute}
+                                  {attribute_main}
                                 </p>
                               )}
                               <div className={styles.attributeBoxQuantity}>
@@ -149,7 +150,7 @@ const ProductsTable = () => {
                                     handleQuantityBlur(
                                       product.slug,
                                       quantities[key]?.quantity ?? 0,
-                                      value
+                                      value_main
                                     )
                                   }
                                   onKeyDown={(e) => {
@@ -158,7 +159,7 @@ const ProductsTable = () => {
                                       handleQuantityBlur(
                                         product.slug,
                                         quantities[key]?.quantity ?? 0,
-                                        value
+                                        value_main
                                       );
                                     }
                                   }}
@@ -184,19 +185,19 @@ const ProductsTable = () => {
                       {(() => {
                         const seenAttributes = new Set<string>();
                         return product.attributes.map(
-                          ({ attribute, value }, i) => {
+                          ({ attribute_main, value_main }, i) => {
                             const showAttribute =
-                              !seenAttributes.has(attribute);
-                            seenAttributes.add(attribute);
+                              !seenAttributes.has(attribute_main);
+                            seenAttributes.add(attribute_main);
                             return (
                               <div key={i}>
                                 {showAttribute && (
                                   <p className={styles.attributeName}>
-                                    {attribute}:
+                                    {attribute_main}:
                                   </p>
                                 )}
                                 <div className={styles.attributeBox}>
-                                  <span>{value}</span>
+                                  <span>{value_main}</span>
                                 </div>
                               </div>
                             );
