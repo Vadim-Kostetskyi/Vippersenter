@@ -89,7 +89,7 @@ const ShoppingBag = () => {
     };
 
     try {
-      const res = await placeOrder(orderData).unwrap();
+      await placeOrder(orderData).unwrap();
       setCartItems([]);
     } catch (err) {
       console.error("Order error:", err);

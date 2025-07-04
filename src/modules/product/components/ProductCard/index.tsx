@@ -10,16 +10,16 @@ import styles from "./index.module.scss";
 import { parseDescription } from "utils/text";
 
 const groupAttributes = (
-  attrs: { attribute: string; value: string }[]
+  attrs: { attribute_main: string; value_main: string }[]
 ): { name: string; values: string[] }[] => {
   const grouped: { name: string; values: string[] }[] = [];
 
-  attrs.forEach(({ attribute, value }) => {
-    const existing = grouped.find((item) => item.name === attribute);
+  attrs.forEach(({ attribute_main, value_main }) => {
+    const existing = grouped.find((item) => item.name === attribute_main);
     if (existing) {
-      existing.values.push(value);
+      existing.values.push(value_main);
     } else {
-      grouped.push({ name: attribute, values: [value] });
+      grouped.push({ name: attribute_main, values: [value_main] });
     }
   });
 
@@ -59,11 +59,11 @@ const ProductCard = () => {
 
       const grouped: { [key: string]: string[] } = {};
 
-      product.attributes.forEach(({ attribute, value }) => {
-        if (!grouped[attribute]) {
-          grouped[attribute] = [];
+      product.attributes.forEach(({ attribute_main, value_main }) => {
+        if (!grouped[attribute_main]) {
+          grouped[attribute_main] = [];
         }
-        grouped[attribute].push(value);
+        grouped[attribute_main].push(value_main);
       });
 
       for (const name in grouped) {

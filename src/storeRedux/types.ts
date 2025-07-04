@@ -1,8 +1,12 @@
 export type Attribute = {
-  attribute: string;
+  attribute_main: string;
+  value_main: string;
+  attribute_secondary?: string;
+  value_secondary?: string;
+  attribute_tertiary?: string;
+  value_tertiary?: string;
   extraPrice: string;
   quantity: string;
-  value: string;
 };
 
 export interface Product {

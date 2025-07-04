@@ -1,0 +1,14 @@
+RewriteEngine On
+RewriteBase /
+
+# Не чіпаємо запити до бекенду (API)
+RewriteCond %{REQUEST_URI} ^/myAPI/
+RewriteRule ^ - [L]
+
+# Не чіпаємо index.html напряму
+RewriteRule ^index\.html$ - [L]
+
+# Все інше перекидаємо на index.html (для SPA)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.html [L]
