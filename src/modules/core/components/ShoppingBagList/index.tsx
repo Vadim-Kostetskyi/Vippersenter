@@ -2,6 +2,7 @@ import { FC } from "react";
 import { CartItem } from "utils/card";
 import ShoppingBagCard from "../ShoppingBagCard";
 import styles from "./index.module.scss";
+import { Values } from "storeRedux/types";
 
 interface ShoppingBagListProps {
   products: CartItem[];
@@ -10,7 +11,7 @@ interface ShoppingBagListProps {
     productId: string,
     attributes?: {
       name: string;
-      value: string;
+      value: Values;
     }[]
   ) => void;
 }

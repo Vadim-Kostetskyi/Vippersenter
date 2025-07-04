@@ -40,6 +40,7 @@ const ProductsTable = () => {
           };
         });
       });
+
       setQuantities(initialQuantities);
     }
   }, [products]);
@@ -213,7 +214,7 @@ const ProductsTable = () => {
                   <p>{product.description}</p>
                 </td>
                 <td style={{ textAlign: "center" }}>
-                  <button onClick={() => handleDelete(product.slug)}>
+                  <button onClick={() => handleDelete(product._id)}>
                     <Cross className={styles.trashIcon} />
                   </button>
                 </td>

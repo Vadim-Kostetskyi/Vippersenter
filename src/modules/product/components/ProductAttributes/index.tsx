@@ -1,11 +1,12 @@
 import { FC } from "react";
 import styles from "./index.module.scss";
+import { Values } from "storeRedux/types";
 
 interface ProductAttributesProps {
   title: string;
-  values: string[];
+  values: Values[];
   selectedValue?: string;
-  onSelect: (title: string, value: string) => void;
+  onSelect: (title: string, value: string, extraPrice: string) => void;
 }
 
 const ProductAttributes: FC<ProductAttributesProps> = ({
@@ -17,15 +18,15 @@ const ProductAttributes: FC<ProductAttributesProps> = ({
   <>
     <h3 className={styles.title}>{title}</h3>
     <div className={styles.valueBox}>
-      {values.map((value) => (
+      {values.map(({ attributeName, extraPrice }) => (
         <button
-          key={value}
+          key={attributeName}
           className={`${styles.button} ${
-            selectedValue === value ? styles.active : ""
+            selectedValue === attributeName ? styles.active : ""
           }`}
-          onClick={() => onSelect(title, value)}
+          onClick={() => onSelect(title, attributeName, extraPrice)}
         >
-          {value}
+          {attributeName}
         </button>
       ))}
     </div>

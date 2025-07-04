@@ -1,7 +1,9 @@
+import { Values } from "storeRedux/types";
+
 export interface CartItem {
   price: number;
   quantity: number;
-  attributes?: { name: string; value: string }[];
+  attributes?: { name: string; value: Values }[];
   slug: string;
 }
 
@@ -9,7 +11,7 @@ export const addProductToCart = (
   slug: string,
   price: number,
   quantity: number = 1,
-  attributes?: { name: string; value: string }[]
+  attributes?: { name: string; value: Values }[]
 ) => {
   const storedCart = localStorage.getItem("cart");
   const cart: CartItem[] = storedCart ? JSON.parse(storedCart) : [];
@@ -21,7 +23,12 @@ export const addProductToCart = (
     if (item.attributes.length !== attributes.length) return false;
 
     return item.attributes.every((attr) =>
-      attributes.some((a) => a.name === attr.name && a.value === attr.value)
+      attributes.some(
+        (a) =>
+          a.name === attr.name &&
+          a.value.attributeName === attr.value.attributeName &&
+          a.value.extraPrice === attr.value.extraPrice
+      )
     );
   });
 
@@ -40,8 +47,8 @@ export const getCartItems = (): CartItem[] => {
 };
 
 const areAttributesEqual = (
-  a?: { name: string; value: string }[],
-  b?: { name: string; value: string }[]
+  a?: { name: string; value: Values }[],
+  b?: { name: string; value: Values }[]
 ): boolean => {
   if (!a && !b) return true;
   if (!a || !b) return false;
@@ -51,8 +58,11 @@ const areAttributesEqual = (
   const sortedB = [...b].sort((x, y) => x.name.localeCompare(y.name));
 
   return sortedA.every((attr, index) => {
+    const bAttr = sortedB[index];
     return (
-      attr.name === sortedB[index].name && attr.value === sortedB[index].value
+      attr.name === bAttr.name &&
+      attr.value.attributeName === bAttr.value.attributeName &&
+      attr.value.extraPrice === bAttr.value.extraPrice
     );
   });
 };
@@ -60,7 +70,7 @@ const areAttributesEqual = (
 export const updateCartItemQuantity = (
   slug: string,
   newQuantity: number,
-  attributes?: { name: string; value: string }[]
+  attributes?: { name: string; value: Values }[]
 ) => {
   const cart: CartItem[] = JSON.parse(localStorage.getItem("cart") || "[]");
 
@@ -78,7 +88,7 @@ export const updateCartItemQuantity = (
 
 export const removeCartItem = (
   slug: string,
-  attributes?: { name: string; value: string }[]
+  attributes?: { name: string; value: Values }[]
 ) => {
   const storedCart = localStorage.getItem("cart");
   const cart: CartItem[] = storedCart ? JSON.parse(storedCart) : [];

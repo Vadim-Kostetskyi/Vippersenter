@@ -6,6 +6,7 @@ import CardButton from "../CardButton";
 import ShoppingBagList from "../ShoppingBagList";
 import { CartItem, getCartItems } from "utils/card";
 import { usePlaceOrderMutation } from "storeRedux/productsApi";
+import { Values } from "storeRedux/types";
 import styles from "./index.module.scss";
 
 const ShoppingBag = () => {
@@ -49,7 +50,7 @@ const ShoppingBag = () => {
 
   const removeCartItem = (
     slug: string,
-    attributes?: { name: string; value: string }[]
+    attributes?: { name: string; value: Values }[]
   ) => {
     const updatedCart = cartItems.filter((item) => {
       if (item.slug !== slug) return true;
