@@ -37,14 +37,14 @@ const ProductCard = () => {
   const [count, setCount] = useState(1);
   const [maxCount, setMaxCount] = useState(0);
   const [selectedAttributes, setSelectedAttributes] = useState<
-    { name: string; value: string }[]
+    { name: string; value: Values }[]
   >([]);
 
   console.log(product);
 
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-    const productInCart = cart.find((p: any) => p.id === productId);
+    const productInCart = cart.find((p: any) => p.slug === productId);
 
     const alreadyInCart = productInCart?.quantity || 0;
     const available = product?.quantity ?? 0;
@@ -94,7 +94,16 @@ const ProductCard = () => {
     window.dispatchEvent(new Event("cartUpdated"));
   };
 
-  const handleSelectAttribute = (name: string, value: string) => {
+  const handleSelectAttribute = (
+    name: string,
+    value: string,
+    extraPrice: string
+  ) => {
+    const valueAsValues: Values = {
+      attributeName: value,
+      extraPrice,
+    };
+
     setSelectedAttributes((prev) => {
       const existsIndex = prev.findIndex((attr) => attr.name === name);
 
@@ -136,6 +145,7 @@ const ProductCard = () => {
                 values={values}
                 selectedValue={
                   selectedAttributes.find((attr) => attr.name === name)?.value
+                    .attributeName
                 }
                 onSelect={handleSelectAttribute}
               />
