@@ -180,6 +180,13 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (selectedCategory === t("category")) {
+      alert("Select a category");
+      return;
+    } else if (!selectedImage) {
+      alert("Select an image");
+    }    
+
     const keys = attributeNames;
     const valuesArrays = keys.map((key) => attributeValues[key] || []);
 
@@ -191,7 +198,6 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
         combination[key] = comboValues[idx];
       });
 
-      // Знайти у існуючих variants чи є ця комбінація
       const found = variants.find(
         (v) => JSON.stringify(v.combination) === JSON.stringify(combination)
       );
@@ -234,14 +240,14 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
       console.log(pair[0] + ": " + pair[1]);
     }
 
-    // try {
-    //   await addProduct(formData).unwrap();
-    //   alert("Товар успішно додано!");
-    //   onModalClose();
-    // } catch (err) {
-    //   console.error("Error:", err);
-    //   alert("Помилка при додаванні товару.");
-    // }
+    try {
+      await addProduct(formData).unwrap();
+      alert("Товар успішно додано!");
+      onModalClose();
+    } catch (err) {
+      console.error("Error:", err);
+      alert("Помилка при додаванні товару.");
+    }
   };
 
   return (

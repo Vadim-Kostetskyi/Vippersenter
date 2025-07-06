@@ -19,30 +19,73 @@ const ProductsTable = () => {
   const [quantities, setQuantities] = useState<
     Record<
       string,
-      { quantity: number; attributeName: string; extraPrice: string }
+      {
+        quantity: number;
+        value_main?: string;
+        value_secondary?: string;
+        value_tertiary?: string;
+        extraPrice: string;
+      }
     >
   >({});
 
-  useEffect(() => {
-    if (products) {
-      const initialQuantities: Record<
-        string,
-        { quantity: number; attributeName: string; extraPrice: string }
-      > = {};
+  const [selectedAttributes, setSelectedAttributes] = useState<
+    Record<string, { main: string; secondary: string; tertiary: string }>
+    >({});
 
-      products.forEach((product) => {
-        product.attributes?.forEach((attr) => {
-          const key = `${product.slug}_${attr.value_main}`;
-          initialQuantities[key] = {
-            quantity: Number(attr.quantity) ?? 0,
-            attributeName: attr.attribute_main,
-            extraPrice: attr.extraPrice ?? "",
-          };
+    useEffect(() => {
+      if (products) {
+        setQuantities((prevQuantities) => {
+          const newQuantities = { ...prevQuantities };
+
+          products.forEach((product) => {
+            product.attributes?.forEach((attr) => {
+              const key = `${product.slug}_${attr.value_main ?? ""}_${
+                attr.value_secondary ?? ""
+              }_${attr.value_tertiary ?? ""}`;
+
+              if (!(key in newQuantities)) {
+                newQuantities[key] = {
+                  quantity: Number(attr.quantity) ?? 0,
+                  value_main: attr.attribute_main,
+                  value_secondary: attr.value_secondary,
+                  value_tertiary: attr.value_tertiary,
+                  extraPrice: attr.extraPrice ?? "",
+                };
+              }
+            });
+          });
+
+          return newQuantities;
         });
-      });
-      setQuantities(initialQuantities);
-    }
-  }, [products]);
+
+        setSelectedAttributes((prevSelectedAttrs) => {
+          const newSelectedAttrs = { ...prevSelectedAttrs };
+
+          products.forEach((product) => {
+            if (!(product.slug in newSelectedAttrs)) {
+              if (product.attributes && product.attributes.length > 0) {
+                const firstAttr = product.attributes[0];
+                newSelectedAttrs[product.slug] = {
+                  main: firstAttr.value_main || "",
+                  secondary: firstAttr.value_secondary || "",
+                  tertiary: firstAttr.value_tertiary || "",
+                };
+              } else {
+                newSelectedAttrs[product.slug] = {
+                  main: "",
+                  secondary: "",
+                  tertiary: "",
+                };
+              }
+            }
+          });
+
+          return newSelectedAttrs;
+        });
+      }
+    }, [products]);
+    
 
   const handleQuantityChange = (key: string, newQuantity: string) => {
     const num = parseInt(newQuantity);
@@ -60,18 +103,23 @@ const ProductsTable = () => {
   const handleQuantityBlur = async (
     productSlug: string,
     quantity: number,
-    attribute: string
+    value_main: string,
+    value_secondary?: string,
+    value_tertiary?: string
   ) => {
     try {
       await updateQuantity({
         slug: productSlug,
         quantity,
-        attribute,
+        value_main,
+        value_secondary,
+        value_tertiary,
       }).unwrap();
     } catch {
       alert(t("product.updateError") || "Error updating quantity");
     }
   };
+  
 
   const handleDelete = async (id: string) => {
     if (window.confirm(`${t("product.confirmDelete")}?`)) {
@@ -81,6 +129,20 @@ const ProductsTable = () => {
         alert(t("product.deleteError") || "Error deleting product");
       }
     }
+  };
+
+  const handleAttributeChange = (
+    productSlug: string,
+    attrType: "main" | "secondary" | "tertiary",
+    value: string
+  ) => {
+    setSelectedAttributes((prev) => ({
+      ...prev,
+      [productSlug]: {
+        ...prev[productSlug],
+        [attrType]: value,
+      },
+    }));
   };
 
   if (isLoading) return <div>...</div>;
@@ -115,110 +177,170 @@ const ProductsTable = () => {
                 {category}
               </td>
             </tr>
-            {items.map((product) => (
-              <tr key={product.slug}>
-                <td>{product.name}</td>
-                <td style={{ textAlign: "center" }}>{product.price}</td>
-                <td className={styles.attributes}>
-                  {Array.isArray(product.attributes) &&
-                  product.attributes.length > 0 ? (
-                    (() => {
-                      const seenAttributes = new Set<string>();
-                      return product.attributes.map(
-                        ({ attribute_main, value_main }, i) => {
-                          const key = `${product.slug}_${value_main}`;
-                          const showAttribute =
-                            !seenAttributes.has(attribute_main);
-                          if (showAttribute) seenAttributes.add(attribute_main);
+            {items.map((product) => {
+              const attrMainValues = Array.from(
+                new Set(product.attributes?.map((a) => a.value_main) || [])
+              );
+              const attrSecondaryValues = Array.from(
+                new Set(product.attributes?.map((a) => a.value_secondary) || [])
+              );
+              const attrTertiaryValues = Array.from(
+                new Set(product.attributes?.map((a) => a.value_tertiary) || [])
+              );
 
-                          return (
-                            <div key={i}>
-                              {showAttribute && (
-                                <p className={styles.attributeNameQuantity}>
-                                  {attribute_main}
-                                </p>
-                              )}
-                              <div className={styles.attributeBoxQuantity}>
+              const selected = selectedAttributes[product.slug] || {
+                main: "",
+                secondary: "",
+                tertiary: "",
+              };
+
+              const quantityKey = `${product.slug}_${selected.main}_${selected.secondary ?? ''}_${selected.tertiary ?? ''}`;
+              const quantity = quantities[quantityKey]?.quantity ?? 0;              
+
+              return (
+                <tr key={product.slug}>
+                  <td>{product.name}</td>
+                  <td style={{ textAlign: "center" }}>{product.price}</td>
+                  <td>
+                    <input
+                      type="number"
+                      min={0}
+                      value={quantity}
+                      onChange={(e) =>
+                        handleQuantityChange(quantityKey, e.target.value)
+                      }
+                      onBlur={() =>
+                        handleQuantityBlur(
+                          product.slug,
+                          +quantity,
+                          selected.main,
+                          selected.secondary,
+                          selected.tertiary
+                        )
+                      }
+                      style={{ width: 30, textAlign: "center" }}
+                    />
+                  </td>
+                  <td className={styles.attributes}>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: 16,
+                        justifyContent: "center",
+                        padding: 10,
+                      }}
+                    >
+                      {/* main attribute */}
+                      {attrMainValues.length > 0 && (
+                        <div>
+                          <p>
+                            <b>
+                              {product.attributes?.[0]?.attribute_main ||
+                                "Main"}
+                            </b>
+                          </p>
+                          {attrMainValues.map((val) => (
+                            <div key={val} className={styles.radioWrapper}>
+                              <label className={styles.radioLabel}>
                                 <input
-                                  type="number"
-                                  min={0}
-                                  value={quantities[key]?.quantity ?? 0}
-                                  onChange={(e) =>
-                                    handleQuantityChange(key, e.target.value)
-                                  }
-                                  onBlur={() =>
-                                    handleQuantityBlur(
+                                  type="radio"
+                                  name={`${product.slug}_main`}
+                                  value={val}
+                                  checked={selected.main === val}
+                                  onChange={() =>
+                                    handleAttributeChange(
                                       product.slug,
-                                      quantities[key]?.quantity ?? 0,
-                                      value_main
+                                      "main",
+                                      val
                                     )
                                   }
-                                  onKeyDown={(e) => {
-                                    if (e.key === "Enter") {
-                                      e.currentTarget.blur();
-                                      handleQuantityBlur(
-                                        product.slug,
-                                        quantities[key]?.quantity ?? 0,
-                                        value_main
-                                      );
-                                    }
-                                  }}
-                                  style={{
-                                    width: 40,
-                                    textAlign: "center",
-                                  }}
+                                  style={{ marginRight: 6 }}
                                 />
-                              </div>
+                                <span>{val}</span>
+                              </label>
                             </div>
-                          );
-                        }
-                      );
-                    })()
-                  ) : (
-                    <span>-</span>
-                  )}
-                </td>
-                <td>
-                  {Array.isArray(product.attributes) &&
-                  product.attributes.length > 0 ? (
-                    <div>
-                      {(() => {
-                        const seenAttributes = new Set<string>();
-                        return product.attributes.map(
-                          ({ attribute_main, value_main }, i) => {
-                            const showAttribute =
-                              !seenAttributes.has(attribute_main);
-                            seenAttributes.add(attribute_main);
-                            return (
-                              <div key={i}>
-                                {showAttribute && (
-                                  <p className={styles.attributeName}>
-                                    {attribute_main}:
-                                  </p>
-                                )}
-                                <div className={styles.attributeBox}>
-                                  <span>{value_main}</span>
-                                </div>
-                              </div>
-                            );
-                          }
-                        );
-                      })()}
+                          ))}
+                        </div>
+                      )}
+
+                      {/* secondary attribute */}
+                      {attrSecondaryValues[0] && (
+                        <div>
+                          <p>
+                            <b>
+                              {product.attributes?.[0]?.attribute_secondary ||
+                                "Secondary"}
+                            </b>
+                          </p>
+                          {attrSecondaryValues.map((val) => (
+                            <div key={val} className={styles.radioWrapper}>
+                              <label className={styles.radioLabel}>
+                                <input
+                                  type="radio"
+                                  name={`${product.slug}_secondary`}
+                                  value={val ?? ""}
+                                  checked={selected.secondary === val}
+                                  onChange={() =>
+                                    handleAttributeChange(
+                                      product.slug,
+                                      "secondary",
+                                      val ?? ""
+                                    )
+                                  }
+                                  style={{ marginRight: 6 }}
+                                />
+                                <span>{val}</span>
+                              </label>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* tertiary attribute */}
+                      {attrTertiaryValues[0] && (
+                        <div>
+                          <p>
+                            <b>
+                              {product.attributes?.[0]?.attribute_tertiary ||
+                                "Tertiary"}
+                            </b>
+                          </p>
+                          {attrTertiaryValues.map((val) => (
+                            <div key={val} className={styles.radioWrapper}>
+                              <label className={styles.radioLabel}>
+                                <input
+                                  type="radio"
+                                  name={`${product.slug}_tertiary`}
+                                  value={val ?? ""}
+                                  checked={selected.tertiary === val}
+                                  onChange={() =>
+                                    handleAttributeChange(
+                                      product.slug,
+                                      "tertiary",
+                                      val ?? ""
+                                    )
+                                  }
+                                  style={{ marginRight: 6 }}
+                                />
+                                <span>{val}</span>
+                              </label>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
-                  ) : (
-                    "-"
-                  )}
-                </td>
-                <td>
-                  <p>{product.description}</p>
-                </td>
-                <td style={{ textAlign: "center" }}>
-                  <button onClick={() => handleDelete(product.slug)}>
-                    <Cross className={styles.trashIcon} />
-                  </button>
-                </td>
-              </tr>
-            ))}
+                  </td>
+                  <td>
+                    <p>{product.description}</p>
+                  </td>
+                  <td style={{ textAlign: "center" }}>
+                    <button onClick={() => handleDelete(product.slug)}>
+                      <Cross className={styles.trashIcon} />
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
           </React.Fragment>
         ))}
       </tbody>
