@@ -4,6 +4,10 @@
   width: "100%";
   margin-top: 80px;
 
+  & td{
+    text-align: center;
+  }
+
   & input[type="number"]::-webkit-outer-spin-button,
   & input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -47,3 +51,24 @@
   flex-direction: column;
   gap: 10px;
 }
+
+.radioLabel {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+
+  & span{
+    padding: 2px 5px;
+    border: 1px solid $pageBackground;
+  }
+
+  input[type="radio"] {
+    display: none;
+
+    &:checked + span {
+      border: 1px solid $darkBlue;
+      color: $darkBlue;
+    }
+  }
+}
+
