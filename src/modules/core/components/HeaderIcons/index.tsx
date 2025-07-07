@@ -6,7 +6,7 @@ const HeaderIcons = () => {
   return (
     <div className={styles.headerIcons}>
       <SearchButton isLaptop={true} />
-      <ShoppingBag />
+      {/* <ShoppingBag /> */}
     </div>
   );
 };

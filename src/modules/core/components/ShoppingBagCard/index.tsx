@@ -11,7 +11,7 @@ import {
   removeCartItem,
   updateCartItemQuantity,
 } from "utils/card";
-import { Values } from "storeRedux/types";
+import { Attribute } from "storeRedux/types";
 
 interface ShoppingBagCardProps {
   slug: string;
@@ -21,12 +21,12 @@ interface ShoppingBagCardProps {
     productId: string,
     attributes?: {
       name: string;
-      value: Values;
+      value: Attribute;
     }[]
   ) => void;
   attributes?: {
     name: string;
-    value: Values;
+    value: Attribute;
   }[];
 }
 
@@ -86,7 +86,7 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
         </div>
         {attributes?.map(({ name, value }) => (
           <div className={styles.attributes}>
-            <span>{name}:</span> <span>{value.attributeName}</span>
+            <span>{name}:</span> <span>{value.attribute_main}</span>
           </div>
         ))}
         <div>
