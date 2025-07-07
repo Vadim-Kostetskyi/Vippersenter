@@ -344,7 +344,7 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
           </div>
           <input
             type="text"
-            placeholder="Ціна"
+            placeholder="Додаткова ціна"
             value={getCurrentVariant()?.price || ""}
             onChange={(e) => updateVariant("price", e.target.value)}
           />
