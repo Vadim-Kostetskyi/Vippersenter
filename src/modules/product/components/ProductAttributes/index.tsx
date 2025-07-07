@@ -1,5 +1,4 @@
 import { FC } from "react";
-import { Attribute } from "storeRedux/types";
 import styles from "./index.module.scss";
 
 interface ProductAttributesProps {
@@ -7,7 +6,6 @@ interface ProductAttributesProps {
   values: string[];
   selectedValue?: string;
   onSelect: (title: string, value: string) => void;
-  // inStock?: boolean;
   availableValues: Set<string>;
 }
 

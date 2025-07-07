@@ -5,7 +5,7 @@ import styles from "./index.module.scss";
 interface ProductListCardProps {
   slug: string;
   image: string;
-  price: string;
+  price: number;
   name: string;
 }
 
@@ -25,7 +25,7 @@ const ProductListCard: FC<ProductListCardProps> = ({
       <div className={styles.info}>
         <p>{name}</p>
         <p className={styles.price}>
-          {(+price).toFixed(2)}
+          {price.toFixed(2)}
           {t("currency")}
         </p>
         <a href={`/product/${slug}`}>{t("goToProduct")}</a>

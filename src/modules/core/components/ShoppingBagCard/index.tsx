@@ -11,23 +11,14 @@ import {
   removeCartItem,
   updateCartItemQuantity,
 } from "utils/card";
-import { Attribute } from "storeRedux/types";
+import { Attributes } from "utils/card";
 
 interface ShoppingBagCardProps {
   slug: string;
   assignedQuantity: number;
   setProducts: (items: CartItem[]) => void;
-  delProduct: (
-    productId: string,
-    attributes?: {
-      name: string;
-      value: Attribute;
-    }[]
-  ) => void;
-  attributes?: {
-    name: string;
-    value: Attribute;
-  }[];
+  delProduct: (productId: string, attributes?: Attributes[]) => void;
+  attributes?: Attributes[];
 }
 
 const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
@@ -84,9 +75,9 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
             <img src={TrashIcon} alt="delete item" />
           </button>
         </div>
-        {attributes?.map(({ name, value }) => (
+        {attributes?.map(({ name, attributeName }) => (
           <div className={styles.attributes}>
-            <span>{name}:</span> <span>{value.attribute_main}</span>
+            <span>{name}:</span> <span>{attributeName}</span>
           </div>
         ))}
         <div>

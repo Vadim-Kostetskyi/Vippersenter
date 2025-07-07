@@ -67,7 +67,7 @@ const ProductCard = () => {
   const [count, setCount] = useState(1);
   const [maxCount, setMaxCount] = useState(0);
   const [selectedAttributes, setSelectedAttributes] = useState<Value[]>([]);
-  const [variantQuantity, setVariantQuantity] = useState(0);
+  // const [variantQuantity, setVariantQuantity] = useState(0);
 
   const { t } = useTranslation();
 
@@ -148,7 +148,7 @@ const ProductCard = () => {
     const qty = parseInt(variant?.quantity || "0");
     // const extraPrice = parseFloat(variant?.extraPrice || "0");
 
-    setVariantQuantity(qty);
+    // setVariantQuantity(qty);
 
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
     const productInCart = cart.find((p: any) => p.slug === productId);
@@ -178,11 +178,11 @@ const ProductCard = () => {
   const grouped = groupAttributes(attributes || []);
   console.log(grouped);
 
-  // const onAddToCart = () => {
-  //   addProductToCart(slug, +price, count, selectedAttributes);
-  //   setMaxCount((prev) => prev - count);
-  //   window.dispatchEvent(new Event("cartUpdated"));
-  // };
+  const onAddToCart = () => {
+    addProductToCart(slug, +price, count, selectedAttributes);
+    setMaxCount((prev) => prev - count);
+    window.dispatchEvent(new Event("cartUpdated"));
+  };
 
   const handleSelectAttribute = (name: string, value: string) => {
     const valueAsValues: Value = {
@@ -250,7 +250,7 @@ const ProductCard = () => {
       const qty = parseInt(attr.quantity || "0");
       if (qty <= 0) return;
 
-      const selectedNames = selected.map((s) => s.name);
+      // const selectedNames = selected.map((s) => s.name);
 
       const isCompatible = (checkAttrName: string) => {
         return selected.every(({ name, attributeName }) => {
@@ -376,7 +376,7 @@ const ProductCard = () => {
                 color: "white",
                 marginBottom: 15,
               }}
-              // onClick={onAddToCart}
+              onClick={onAddToCart}
               disabled={count > maxCount}
             >
               {t("form.addToCard")}

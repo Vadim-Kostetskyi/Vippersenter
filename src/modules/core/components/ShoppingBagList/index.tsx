@@ -1,13 +1,12 @@
 import { FC } from "react";
-import { CartItem } from "utils/card";
+import { Attributes, CartItem } from "utils/card";
 import ShoppingBagCard from "../ShoppingBagCard";
 import styles from "./index.module.scss";
-import { Attribute } from "storeRedux/types";
 
 interface ShoppingBagListProps {
   products: CartItem[];
   setProducts: (items: CartItem[]) => void;
-  delProduct: (productId: string, attributes?: Attribute[]) => void;
+  delProduct: (productId: string, attributes?: Attributes[]) => void;
 }
 
 const ShoppingBagList: FC<ShoppingBagListProps> = ({
