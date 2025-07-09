@@ -68,6 +68,8 @@ const ProductCard = () => {
   const [maxCount, setMaxCount] = useState(0);
   const [selectedAttributes, setSelectedAttributes] = useState<Value[]>([]);
   // const [variantQuantity, setVariantQuantity] = useState(0);
+  console.log(product);
+  
 
   const { t } = useTranslation();
 
@@ -122,8 +124,6 @@ const ProductCard = () => {
 
       for (const name in grouped) {
         const values = Array.from(grouped[name]);
-        console.log(132);
-        console.log(grouped);
 
         if (values.length > 0) {
           selected.push({ name, attributeName: values[0] });
@@ -176,7 +176,6 @@ const ProductCard = () => {
   const handleDecrement = () => setCount((prev) => (prev > 1 ? prev - 1 : 1));
 
   const grouped = groupAttributes(attributes || []);
-  console.log(grouped);
 
   const onAddToCart = () => {
     addProductToCart(slug, +price, count, selectedAttributes);
@@ -229,10 +228,6 @@ const ProductCard = () => {
       );
     });
   };
-
-  console.log(2222);
-
-  console.log(isValueInStock("Вигин", "C")); 
 
   const getAvailableAttributeValues = (
     attributes: Attribute[],
@@ -291,11 +286,6 @@ const ProductCard = () => {
     product.attributes ?? [],
     selectedAttributes
   );
-
-  console.log(9999);
-  
-  console.log(product.quantity);
-  console.log(variant);
 
   const inStock = variant ? variant?.quantity : product.quantity;
 

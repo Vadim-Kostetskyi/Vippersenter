@@ -108,17 +108,27 @@ const ProductsTable = () => {
     value_tertiary?: string
   ) => {
     try {
-      await updateQuantity({
+      const payload: any = {
         slug: productSlug,
         quantity,
-        value_main,
-        value_secondary,
-        value_tertiary,
-      }).unwrap();
+      };
+
+      if (value_main) {
+        payload.value_main = value_main;
+      }
+      if (value_secondary) {
+        payload.value_secondary = value_secondary;
+      }
+      if (value_tertiary) {
+        payload.value_tertiary = value_tertiary;
+      }
+
+      await updateQuantity(payload).unwrap();
     } catch {
       alert(t("product.updateError") || "Error updating quantity");
     }
   };
+  
   
 
   const handleDelete = async (id: string) => {
@@ -144,6 +154,8 @@ const ProductsTable = () => {
       },
     }));
   };
+  console.log(products);
+  
 
   if (isLoading) return <div>...</div>;
   if (isError || !products) return <div>Data loading error</div>;
@@ -195,7 +207,8 @@ const ProductsTable = () => {
               };
 
               const quantityKey = `${product.slug}_${selected.main}_${selected.secondary ?? ''}_${selected.tertiary ?? ''}`;
-              const quantity = quantities[quantityKey]?.quantity ?? 0;              
+              const quantity =
+                quantities[quantityKey]?.quantity ?? product.quantity;
 
               return (
                 <tr key={product.slug}>
