@@ -1,181 +1,60 @@
-import React, { useState, useEffect } from "react";
-import { useTranslation } from "react-i18next";
-import {
-  useGetProductsQuery,
-  useUpdateProductQuantityMutation,
-  useDeleteProductMutation,
-} from "storeRedux/productsApi";
-import { Product } from "storeRedux/types";
+import React, { FC } from "react";
 import Cross from "assets/svg/Cross";
+import { Product } from "storeRedux/types";
 import styles from "./index.module.scss";
 
-const ProductsTable = () => {
-  const { t } = useTranslation();
-
-  const { data: products, isLoading, isError } = useGetProductsQuery();
-  const [updateQuantity] = useUpdateProductQuantityMutation();
-  const [deleteProduct] = useDeleteProductMutation();
-
-  const [quantities, setQuantities] = useState<
-    Record<
-      string,
-      {
-        quantity: number;
-        value_main?: string;
-        value_secondary?: string;
-        value_tertiary?: string;
-        extraPrice: string;
-      }
-    >
-  >({});
-
-  const [selectedAttributes, setSelectedAttributes] = useState<
-    Record<string, { main: string; secondary: string; tertiary: string }>
-    >({});
-
-    useEffect(() => {
-      if (products) {
-        setQuantities((prevQuantities) => {
-          const newQuantities = { ...prevQuantities };
-
-          products.forEach((product) => {
-            product.attributes?.forEach((attr) => {
-              const key = `${product.slug}_${attr.value_main ?? ""}_${
-                attr.value_secondary ?? ""
-              }_${attr.value_tertiary ?? ""}`;
-
-              if (!(key in newQuantities)) {
-                newQuantities[key] = {
-                  quantity: Number(attr.quantity) ?? 0,
-                  value_main: attr.attribute_main,
-                  value_secondary: attr.value_secondary,
-                  value_tertiary: attr.value_tertiary,
-                  extraPrice: attr.extraPrice ?? "",
-                };
-              }
-            });
-          });
-
-          return newQuantities;
-        });
-
-        setSelectedAttributes((prevSelectedAttrs) => {
-          const newSelectedAttrs = { ...prevSelectedAttrs };
-
-          products.forEach((product) => {
-            if (!(product.slug in newSelectedAttrs)) {
-              if (product.attributes && product.attributes.length > 0) {
-                const firstAttr = product.attributes[0];
-                newSelectedAttrs[product.slug] = {
-                  main: firstAttr.value_main || "",
-                  secondary: firstAttr.value_secondary || "",
-                  tertiary: firstAttr.value_tertiary || "",
-                };
-              } else {
-                newSelectedAttrs[product.slug] = {
-                  main: "",
-                  secondary: "",
-                  tertiary: "",
-                };
-              }
-            }
-          });
-
-          return newSelectedAttrs;
-        });
-      }
-    }, [products]);
-    
-
-  const handleQuantityChange = (key: string, newQuantity: string) => {
-    const num = parseInt(newQuantity);
-    if (!isNaN(num) && num >= 0) {
-      setQuantities((prev) => ({
-        ...prev,
-        [key]: {
-          ...prev[key],
-          quantity: num,
-        },
-      }));
+interface ProductsTableProps {
+  titles: string[];
+  grouped: Record<string, Product[]>;
+  selectedAttributes: Record<
+    string,
+    {
+      main: string;
+      secondary: string;
+      tertiary: string;
     }
-  };
-
-  const handleQuantityBlur = async (
+  >;
+  quantities: Record<
+    string,
+    {
+      quantity: number;
+      value_main?: string;
+      value_secondary?: string;
+      value_tertiary?: string;
+      extraPrice: string;
+    }
+  >;
+  handleQuantityChange: (key: string, newQuantity: string) => void;
+  handleQuantityBlur: (
     productSlug: string,
     quantity: number,
     value_main: string,
     value_secondary?: string,
     value_tertiary?: string
-  ) => {
-    try {
-      const payload: any = {
-        slug: productSlug,
-        quantity,
-      };
-
-      if (value_main) {
-        payload.value_main = value_main;
-      }
-      if (value_secondary) {
-        payload.value_secondary = value_secondary;
-      }
-      if (value_tertiary) {
-        payload.value_tertiary = value_tertiary;
-      }
-
-      await updateQuantity(payload).unwrap();
-    } catch {
-      alert(t("product.updateError") || "Error updating quantity");
-    }
-  };
-  
-  
-
-  const handleDelete = async (id: string) => {
-    if (window.confirm(`${t("product.confirmDelete")}?`)) {
-      try {
-        await deleteProduct(id).unwrap();
-      } catch {
-        alert(t("product.deleteError") || "Error deleting product");
-      }
-    }
-  };
-
-  const handleAttributeChange = (
+  ) => Promise<void>;
+  handleAttributeChange: (
     productSlug: string,
     attrType: "main" | "secondary" | "tertiary",
     value: string
-  ) => {
-    setSelectedAttributes((prev) => ({
-      ...prev,
-      [productSlug]: {
-        ...prev[productSlug],
-        [attrType]: value,
-      },
-    }));
-  };
-  console.log(products);
-  
+  ) => void;
+  handleDelete: (id: string) => Promise<void>;
+}
 
-  if (isLoading) return <div>...</div>;
-  if (isError || !products) return <div>Data loading error</div>;
 
-  const grouped = products.reduce<Record<string, Product[]>>((acc, product) => {
-    acc[product.category] = acc[product.category] || [];
-    acc[product.category].push(product);
-    return acc;
-  }, {});
-
-  return (
+const ProductsTable: FC<ProductsTableProps> = ({
+  titles,
+  grouped,
+  selectedAttributes,
+  quantities,
+  handleQuantityChange,
+  handleQuantityBlur,
+  handleAttributeChange,
+  handleDelete
+}) =>  (
     <table border={1} cellPadding={8} className={styles.productsTable}>
       <thead>
         <tr>
-          <th>{t("product.title")}</th>
-          <th>{t("product.price")}</th>
-          <th>{t("product.quantity")}</th>
-          <th>{t("product.characteristics")}</th>
-          <th>{t("form.description")}</th>
-          <th>{t("actions")}</th>
+          {titles.map((title) => <th>{title}</th>)}
         </tr>
       </thead>
       <tbody>
@@ -206,7 +85,9 @@ const ProductsTable = () => {
                 tertiary: "",
               };
 
-              const quantityKey = `${product.slug}_${selected.main}_${selected.secondary ?? ''}_${selected.tertiary ?? ''}`;
+              const quantityKey = `${product.slug}_${selected.main}_${
+                selected.secondary ?? ""
+              }_${selected.tertiary ?? ""}`;
               const quantity =
                 quantities[quantityKey]?.quantity ?? product.quantity;
 
@@ -359,6 +240,5 @@ const ProductsTable = () => {
       </tbody>
     </table>
   );
-};
 
-export default ProductsTable;
+export default ProductsTable

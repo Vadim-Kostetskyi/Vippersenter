@@ -89,25 +89,21 @@ export const productsApi = createApi({
 
     getProductsByCategory: builder.query<
       Product[],
-      { category: string; filters?: Record<string, string> }
+      { category: string; filters?: Record<string, string[]> }
     >({
-      query: ({ category, filters }) => {
-        let path = `products/category/${encodeURIComponent(category)}`;
+      query: ({ category, filters }) => ({
+        url: `products/category/${encodeURIComponent(category)}`,
+        method: "POST",
+        body: { filters },
+      }),
 
-        if (filters) {
-          for (const [key, value] of Object.entries(filters)) {
-            path += `/${encodeURIComponent(key)}/${encodeURIComponent(value)}`;
-          }
-        }
-
-        return path;
-      },
-
-      transformResponse: (response: Product[]) =>
-        response.map((product) => ({
-          ...product,
-          image: BASE_URL + product.image,
-        })),
+      transformResponse: (response: Product[] | null) =>
+        Array.isArray(response)
+          ? response.map((product) => ({
+              ...product,
+              image: BASE_URL + product.image,
+            }))
+          : [],
 
       providesTags: (result) =>
         result

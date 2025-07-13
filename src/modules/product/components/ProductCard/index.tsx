@@ -67,9 +67,7 @@ const ProductCard = () => {
   const [count, setCount] = useState(1);
   const [maxCount, setMaxCount] = useState(0);
   const [selectedAttributes, setSelectedAttributes] = useState<Value[]>([]);
-  // const [variantQuantity, setVariantQuantity] = useState(0);
-  console.log(product);
-  
+  // const [variantQuantity, setVariantQuantity] = useState(0);  
 
   const { t } = useTranslation();
 
@@ -201,33 +199,33 @@ const ProductCard = () => {
     });
   };
 
-  const isValueInStock = (name: string, value: string): boolean => {
-    if (!attributes) return false;
+  // const isValueInStock = (name: string, value: string): boolean => {
+  //   if (!attributes) return false;
 
-    return attributes.some((attr) => {
-      const matches: Record<string, string | undefined> = {};
+  //   return attributes.some((attr) => {
+  //     const matches: Record<string, string | undefined> = {};
 
-      if (attr.attribute_main) {
-        matches[attr.attribute_main] = attr.value_main;
-      }
-      if (attr.attribute_secondary) {
-        matches[attr.attribute_secondary] = attr.value_secondary;
-      }
-      if (attr.attribute_tertiary) {
-        matches[attr.attribute_tertiary] = attr.value_tertiary;
-      }
+  //     if (attr.attribute_main) {
+  //       matches[attr.attribute_main] = attr.value_main;
+  //     }
+  //     if (attr.attribute_secondary) {
+  //       matches[attr.attribute_secondary] = attr.value_secondary;
+  //     }
+  //     if (attr.attribute_tertiary) {
+  //       matches[attr.attribute_tertiary] = attr.value_tertiary;
+  //     }
 
-      const partialMatch = selectedAttributes.every(
-        (sel) => matches[sel.name] === sel.attributeName
-      );
+  //     const partialMatch = selectedAttributes.every(
+  //       (sel) => matches[sel.name] === sel.attributeName
+  //     );
 
-      return (
-        partialMatch &&
-        matches[name] === value &&
-        parseInt(attr.quantity || "0") > 0
-      );
-    });
-  };
+  //     return (
+  //       partialMatch &&
+  //       matches[name] === value &&
+  //       parseInt(attr.quantity || "0") > 0
+  //     );
+  //   });
+  // };
 
   const getAvailableAttributeValues = (
     attributes: Attribute[],
