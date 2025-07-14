@@ -19,17 +19,21 @@ const ProductSwiperNewProducts = () => {
           newProducts.map(({ name, image, price, slug }) => (
             <SwiperSlide>
               <div className={styles.itemsWrapper}>
-                <picture>
-                  <img src={image} alt="" className={styles.image} />
-                </picture>
+                <div>
+                <div className={styles.imageWrapper}>
+                  <picture>
+                    <img src={image} alt="" className={styles.image} />
+                  </picture>
+                </div>
+                <div className={styles.info}>
+                  <p>{name}</p>
+                  <p className={styles.price}>
+                    {Number(price).toFixed(2)}
+                    {t("currency")}
+                  </p>
+                </div>
               </div>
-              <div className={styles.info}>
-                <p>{name}</p>
-                <p className={styles.price}>
-                  {Number(price).toFixed(2)}
-                  {t("currency")}
-                </p>
-                <a href={`/product/${slug}`}>{t("goToProduct")}</a>
+              <a href={`/product/${slug}`}>{t("goToProduct")}</a>
               </div>
             </SwiperSlide>
           ))}

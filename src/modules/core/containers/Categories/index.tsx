@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import CategoryCard from "modules/core/components/CategorieCard";
+import CategoryCard from "modules/core/components/CategoryCard";
 import CategoryNames from "components/CategoryNames";
 import { categories } from "./data";
 import styles from "./index.module.scss";

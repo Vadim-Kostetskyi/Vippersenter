@@ -34,7 +34,11 @@ const ProductCategory = () => {
     filters,
   });
 
-  console.log(products);
+  console.log(attributes);
+  console.log(filters);
+  console.log(categoryChosen[0].label);
+  
+  
   
 
   const onFiltrationAttributes = (
@@ -56,7 +60,7 @@ const ProductCategory = () => {
       } else {
         delete newAttributes[attributeName];
       }
-      // console.log(newAttributes);
+      console.log(newAttributes);
       
 
       return newAttributes;

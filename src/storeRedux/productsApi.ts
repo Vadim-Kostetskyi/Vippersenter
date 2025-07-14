@@ -94,7 +94,7 @@ export const productsApi = createApi({
       query: ({ category, filters }) => ({
         url: `products/category/${encodeURIComponent(category)}`,
         method: "POST",
-        body: { filters },
+        body: filters && Object.keys(filters).length > 0 ? { filters } : {},
       }),
 
       transformResponse: (response: Product[] | null) =>

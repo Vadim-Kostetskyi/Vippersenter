@@ -185,6 +185,7 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
       return;
     } else if (!selectedImage) {
       alert("Select an image");
+      return;
     }    
 
     const keys = attributeNames;
