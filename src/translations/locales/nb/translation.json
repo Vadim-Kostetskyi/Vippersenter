@@ -1,1 +1,86 @@
-{}
+{
+  "categories": {
+    "falseEyelashes": "Falske øyevipper",
+    "glueForEyelashes": "Lim for øyevipper",
+    "remover": "Fjerner",
+    "preparations": "Preparater"
+  },
+
+  "header": {
+    "aboutUs": "Om oss",
+    "cooperation": "Samarbeid"
+  },
+
+  "footer": {
+    "additionally": "Tillegg",
+    "paymentAndDelivery": "Betaling og levering",
+    "exchangeAndReturn": "Bytte og retur",
+    "ourAddress": "Vår adresse",
+    "Contacts": "Kontakt",
+    "main": "Hjem",
+    "shoppingCard": "Handlekurv"
+  },
+
+  "login": {
+    "login": "Logg inn",
+    "usernameOrEmailAddress": "Brukernavn eller e-postadresse",
+    "password": "Passord",
+    "logInToSystem": "Logg inn i systemet",
+    "rememberMe": "Husk meg"
+  },
+
+  "product": {
+    "title": "Tittel",
+    "price": "Pris",
+    "quantity": "Antall",
+    "characteristics": "Egenskaper",
+    "confirmDelete": "Slett produkt",
+    "updateError": "Oppdateringsfeil",
+    "deleteError": "Slettefeil"
+  },
+
+  "form": {
+    "attributeName": "Attributtnavn",
+    "attributes": "Attributter",
+    "value": "Verdi",
+    "addValue": "Legg til verdi",
+    "deleteAttribute": "Slett attributt",
+    "addAttribute": "Legg til attributt",
+    "description": "Beskrivelse",
+    "save": "Lagre",
+    "addToCard": "Legg i handlekurv"
+  },
+
+  "filter": {
+    "filters": "Filtere",
+    "clearEverything": "Fjern alt",
+    "filterProducts": "Filtrer produkter",
+    "categories": "Kategorier",
+    "lines": "linjer",
+    "lines20": "20 linjer",
+    "lines28": "28 linjer",
+    "bend": "Bøy",
+    "length": "Lengde",
+    "thickness": "Tykkelse",
+    "volume": "Volum",
+    "thereAreNoProducts": "Dessverre finnes det ingen slike produkter :("
+  },
+
+  "shoppingCard": {
+    "card": "handlekurv",
+    "yourCardEmpty": "Handlekurven din er tom",
+    "returnToStore": "Gå tilbake til butikken",
+    "continueShopping": "Fortsett å handle",
+    "total": "Totalt",
+    "placeAnOrder": "Legg inn bestilling"
+  },
+
+  "catalog": "Katalog",
+  "popularProducts": "Populære produkter",
+  "newProducts": "Nyheter",
+  "goToProduct": "Gå til produktet",
+  "category": "Kategori",
+  "eyelashes": "Øyevipper",
+  "youMayAlsoLike": "Du vil kanskje også like",
+  "currency": "₴"
+}

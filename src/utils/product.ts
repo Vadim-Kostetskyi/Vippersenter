@@ -7,7 +7,7 @@ export const handleDeleteProduct = async (
 ) => {
   if (window.confirm(`${t("product.confirmDelete")}?`)) {
     try {
-      await deleteProduct(id).unwrap();
+      await deleteProduct(id);
     } catch {
       alert(t("product.deleteError") || "Error deleting product");
     }

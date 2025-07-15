@@ -128,8 +128,8 @@ const ProductsTableFunctional: FC<ProductsTableFunctional> = ({ products, groupe
     }
   };
 
-  const delProduct = (id: string) => {
-    deleteProduct(id);
+  const delProduct = async (id: string) => {
+    await deleteProduct(id).unwrap();
   };
 
   const handleDelete = (id: string) => handleDeleteProduct(id, delProduct, t);

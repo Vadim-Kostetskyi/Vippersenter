@@ -9,7 +9,7 @@ const CatalogHeader = () => {
   return (
     <div className={styles.catalogHeader}>
       <div className={styles.lickBox}>
-        <a href="#" className={styles.link}>
+        <a href="/product-category" className={styles.link}>
           {t("catalog")}
         </a>
       </div>

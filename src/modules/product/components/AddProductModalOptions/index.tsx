@@ -237,17 +237,17 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
       })
     );
 
-    for (let pair of formData.entries()) {
-      console.log(pair[0] + ": " + pair[1]);
-    }
+    // for (let pair of formData.entries()) {
+    //   console.log(pair[0] + ": " + pair[1]);
+    // }
 
     try {
       await addProduct(formData).unwrap();
-      alert("Товар успішно додано!");
+      alert("Product successfully added!");
       onModalClose();
     } catch (err) {
       console.error("Error:", err);
-      alert("Помилка при додаванні товару.");
+      alert("Error adding a product.");
     }
   };
 
