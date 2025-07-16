@@ -2,7 +2,9 @@
 
 .shoppingBagCard {
   display: flex;
+  border-radius: 4px;
   background-color: $pageBackground;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 
   & > a img {
     width: 140px;

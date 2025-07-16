@@ -5,6 +5,7 @@ import PrivateRoute from "storeRedux/PrivateRoute";
 import ProductFormPage from "./ProductFormPage";
 import ProductPage from "./ProductPage";
 import ProductCategoryPage from "./ProductCategoryPage";
+import ProductCategoriesPage from "./ProductCategoriesPage";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/product/:productId" element={<ProductPage />} />
+      <Route path="/product-category" element={<ProductCategoriesPage />} />
       <Route
         path="/product-category/:category"
         element={<ProductCategoryPage />}
