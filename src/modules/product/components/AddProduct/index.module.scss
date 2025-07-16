@@ -4,10 +4,14 @@
   padding: 16px;
   text-align: center;
   position: sticky;
-  bottom: 65px;
+  bottom: 0;
   z-index: 1;
   border: 5px solid $darkGreen;
   background-color: $greenMint;
+  
+  @include media(tablet){
+    bottom: 65px;
+  }
 
   @include media(laptopMedium) {
     position: fixed;

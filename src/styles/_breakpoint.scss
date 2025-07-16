@@ -7,6 +7,7 @@ $laptopMin: 961px;
 $laptopMedium: 1200px;
 $laptop: 1280px;
 $desktopUp: 1281px;
+$desktopSmall: 1400px;
 $desktop: 1440px;
 $max-content-width: 1440px;
 
@@ -49,6 +50,12 @@ $max-content-width: 1440px;
 
   @if $breakpoint ==laptopMedium {
     @media only screen and (min-width: $laptopMedium) {
+      @content;
+    }
+  }
+
+    @if $breakpoint ==desktopSmall {
+    @media only screen and (min-width: $desktopSmall) {
       @content;
     }
   }

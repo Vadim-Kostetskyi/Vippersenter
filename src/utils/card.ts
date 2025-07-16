@@ -1,9 +1,12 @@
-import { Values } from "storeRedux/types";
+export interface Attributes{
+  name: string;
+  attributeName: string;
+}
 
 export interface CartItem {
   price: number;
   quantity: number;
-  attributes?: { name: string; value: Values }[];
+  attributes?: Attributes[];
   slug: string;
 }
 
@@ -11,7 +14,7 @@ export const addProductToCart = (
   slug: string,
   price: number,
   quantity: number = 1,
-  attributes?: { name: string; value: Values }[]
+  attributes?: Attributes[]
 ) => {
   const storedCart = localStorage.getItem("cart");
   const cart: CartItem[] = storedCart ? JSON.parse(storedCart) : [];
@@ -26,8 +29,7 @@ export const addProductToCart = (
       attributes.some(
         (a) =>
           a.name === attr.name &&
-          a.value.attributeName === attr.value.attributeName &&
-          a.value.extraPrice === attr.value.extraPrice
+          a.attributeName === attr.attributeName
       )
     );
   });
@@ -47,8 +49,8 @@ export const getCartItems = (): CartItem[] => {
 };
 
 const areAttributesEqual = (
-  a?: { name: string; value: Values }[],
-  b?: { name: string; value: Values }[]
+  a?: Attributes[],
+  b?: Attributes[]
 ): boolean => {
   if (!a && !b) return true;
   if (!a || !b) return false;
@@ -61,8 +63,7 @@ const areAttributesEqual = (
     const bAttr = sortedB[index];
     return (
       attr.name === bAttr.name &&
-      attr.value.attributeName === bAttr.value.attributeName &&
-      attr.value.extraPrice === bAttr.value.extraPrice
+      attr.attributeName === bAttr.attributeName 
     );
   });
 };
@@ -70,7 +71,7 @@ const areAttributesEqual = (
 export const updateCartItemQuantity = (
   slug: string,
   newQuantity: number,
-  attributes?: { name: string; value: Values }[]
+  attributes?: Attributes[]
 ) => {
   const cart: CartItem[] = JSON.parse(localStorage.getItem("cart") || "[]");
 
@@ -88,7 +89,7 @@ export const updateCartItemQuantity = (
 
 export const removeCartItem = (
   slug: string,
-  attributes?: { name: string; value: Values }[]
+  attributes?: Attributes[]
 ) => {
   const storedCart = localStorage.getItem("cart");
   const cart: CartItem[] = storedCart ? JSON.parse(storedCart) : [];

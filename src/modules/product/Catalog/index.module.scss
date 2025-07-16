@@ -1,0 +1,15 @@
+@use "styles/bootstrap" as *;
+
+.catalog {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 400px;
+
+  @include media(desktopSmall) {
+    & a:last-child {
+      margin-right: calc((380px * 2) + 20px);
+    }
+  }
+}

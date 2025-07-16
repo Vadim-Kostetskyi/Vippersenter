@@ -1,0 +1,22 @@
+@use "styles/bootstrap" as *;
+
+.catalogCard{
+  width: 380px;
+
+    & h3{
+    padding: 20px 0;
+    text-transform: uppercase;
+  }
+}
+
+.imageWrapper{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 380px;
+  overflow: hidden;
+
+  & img{
+    width: 100%;
+  }
+}

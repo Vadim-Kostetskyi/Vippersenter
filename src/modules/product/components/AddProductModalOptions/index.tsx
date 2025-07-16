@@ -180,6 +180,14 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (selectedCategory === t("category")) {
+      alert("Select a category");
+      return;
+    } else if (!selectedImage) {
+      alert("Select an image");
+      return;
+    }    
+
     const keys = attributeNames;
     const valuesArrays = keys.map((key) => attributeValues[key] || []);
 
@@ -191,7 +199,6 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
         combination[key] = comboValues[idx];
       });
 
-      // Знайти у існуючих variants чи є ця комбінація
       const found = variants.find(
         (v) => JSON.stringify(v.combination) === JSON.stringify(combination)
       );
@@ -230,18 +237,18 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
       })
     );
 
-    for (let pair of formData.entries()) {
-      console.log(pair[0] + ": " + pair[1]);
-    }
-
-    // try {
-    //   await addProduct(formData).unwrap();
-    //   alert("Товар успішно додано!");
-    //   onModalClose();
-    // } catch (err) {
-    //   console.error("Error:", err);
-    //   alert("Помилка при додаванні товару.");
+    // for (let pair of formData.entries()) {
+    //   console.log(pair[0] + ": " + pair[1]);
     // }
+
+    try {
+      await addProduct(formData).unwrap();
+      alert("Product successfully added!");
+      onModalClose();
+    } catch (err) {
+      console.error("Error:", err);
+      alert("Error adding a product.");
+    }
   };
 
   return (
@@ -338,7 +345,7 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
           </div>
           <input
             type="text"
-            placeholder="Ціна"
+            placeholder="Додаткова ціна"
             value={getCurrentVariant()?.price || ""}
             onChange={(e) => updateVariant("price", e.target.value)}
           />

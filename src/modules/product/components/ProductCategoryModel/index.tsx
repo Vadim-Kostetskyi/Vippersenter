@@ -3,8 +3,8 @@ import styles from "./index.module.scss";
 import { useTranslation } from "react-i18next";
 
 interface ProductCategoryModelProps {
-  image: string;
-  category: string;
+  image?: string;
+  category?: string;
 }
 
 const ProductCategoryModel: FC<ProductCategoryModelProps> = ({
@@ -12,11 +12,20 @@ const ProductCategoryModel: FC<ProductCategoryModelProps> = ({
   category,
 }) => {
   const { t } = useTranslation();
+
+  const title = category ? t(`categories.${category}`) : t(`catalog`);
+
   return (
     <>
       <div className={styles.topContainer}>
-        <img src={image} alt="" />
-        <h1>{t(`categories.${category}`)}</h1>
+        {image ? (
+          <div>
+            <img src={image} alt="" />
+          </div>
+        ) : (
+          <></>
+        )}
+        <h1>{title}</h1>
       </div>
     </>
   );

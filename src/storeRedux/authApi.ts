@@ -26,7 +26,7 @@ export const authApi = createApi({
       { email: string; password: string; rememberMe: boolean }
     >({
       query: ({ email, password }) => ({
-        url: "auth/login",
+        url: "users/login",
         method: "POST",
         credentials: "include",
         body: { email, password },
@@ -35,7 +35,7 @@ export const authApi = createApi({
 
     registerUser: builder.mutation<RegisterResponse, RegisterRequest>({
       query: (body) => ({
-        url: "auth/register",
+        url: "users/register",
         method: "POST",
         body,
       }),

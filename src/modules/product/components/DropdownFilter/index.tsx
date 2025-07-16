@@ -32,7 +32,7 @@ const DropdownFilter: FC<DropdownFilterProps> = ({
 
   useEffect(() => {
     if (contentRef.current) {
-      setHeight(isOpen ? `${contentRef.current.scrollHeight + 15}px` : "0px");
+      setHeight(isOpen ? `${contentRef.current.scrollHeight + 60}px` : "0px");
     }
   }, [isOpen]);
 

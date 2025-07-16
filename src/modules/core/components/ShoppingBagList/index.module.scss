@@ -2,5 +2,10 @@
 
 .shoppingBagList {
   max-height: 700px;
-  overflow-y: scroll;
+  overflow-y: auto;
+  padding: 0 5px 15px 0;
+
+  & > div:not(:last-child){
+    margin-bottom: 15px;
+  }
 }

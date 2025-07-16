@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_URL } from "./routes";
-import { Attribute, GetProductsResponse, Product } from "./types";
+import { GetProductsResponse, Product } from "./types";
 
 export const productsApi = createApi({
   reducerPath: "productsApi",
@@ -89,25 +89,21 @@ export const productsApi = createApi({
 
     getProductsByCategory: builder.query<
       Product[],
-      { category: string; filters?: Record<string, string> }
+      { category: string; filters?: Record<string, string[]> }
     >({
-      query: ({ category, filters }) => {
-        let path = `products/category/${encodeURIComponent(category)}`;
+      query: ({ category, filters }) => ({
+        url: `products/category/${encodeURIComponent(category)}`,
+        method: "POST",
+        body: filters && Object.keys(filters).length > 0 ? { filters } : {},
+      }),
 
-        if (filters) {
-          for (const [key, value] of Object.entries(filters)) {
-            path += `/${encodeURIComponent(key)}/${encodeURIComponent(value)}`;
-          }
-        }
-
-        return path;
-      },
-
-      transformResponse: (response: Product[]) =>
-        response.map((product) => ({
-          ...product,
-          image: BASE_URL + product.image,
-        })),
+      transformResponse: (response: Product[] | null) =>
+        Array.isArray(response)
+          ? response.map((product) => ({
+              ...product,
+              image: BASE_URL + product.image,
+            }))
+          : [],
 
       providesTags: (result) =>
         result
@@ -161,14 +157,30 @@ export const productsApi = createApi({
 
     updateProductQuantity: builder.mutation<
       Product,
-      { slug: string; quantity: number; attribute: string }
+      {
+        slug: string;
+        quantity: number;
+        value_main: string;
+        value_secondary?: string;
+        value_tertiary?: string;
+      }
     >({
-      query: ({ slug, quantity, attribute }) => ({
+      query: ({
+        slug,
+        quantity,
+        value_main,
+        value_secondary,
+        value_tertiary,
+      }) => ({
         url: `products/${slug}`,
         method: "PATCH",
-        body: { quantity, attribute },
+        body: {
+          quantity,
+          value_main,
+          value_secondary,
+          value_tertiary,
+        },
       }),
-
       invalidatesTags: (_result, _error, { slug }) => [
         { type: "Product", slug },
       ],

@@ -11,7 +11,7 @@ export type Attribute = {
 
 export interface Product {
   name: string;
-  price: string;
+  price: number;
   image: string;
   quantity: string;
   category: string;

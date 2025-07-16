@@ -1,4 +1,4 @@
-import ProductsTable from "modules/product/components/ProductsTable";
+import ProductsTable from "modules/product/components/ProductsDescription";
 import AddProduct from "modules/product/components/AddProduct";
 import AddProductModal from "modules/product/containers/AddProductModal";
 import { useState } from "react";
