@@ -1,13 +1,13 @@
 import { useTranslation } from "react-i18next";
 import Home from "assets/svg/Home";
 import Catalog from "assets/svg/Catalog";
-import ShoppingCard from "assets/svg/ShoppingCard";
-import styles from "./index.module.scss";
 import { Link } from "react-router-dom";
 import ShoppingBag from "../ShoppingBag";
+import styles from "./index.module.scss";
 
 const MenuBar = () => {
   const { t } = useTranslation();
+  
   return (
     <ul className={styles.menuBar}>
       <li>
