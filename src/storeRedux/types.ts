@@ -1,13 +1,22 @@
-export type Attribute = {
-  attribute_main: string;
+export type AttributeValue = {
   value_main: string;
-  attribute_secondary?: string;
   value_secondary?: string;
-  attribute_tertiary?: string;
   value_tertiary?: string;
+};
+
+export type Attributes = {
+  attribute_main: string;
+  attribute_secondary?: string;
+  attribute_tertiary?: string;
+};
+
+export type AttributesKey = keyof Attributes;
+export type ValueKey = keyof AttributeValue;
+
+export type Attribute = {
   extraPrice: string;
   quantity: string;
-};
+} & AttributeValue & Attributes;
 
 export interface Product {
   name: string;
