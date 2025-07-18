@@ -26,13 +26,6 @@ const ProductCategory = () => {
     filters,
   });
 
-  console.log(attributes);
-  console.log(filters);
-  console.log(categoryChosen[0].label);
-  
-  
-  
-
   const onFiltrationAttributes = (
     attributeName: string,
     value: string,
