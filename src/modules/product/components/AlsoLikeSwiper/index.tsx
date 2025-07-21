@@ -22,19 +22,23 @@ const AlsoLikeSwiper = () => {
         {products &&
           products.map(({ name, image, price, slug }) => (
             <SwiperSlide key={slug}>
-              <div className={styles.itemsWrapper}>
-                <picture>
-                  <img src={image} alt={name} className={styles.image} />
-                </picture>
-              </div>
-              <div className={styles.info}>
-                <p>{name}</p>
-                <p className={styles.price}>
-                  {Number(price).toFixed(2)}
-                  {t("currency")}
-                </p>
-                <a href={`/product/${slug}`}>{t("goToProduct")}</a>
-              </div>
+              <a href={`/product/${slug}`} className={styles.itemsWrapper}>
+                <div>
+                  <div className={styles.itemsWrapper}>
+                    <picture>
+                      <img src={image} alt={name} className={styles.image} />
+                    </picture>
+                  </div>
+                  <div className={styles.info}>
+                    <p>{name}</p>
+                    <p className={styles.price}>
+                      {Number(price).toFixed(2)}
+                      {t("currency")}
+                    </p>
+                  </div>
+                </div>
+                <button>{t("goToProduct")}</button>
+              </a>
             </SwiperSlide>
           ))}
       </CoreSwiper>

@@ -9,13 +9,13 @@ const HeaderNavigation = () => {
   return (
     <nav className={styles.headerNavigation}>
       <ul>
-        {list.map((item, index) =>
+        {list.map(({ title, link }, index) =>
           index ? (
-            <li key={item}>
-              <a href="#">{t(item)}</a>
+            <li key={title}>
+              <a href={link}>{t(title)}</a>
             </li>
           ) : (
-            <li key={item}>
+            <li key={title}>
               <CatalogHeader />
             </li>
           )

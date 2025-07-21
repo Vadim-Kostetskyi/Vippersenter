@@ -1,1 +1,14 @@
-export const list = ["catalog", "header.aboutUs", "header.cooperation"];
+export const list = [
+  {
+    title: "catalog",
+    link: "#",
+  },
+  {
+    title: "header.aboutUs",
+    link: "/about-us",
+  },
+  // {
+  //   title: "header.cooperation",
+  //   link: ''
+  // }
+];

@@ -29,6 +29,10 @@
   :global(.swiper-button-disabled) {
     display: none;
   }
+
+      :global(.swiper-slide) {
+    height: auto;
+  }
 }
 
 .title {
@@ -40,30 +44,16 @@
 
 .itemsWrapper {
   display: flex;
-  align-items: center;
-  height: 255px;
-  overflow: hidden;
-  margin-bottom: 10px;
-
-  & img {
-    width: 100%;
-    max-width: 100%;
-    object-fit: contain;
-    transition: transform 0.3s ease;
-
-    &:hover,
-    &:focus {
-      transform: scale(1.08);
-    }
-  }
-}
-
-.info {
-  display: flex;
   flex-direction: column;
-  color: $backdropColor;
+  justify-content: space-between;
+  height: 100%;
 
-  & > a {
+  &  picture {
+    display: flex;
+    align-items: center;
+  }
+
+  & > button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -87,6 +77,22 @@
       letter-spacing: 0.1rem;
     }
   }
+
+  & img {
+    width: 100%;
+    transition: transform 0.3s ease;
+
+    &:hover,
+    &:focus {
+      transform: scale(1.08);
+    }
+  }
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  color: $backdropColor;
 
   & > p {
     font-weight: 700;

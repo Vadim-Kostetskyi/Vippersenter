@@ -18,7 +18,7 @@ const ProductSwiperNewProducts = () => {
         {newProducts &&
           newProducts.map(({ name, image, price, slug }) => (
             <SwiperSlide>
-              <div className={styles.itemsWrapper}>
+              <a href={`/product/${slug}`} className={styles.itemsWrapper}>
                 <div>
                 <div className={styles.imageWrapper}>
                   <picture>
@@ -33,8 +33,8 @@ const ProductSwiperNewProducts = () => {
                   </p>
                 </div>
               </div>
-              <a href={`/product/${slug}`}>{t("goToProduct")}</a>
-              </div>
+              <button>{t("goToProduct")}</button>
+              </a>
             </SwiperSlide>
           ))}
       </CoreSwiper>

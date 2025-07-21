@@ -26,10 +26,6 @@ const MenuBar = () => {
           <ShoppingBag />
           {t("footer.shoppingCard")}
       </li>
-      <li>
-          <ShoppingBag />
-          {t("footer.shoppingCard")}
-      </li>
     </ul>
   );
 };
