@@ -24,7 +24,7 @@ const AlsoLikeSwiper = () => {
             <SwiperSlide key={slug}>
               <a href={`/product/${slug}`} className={styles.itemsWrapper}>
                 <div>
-                  <div className={styles.itemsWrapper}>
+                  <div>
                     <picture>
                       <img src={image} alt={name} className={styles.image} />
                     </picture>
