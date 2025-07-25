@@ -17,7 +17,7 @@ useEffect(() => {
   const fetchShipping = async () => {
     try {
       const res = await fetch(
-        "http://localhost/vise-data-base/api/v1/myAPI/api/v1/order/",
+        "http://localhost/vise-data-base/api/v1/order/",
         {
           method: "POST",
           headers: {
