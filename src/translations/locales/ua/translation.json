@@ -75,6 +75,22 @@
     "placeAnOrder": "Оформити замовлення"
   },
 
+  "order":{
+    "name": "Ім'я",
+    "lasName": "Прізвище",
+    "phone": "Телефон",
+    "email": "Електронна пошта",
+    "country/Region": "Країна / Регіон",
+    "streetAddress": "Адреса",
+    "town": "Місто",
+    "county": "Округ",
+    "postcode/ZIP": "Поштовий індекс / ZIP",
+    "billingShipping": "Доставка",
+    "houseNumberAndStreetName": "Номер будинку та назва вулиці",
+    "orderNotes": "Примітки до замовлення",
+    "notesAboutOrder": "Примітки щодо вашого замовлення, наприклад, особливі примітки щодо доставки"
+  },
+
   "catalog": "Каталог",
   "popularProducts": "Популярні товари",
   "newProducts": "Новинки",
