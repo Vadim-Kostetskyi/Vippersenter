@@ -66,8 +66,7 @@ const ProductCard = () => {
   const [loaded, setLoaded] = useState(false);
   const [count, setCount] = useState(1);
   const [maxCount, setMaxCount] = useState(0);
-  const [selectedAttributes, setSelectedAttributes] = useState<Value[]>([]);
-  // const [variantQuantity, setVariantQuantity] = useState(0);  
+  const [selectedAttributes, setSelectedAttributes] = useState<Value[]>([]);    
 
   const { t } = useTranslation();
 
@@ -75,7 +74,7 @@ const ProductCard = () => {
     attributes: Attribute[],
     selectedAttributes: Value[]
   ): Attribute | null => {
-    if (selectedAttributes.length < 3) return null;
+    if (selectedAttributes.length === 0) return null;
 
     const selected = Object.fromEntries(
       selectedAttributes.map(({ name, attributeName }) => [name, attributeName])
@@ -91,9 +90,13 @@ const ProductCard = () => {
           attr.value_secondary === selected[attr.attribute_secondary];
         const tertiaryMatch =
           attr.attribute_tertiary &&
-          attr.value_tertiary === selected[attr.attribute_tertiary];
+          attr.value_tertiary === selected[attr.attribute_tertiary];        
 
-        return mainMatch && secondaryMatch && tertiaryMatch;
+        if (selectedAttributes.length === 3) {
+          return mainMatch && secondaryMatch && tertiaryMatch;
+        } else if (selectedAttributes.length === 1) {
+          return mainMatch;
+        }
       }) ?? null
     );
   };
@@ -144,12 +147,24 @@ const ProductCard = () => {
       selectedAttributes
     );
     const qty = parseInt(variant?.quantity || "0");
-    // const extraPrice = parseFloat(variant?.extraPrice || "0");
-
-    // setVariantQuantity(qty);
 
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-    const productInCart = cart.find((p: any) => p.slug === productId);
+    const productInCart = cart.find(
+      (p: any) =>
+        p.slug === productId &&
+        p.attributes[0].attributeName ===
+        selectedAttributes[0]?.attributeName
+        &&
+        (p.attributes[1].attributeName === undefined ||
+          p.attributes[1].attributeName ===
+        selectedAttributes[1]?.attributeName
+    )
+      &&
+        (p.attributes[2].attributeName === undefined ||
+          p.attributes[2].attributeName ===
+            selectedAttributes[2]?.attributeName)
+    );
+
     const alreadyInCart = productInCart?.quantity || 0;
     const maxAddable = Math.max(qty - alreadyInCart, 0);
 
@@ -330,6 +345,7 @@ const ProductCard = () => {
               </button>
             </div>
             <button
+              className={(maxCount < count) ? styles.disable : ''}
               style={{
                 padding: 15,
                 backgroundColor: "black",
@@ -337,7 +353,7 @@ const ProductCard = () => {
                 marginBottom: 15,
               }}
               onClick={onAddToCart}
-              disabled={count > maxCount}
+              disabled={maxCount < count}
             >
               {t("form.addToCard")}
             </button>

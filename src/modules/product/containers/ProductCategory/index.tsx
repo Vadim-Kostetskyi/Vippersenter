@@ -45,8 +45,6 @@ const ProductCategory = () => {
       } else {
         delete newAttributes[attributeName];
       }
-      console.log(newAttributes);
-      
 
       return newAttributes;
     });
