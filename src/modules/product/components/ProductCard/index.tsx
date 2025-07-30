@@ -199,34 +199,6 @@ const ProductCard = () => {
     });
   };
 
-  // const isValueInStock = (name: string, value: string): boolean => {
-  //   if (!attributes) return false;
-
-  //   return attributes.some((attr) => {
-  //     const matches: Record<string, string | undefined> = {};
-
-  //     if (attr.attribute_main) {
-  //       matches[attr.attribute_main] = attr.value_main;
-  //     }
-  //     if (attr.attribute_secondary) {
-  //       matches[attr.attribute_secondary] = attr.value_secondary;
-  //     }
-  //     if (attr.attribute_tertiary) {
-  //       matches[attr.attribute_tertiary] = attr.value_tertiary;
-  //     }
-
-  //     const partialMatch = selectedAttributes.every(
-  //       (sel) => matches[sel.name] === sel.attributeName
-  //     );
-
-  //     return (
-  //       partialMatch &&
-  //       matches[name] === value &&
-  //       parseInt(attr.quantity || "0") > 0
-  //     );
-  //   });
-  // };
-
   const getAvailableAttributeValues = (
     attributes: Attribute[],
     selected: SelectedAttributes[]

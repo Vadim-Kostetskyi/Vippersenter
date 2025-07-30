@@ -30,8 +30,9 @@
 }
 
 .infoBox {
-  width: 55%;
+  
   @include media(laptop) {
+    width: 55%;
     padding-left: 30px;
   }
 }
