@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import styles from "./index.module.scss";
 import CategoryNames from "components/CategoryNames";
@@ -9,15 +10,15 @@ const CatalogHeader = () => {
   return (
     <div className={styles.catalogHeader}>
       <div className={styles.lickBox}>
-        <a href="/product-category" className={styles.link}>
+        <Link to="/product-category" className={styles.link}>
           {t("catalog")}
-        </a>
+        </Link>
       </div>
       <div className={styles.subMenu}>
         <ul>
           {list.map(({ key, label }) => (
             <li key={key}>
-              <a href={`/product-category/${key}`}>{label}</a>
+              <Link to={`/product-category/${key}`}>{label}</Link>
             </li>
           ))}
         </ul>

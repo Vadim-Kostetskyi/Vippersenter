@@ -35,8 +35,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
     width: 100%;
     padding: 15px 0;
+    font-size: 12px;
     font-weight: 600;
     color: $gunmetal;
     border: 1px solid $gunmetal;
@@ -49,9 +51,12 @@
       background-color: $gunmetal;
     }
 
+        @include media(preMobile) {
+      font-size: 14px;
+    }
+
     @include media(laptopMedium) {
       padding: 10px;
-      font-size: 14px;
       letter-spacing: 0.1rem;
     }
   }

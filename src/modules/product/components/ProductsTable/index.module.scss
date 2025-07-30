@@ -19,6 +19,16 @@
   }
 }
 
+.category{
+  font-weight: bold;
+   background-color: "#eee"
+}
+
+.quantity{
+  width: 30px;
+  text-align: center;
+}
+
 .attributeNameQuantity {
   margin-bottom: 15px;
   visibility: hidden;
@@ -39,6 +49,13 @@
 
 .attributes {
   text-align: center;
+
+  & > div{
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    padding: 10px;
+  }
 }
 
 .attributeName {
@@ -62,6 +79,10 @@
     border: 1px solid $pageBackground;
   }
 
+  & input{
+    margin-right: 5px;
+  }
+
   input[type="radio"] {
     display: none;
 
@@ -70,4 +91,8 @@
       color: $darkBlue;
     }
   }
+}
+
+.center{
+  text-align: center
 }

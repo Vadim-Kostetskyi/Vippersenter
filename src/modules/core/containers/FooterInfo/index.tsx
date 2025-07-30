@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { data } from "./data";
 import CategoryNames from "../../../../components/CategoryNames";
@@ -20,9 +21,9 @@ const FooterInfo = () => {
                 index === 1 ? (
                   <nav>
                     {text.map((item) => (
-                      <a href="#" key={item}>
+                      <Link to="#" key={item}>
                         {t(item)}
-                      </a>
+                      </Link>
                     ))}
                   </nav>
                 ) : (
@@ -35,9 +36,9 @@ const FooterInfo = () => {
               ) : (
                 <nav>
                   {list.map(({ key, label }) => (
-                    <a href={`/product-category/${key}`} key={label}>
+                    <Link to={`/product-category/${key}`} key={label}>
                       {label}
-                    </a>
+                    </Link>
                   ))}
                 </nav>
               )}

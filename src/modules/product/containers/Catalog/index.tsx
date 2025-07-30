@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import CategoryNames from "components/CategoryNames";
-import CatalogCard from "../components/CatalogCard";
+import CatalogCard from "../../components/CatalogCard";
 import eyelashesImg from "assets/image/category/dyzayn-bez-nazvy.png"; 
 import glueImg from "assets/image/category/img_3911-scaled.jpg"; 
 import medicationsImg from "assets/image/category/cc12bb1e-f27d-4350-94d9-976e9f0eb6d6.jpg"; 

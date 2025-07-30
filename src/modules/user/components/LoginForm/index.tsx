@@ -24,11 +24,7 @@ const LoginForm = () => {
     const email = formData.get("username") as string;
     const password = formData.get("password") as string;
     const rememberMe = formData.get("rememberMe") === "on";
-    console.log('email', email);
-    console.log('password', password);
     
-    
-
     try {
       const data = await loginUser({ email, password, rememberMe }).unwrap();
 

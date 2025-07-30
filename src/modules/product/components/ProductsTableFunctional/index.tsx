@@ -1,9 +1,10 @@
 import { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ProductsTable from "../ProductsTable";
-import { Product } from "storeRedux/types";
+import { Product, AttributeValue } from "storeRedux/types";
 import { handleDeleteProduct } from "utils/product";
 import { useDeleteProductMutation, useUpdateProductQuantityMutation } from "storeRedux/productsApi";
+
 
 interface ProductsTableFunctional {
   products: Product[];
@@ -18,11 +19,8 @@ const ProductsTableFunctional: FC<ProductsTableFunctional> = ({ products, groupe
       string,
       {
         quantity: number;
-        value_main?: string;
-        value_secondary?: string;
-        value_tertiary?: string;
         extraPrice: string;
-      }
+      } & AttributeValue
     >
   >({});
 

@@ -1,0 +1,16 @@
+@use "styles/bootstrap" as *;
+
+.inputField{
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.require{
+  color: $customRed;
+}
+.input{
+  font-size: inherit;
+  width: 100%;
+  padding: 10px 10px;
+  margin-top: 5px;
+}

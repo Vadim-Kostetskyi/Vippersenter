@@ -1,7 +1,8 @@
 @use "styles/bootstrap" as *;
 
 .catalogCard{
-  width: 380px;
+  width: 100%;
+  max-width: 380px;
 
     & h3{
     padding: 20px 0;

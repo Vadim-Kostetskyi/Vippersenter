@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import styles from "./index.module.scss";
 import Arrow from "assets/svg/Arrow";
@@ -8,11 +9,11 @@ const CategoriesHeader = () => {
   const { list } = CategoryNames(t);
 
   return (
-    <ul className={styles.wrapper}>
+    <ul className={styles.categoriesHeader}>
       {list.map(({ key, label }) => {
         return (
           <li key={key}>
-            <a href={`/product-category/${key}`}>{label}</a>
+            <Link to={`/product-category/${key}`}>{label}</Link>
             <Arrow />
           </li>
         );

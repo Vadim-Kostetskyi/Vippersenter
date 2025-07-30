@@ -42,6 +42,14 @@
   }
 }
 
+.shoppingBag{
+  
+  &:hover,
+  &:focus {
+    background-color: $grayDark;
+  }
+}
+
 .icon {
   width: 22px;
   margin-bottom: 5px;

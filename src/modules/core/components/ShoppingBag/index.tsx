@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ShoppingCard from "assets/svg/ShoppingCard";
-import emptyImg from "assets/svg/EmptyCart.svg";
 import CardButton from "../CardButton";
 import ShoppingBagList from "../ShoppingBagList";
 import { Attributes, CartItem, getCartItems } from "utils/card";
 import { usePlaceOrderMutation } from "storeRedux/productsApi";
+import emptyImg from "assets/svg/EmptyCart.svg";
 import styles from "./index.module.scss";
 
 const ShoppingBag = () => {

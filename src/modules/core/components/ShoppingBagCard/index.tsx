@@ -1,4 +1,5 @@
 import { FC, useState } from "react";
+import { Link } from "react-router-dom";
 import { useGetProductBySlugQuery } from "storeRedux/productsApi";
 import TrashIcon from "assets/svg/TrashCan.svg";
 import styles from "./index.module.scss";
@@ -58,14 +59,14 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
 
   return (
     <div className={styles.shoppingBagCard}>
-      <a href={`/product/${slug}`}>
-        <img src={image} alt="" />
-      </a>
+      <Link to={`/product/${slug}`}>
+        {!!image && <img src={image} alt="" />}
+      </Link>
       <div className={styles.infoBox}>
         <div>
-          <a href={`/product/${slug}`}>
+          <Link to={`/product/${slug}`}>
             <h3>{name}</h3>
-          </a>
+          </Link>
           <button
             onClick={() => {
               removeCartItem(slug, attributes);
@@ -76,7 +77,7 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
           </button>
         </div>
         {attributes?.map(({ name, attributeName }) => (
-          <div className={styles.attributes}>
+          <div key={name} className={styles.attributes}>
             <span>{name}:</span> <span>{attributeName}</span>
           </div>
         ))}
@@ -85,7 +86,7 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
             <button onClick={handleDecrement}>
               <Minus />
             </button>
-            <input type="number" value={count} />
+            <input type="number" defaultValue={count} />
             <button onClick={handleIncrement} disabled={count >= +quantity}>
               <PlusSubtle />
             </button>

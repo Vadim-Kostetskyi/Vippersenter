@@ -1,0 +1,9 @@
+@use "styles/bootstrap" as *;
+
+.checkout{
+  margin-top: 40px;
+
+  @include media(laptopUp) {
+    margin-top: 62px;
+  }
+}

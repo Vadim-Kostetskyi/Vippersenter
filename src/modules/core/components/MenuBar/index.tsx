@@ -22,13 +22,9 @@ const MenuBar = () => {
           {t("catalog")}
         </Link>
       </li>
-      <li>
-          <ShoppingBag />
-          {t("footer.shoppingCard")}
-      </li>
-      <li>
-          <ShoppingBag />
-          {t("footer.shoppingCard")}
+      <li className={styles.shoppingBag}>
+        <ShoppingBag />
+        {t("footer.shoppingCard")}
       </li>
     </ul>
   );
