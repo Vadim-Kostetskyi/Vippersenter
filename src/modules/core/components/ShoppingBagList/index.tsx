@@ -15,8 +15,9 @@ const ShoppingBagList: FC<ShoppingBagListProps> = ({
   delProduct,
 }) => (
   <div className={styles.shoppingBagList}>
-    {products.map(({ slug, quantity, attributes }) => (
+    {products.map(({ slug, quantity, attributes }, index) => (
       <ShoppingBagCard
+        key={slug + index}
         slug={slug}
         assignedQuantity={quantity}
         setProducts={setProducts}

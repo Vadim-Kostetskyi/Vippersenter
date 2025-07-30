@@ -59,7 +59,7 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
   return (
     <div className={styles.shoppingBagCard}>
       <a href={`/product/${slug}`}>
-        <img src={image} alt="" />
+        {!!image && <img src={image} alt="" />}
       </a>
       <div className={styles.infoBox}>
         <div>
@@ -76,7 +76,7 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
           </button>
         </div>
         {attributes?.map(({ name, attributeName }) => (
-          <div className={styles.attributes}>
+          <div key={name} className={styles.attributes}>
             <span>{name}:</span> <span>{attributeName}</span>
           </div>
         ))}
@@ -85,7 +85,7 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
             <button onClick={handleDecrement}>
               <Minus />
             </button>
-            <input type="number" value={count} />
+            <input type="number" defaultValue={count} />
             <button onClick={handleIncrement} disabled={count >= +quantity}>
               <PlusSubtle />
             </button>
