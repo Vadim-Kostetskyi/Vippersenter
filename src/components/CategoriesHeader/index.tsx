@@ -9,7 +9,7 @@ const CategoriesHeader = () => {
   const { list } = CategoryNames(t);
 
   return (
-    <ul className={styles.wrapper}>
+    <ul className={styles.categoriesHeader}>
       {list.map(({ key, label }) => {
         return (
           <li key={key}>
