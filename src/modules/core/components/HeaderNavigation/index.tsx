@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import CatalogHeader from "../CatalogHeader";
 import { list } from "./headerList";
@@ -12,7 +13,7 @@ const HeaderNavigation = () => {
         {list.map(({ title, link }, index) =>
           index ? (
             <li key={title}>
-              <a href={link}>{t(title)}</a>
+              <Link to={link}>{t(title)}</Link>
             </li>
           ) : (
             <li key={title}>

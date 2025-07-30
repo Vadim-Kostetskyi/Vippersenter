@@ -1,4 +1,5 @@
 import { FC } from "react";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import styles from "./index.module.scss";
 
@@ -28,7 +29,7 @@ const ProductListCard: FC<ProductListCardProps> = ({
           {price.toFixed(2)}
           {t("currency")}
         </p>
-        <a href={`/product/${slug}`}>{t("goToProduct")}</a>
+        <Link to={`/product/${slug}`}>{t("goToProduct")}</Link>
       </div>
     </div>
   );

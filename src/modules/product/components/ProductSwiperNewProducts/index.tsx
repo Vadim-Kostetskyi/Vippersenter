@@ -1,4 +1,5 @@
 import { SwiperSlide } from "swiper/react";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import CoreSwiper from "components/CoreSwiper";
 import { breakpoints } from "utils/constants";
@@ -18,23 +19,23 @@ const ProductSwiperNewProducts = () => {
         {newProducts &&
           newProducts.map(({ name, image, price, slug }) => (
             <SwiperSlide>
-              <a href={`/product/${slug}`} className={styles.itemsWrapper}>
+              <Link to={`/product/${slug}`} className={styles.itemsWrapper}>
                 <div>
-                <div className={styles.imageWrapper}>
-                  <picture>
-                    <img src={image} alt="" className={styles.image} />
-                  </picture>
+                  <div className={styles.imageWrapper}>
+                    <picture>
+                      <img src={image} alt="" className={styles.image} />
+                    </picture>
+                  </div>
+                  <div className={styles.info}>
+                    <p>{name}</p>
+                    <p className={styles.price}>
+                      {Number(price).toFixed(2)}
+                      {t("currency")}
+                    </p>
+                  </div>
                 </div>
-                <div className={styles.info}>
-                  <p>{name}</p>
-                  <p className={styles.price}>
-                    {Number(price).toFixed(2)}
-                    {t("currency")}
-                  </p>
-                </div>
-              </div>
-              <button>{t("goToProduct")}</button>
-              </a>
+                <button>{t("goToProduct")}</button>
+              </Link>
             </SwiperSlide>
           ))}
       </CoreSwiper>

@@ -1,10 +1,11 @@
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import styles from "./index.module.scss";
-import CoreSwiper from "components/CoreSwiper";
+import { SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
+import CoreSwiper from "components/CoreSwiper";
 import { breakpoints } from "utils/constants";
 import { useGetRandomProductsQuery } from "storeRedux/productsApi";
-import { SwiperSlide } from "swiper/react";
+import styles from "./index.module.scss";
 
 const AlsoLikeSwiper = () => {
   const { data: products } = useGetRandomProductsQuery();
@@ -22,7 +23,7 @@ const AlsoLikeSwiper = () => {
         {products &&
           products.map(({ name, image, price, slug }) => (
             <SwiperSlide key={slug}>
-              <a href={`/product/${slug}`} className={styles.itemsWrapper}>
+              <Link to={`/product/${slug}`} className={styles.itemsWrapper}>
                 <div>
                   <div>
                     <picture>
@@ -38,7 +39,7 @@ const AlsoLikeSwiper = () => {
                   </div>
                 </div>
                 <button>{t("goToProduct")}</button>
-              </a>
+              </Link>
             </SwiperSlide>
           ))}
       </CoreSwiper>

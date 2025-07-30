@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Logo from "assets/svg/Logo";
 import BurgerMenu from "modules/core/components/BurgerMenu";
 import SearchButton from "modules/core/components/SearchButton";
@@ -18,9 +18,9 @@ const Header = () => {
         {isHome ? (
           <Logo className={styles.logo} />
         ) : (
-          <a href="/">
+          <Link to="/">
             <Logo className={styles.logo} />
-          </a>
+          </Link>
         )}
         <HeaderIcons />
         <BurgerMenu />

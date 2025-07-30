@@ -1,10 +1,11 @@
+import { Link } from "react-router-dom";
 import { SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import { useTranslation } from "react-i18next";
 import CoreSwiper from "components/CoreSwiper";
 import { breakpoints } from "utils/constants";
-import styles from "./index.module.scss";
 import { useGetProductsQuery } from "storeRedux/productsApi";
+import styles from "./index.module.scss";
 
 const ProductSwiperPopular = () => {
   const { data: popularProducts } = useGetProductsQuery({
@@ -39,7 +40,7 @@ const ProductSwiperPopular = () => {
                     </p>
                   </div>
                 </div>
-                <a href={`/product/${slug}`}>{t("goToProduct")}</a>
+                <Link to={`/product/${slug}`}>{t("goToProduct")}</Link>
               </div>
             </SwiperSlide>
           ))}
