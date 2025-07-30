@@ -142,31 +142,45 @@ const ProductCard = () => {
   useEffect(() => {
     if (!product?.attributes) return;
 
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+    if (product.attributes.length === 0) {
+      const productInCart = cart.find((p: any) => p.slug === productId); 
+      const maxAddable = Math.max(+product?.quantity - productInCart?.quantity, 0);
+
+      setMaxCount(productInCart ? maxAddable : +product?.quantity);
+      return
+    }
+
     const variant = getSelectedVariantData(
       product.attributes,
       selectedAttributes
     );
     const qty = parseInt(variant?.quantity || "0");
 
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
     const productInCart = cart.find(
       (p: any) =>
         p.slug === productId &&
-        p.attributes[0].attributeName ===
+        p.attributes[0]?.attributeName ===
         selectedAttributes[0]?.attributeName
         &&
-        (p.attributes[1].attributeName === undefined ||
-          p.attributes[1].attributeName ===
+        (p.attributes[1]?.attributeName === undefined ||
+          p.attributes[1]?.attributeName ===
         selectedAttributes[1]?.attributeName
     )
       &&
-        (p.attributes[2].attributeName === undefined ||
-          p.attributes[2].attributeName ===
+        (p.attributes[2]?.attributeName === undefined ||
+          p.attributes[2]?.attributeName ===
             selectedAttributes[2]?.attributeName)
     );
 
     const alreadyInCart = productInCart?.quantity || 0;
     const maxAddable = Math.max(qty - alreadyInCart, 0);
+
+    console.log(variant);
+    console.log(product);
+    
+    
 
     if (variant) {
       setMaxCount(maxAddable);
@@ -229,8 +243,6 @@ const ProductCard = () => {
     attributes.forEach((attr) => {
       const qty = parseInt(attr.quantity || "0");
       if (qty <= 0) return;
-
-      // const selectedNames = selected.map((s) => s.name);
 
       const isCompatible = (checkAttrName: string) => {
         return selected.every(({ name, attributeName }) => {
