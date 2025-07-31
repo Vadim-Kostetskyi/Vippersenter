@@ -66,7 +66,11 @@ const ProductCard = () => {
   const [loaded, setLoaded] = useState(false);
   const [count, setCount] = useState(1);
   const [maxCount, setMaxCount] = useState(0);
-  const [selectedAttributes, setSelectedAttributes] = useState<Value[]>([]);    
+  const [selectedAttributes, setSelectedAttributes] = useState<Value[]>([]);
+  // console.log(maxCount);
+  // console.log(count);
+  
+  
 
   const { t } = useTranslation();
 
@@ -142,31 +146,45 @@ const ProductCard = () => {
   useEffect(() => {
     if (!product?.attributes) return;
 
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+    if (product.attributes.length === 0) {
+      const productInCart = cart.find((p: any) => p.slug === productId); 
+      const maxAddable = Math.max(+product?.quantity - productInCart?.quantity, 0);
+
+      setMaxCount(productInCart ? maxAddable : +product?.quantity);
+      return
+    }
+
     const variant = getSelectedVariantData(
       product.attributes,
       selectedAttributes
     );
     const qty = parseInt(variant?.quantity || "0");
 
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
     const productInCart = cart.find(
       (p: any) =>
         p.slug === productId &&
-        p.attributes[0].attributeName ===
+        p.attributes[0]?.attributeName ===
         selectedAttributes[0]?.attributeName
         &&
-        (p.attributes[1].attributeName === undefined ||
-          p.attributes[1].attributeName ===
+        (p.attributes[1]?.attributeName === undefined ||
+          p.attributes[1]?.attributeName ===
         selectedAttributes[1]?.attributeName
     )
       &&
-        (p.attributes[2].attributeName === undefined ||
-          p.attributes[2].attributeName ===
+        (p.attributes[2]?.attributeName === undefined ||
+          p.attributes[2]?.attributeName ===
             selectedAttributes[2]?.attributeName)
     );
 
     const alreadyInCart = productInCart?.quantity || 0;
     const maxAddable = Math.max(qty - alreadyInCart, 0);
+
+    console.log(variant);
+    console.log(product);
+    
+    
 
     if (variant) {
       setMaxCount(maxAddable);
@@ -229,8 +247,6 @@ const ProductCard = () => {
     attributes.forEach((attr) => {
       const qty = parseInt(attr.quantity || "0");
       if (qty <= 0) return;
-
-      // const selectedNames = selected.map((s) => s.name);
 
       const isCompatible = (checkAttrName: string) => {
         return selected.every(({ name, attributeName }) => {
@@ -303,6 +319,11 @@ const ProductCard = () => {
                 available = availableValues.secondaryValues;
               else if (name === "Довжина")
                 available = availableValues.tertiaryValues;
+              else if (name === "Обʼєм") available = availableValues.mainValues;
+
+              console.log(available);
+              console.log(values);
+              console.log(availableValues.mainValues);
 
               return (
                 <ProductAttributes
@@ -322,7 +343,10 @@ const ProductCard = () => {
             <p className={styles.quantity}>{t("product.quantity")}</p>
 
             <div className={styles.quantityBox}>
-              <button onClick={handleDecrement}>
+              <button
+                className={count === 1 ? styles.disable : ""}
+                onClick={handleDecrement}
+              >
                 <Minus />
               </button>
               <input
@@ -340,12 +364,16 @@ const ProductCard = () => {
                 }}
               />
 
-              <button onClick={handleIncrement} disabled={count >= maxCount}>
+              <button
+                className={maxCount <= count ? styles.disable : ""}
+                onClick={handleIncrement}
+                disabled={count >= maxCount}
+              >
                 <PlusSubtle />
               </button>
             </div>
             <button
-              className={(maxCount < count) ? styles.disable : ''}
+              className={maxCount < count ? styles.disable : ""}
               style={{
                 padding: 15,
                 backgroundColor: "black",
