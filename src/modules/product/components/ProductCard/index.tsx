@@ -66,7 +66,11 @@ const ProductCard = () => {
   const [loaded, setLoaded] = useState(false);
   const [count, setCount] = useState(1);
   const [maxCount, setMaxCount] = useState(0);
-  const [selectedAttributes, setSelectedAttributes] = useState<Value[]>([]);    
+  const [selectedAttributes, setSelectedAttributes] = useState<Value[]>([]);
+  // console.log(maxCount);
+  // console.log(count);
+  
+  
 
   const { t } = useTranslation();
 
@@ -315,6 +319,11 @@ const ProductCard = () => {
                 available = availableValues.secondaryValues;
               else if (name === "Довжина")
                 available = availableValues.tertiaryValues;
+              else if (name === "Обʼєм") available = availableValues.mainValues;
+
+              console.log(available);
+              console.log(values);
+              console.log(availableValues.mainValues);
 
               return (
                 <ProductAttributes
@@ -334,7 +343,10 @@ const ProductCard = () => {
             <p className={styles.quantity}>{t("product.quantity")}</p>
 
             <div className={styles.quantityBox}>
-              <button onClick={handleDecrement}>
+              <button
+                className={count === 1 ? styles.disable : ""}
+                onClick={handleDecrement}
+              >
                 <Minus />
               </button>
               <input
@@ -352,12 +364,16 @@ const ProductCard = () => {
                 }}
               />
 
-              <button onClick={handleIncrement} disabled={count >= maxCount}>
+              <button
+                className={maxCount <= count ? styles.disable : ""}
+                onClick={handleIncrement}
+                disabled={count >= maxCount}
+              >
                 <PlusSubtle />
               </button>
             </div>
             <button
-              className={(maxCount < count) ? styles.disable : ''}
+              className={maxCount < count ? styles.disable : ""}
               style={{
                 padding: 15,
                 backgroundColor: "black",
