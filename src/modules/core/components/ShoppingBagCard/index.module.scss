@@ -71,7 +71,6 @@
     justify-content: center;
     padding: 5px;
     background-color: $softBlush;
-    cursor: pointer;
   }
 }
 
@@ -79,4 +78,8 @@
   font-size: 16px;
   font-weight: 800;
   letter-spacing: 0.04rem;
+}
+
+.disabled{
+  cursor: no-drop;
 }

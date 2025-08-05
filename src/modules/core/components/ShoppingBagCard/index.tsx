@@ -31,7 +31,7 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
 }) => {
   const { data: product } = useGetProductBySlugQuery(slug);
   const { name = "", image = "", price = 0, quantity = 0 } = product ?? {};
-  const [count, setCount] = useState(assignedQuantity);
+  const [count, setCount] = useState(assignedQuantity);  
 
   const { t } = useTranslation();
 
@@ -86,8 +86,12 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
             <button onClick={handleDecrement}>
               <Minus />
             </button>
-            <input type="number" defaultValue={count} />
-            <button onClick={handleIncrement} disabled={count >= +quantity}>
+            <input type="number" value={count} />
+            <button
+              className={count >= +quantity ? styles.disabled : ''}
+              onClick={handleIncrement}
+              disabled={count >= +quantity}
+            >
               <PlusSubtle />
             </button>
           </div>
