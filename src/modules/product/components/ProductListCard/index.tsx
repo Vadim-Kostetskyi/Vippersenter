@@ -19,7 +19,7 @@ const ProductListCard: FC<ProductListCardProps> = ({
   const { t } = useTranslation();
 
   return (
-    <div className={styles.productListCard}>
+    <Link to={`/product/${slug}`} className={styles.productListCard}>
       <div className={styles.imageBox}>
         <img src={image} alt={name} />
       </div>
@@ -29,9 +29,9 @@ const ProductListCard: FC<ProductListCardProps> = ({
           {price.toFixed(2)}
           {t("currency")}
         </p>
-        <Link to={`/product/${slug}`}>{t("goToProduct")}</Link>
+        <button>{t("goToProduct")}</button>
       </div>
-    </div>
+    </Link>
   );
 };
 

@@ -25,7 +25,7 @@ const ProductSwiperPopular = () => {
         {popularProducts &&
           popularProducts.map(({ name, image, price, slug }) => (
             <SwiperSlide>
-              <div className={styles.itemsWrapper}>
+              <Link to={`/product/${slug}`} className={styles.itemsWrapper}>
                 <div>
                   <div className={styles.imageWrapper}>
                     <picture>
@@ -40,8 +40,8 @@ const ProductSwiperPopular = () => {
                     </p>
                   </div>
                 </div>
-                <Link to={`/product/${slug}`}>{t("goToProduct")}</Link>
-              </div>
+                <button>{t("goToProduct")}</button>
+              </Link>
             </SwiperSlide>
           ))}
       </CoreSwiper>
