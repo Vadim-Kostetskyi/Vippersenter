@@ -67,10 +67,6 @@ const ProductCard = () => {
   const [count, setCount] = useState(1);
   const [maxCount, setMaxCount] = useState(0);
   const [selectedAttributes, setSelectedAttributes] = useState<Value[]>([]);
-  // console.log(maxCount);
-  // console.log(count);
-  
-  
 
   const { t } = useTranslation();
 
@@ -181,11 +177,6 @@ const ProductCard = () => {
     const alreadyInCart = productInCart?.quantity || 0;
     const maxAddable = Math.max(qty - alreadyInCart, 0);
 
-    console.log(variant);
-    console.log(product);
-    
-    
-
     if (variant) {
       setMaxCount(maxAddable);
     }
@@ -261,22 +252,25 @@ const ProductCard = () => {
         });
       };
 
-      if (isCompatible("Вигин") && attr.attribute_main) {
+      if (isCompatible(t("filter.bend")) && attr.attribute_main) {
         mainValues.add(attr.value_main);
       }
       if (
-        isCompatible("Товщина") &&
+        isCompatible(t("filter.thickness")) &&
         attr.attribute_secondary &&
         attr.value_secondary
       ) {
         secondaryValues.add(attr.value_secondary);
       }
       if (
-        isCompatible("Довжина") &&
+        isCompatible(t("filter.length")) &&
         attr.attribute_tertiary &&
         attr.value_tertiary
       ) {
         tertiaryValues.add(attr.value_tertiary);
+      }
+      if (isCompatible(t("filter.volume")) && attr.attribute_main) {
+        mainValues.add(attr.value_main);
       }
     });
 
@@ -314,16 +308,14 @@ const ProductCard = () => {
             {grouped.map(({ name, values }) => {
               let available: Set<string> = new Set();
 
-              if (name === "Вигин") available = availableValues.mainValues;
-              else if (name === "Товщина")
+              if (name === t("filter.bend"))
+                available = availableValues.mainValues;
+              else if (name === t("filter.thickness"))
                 available = availableValues.secondaryValues;
-              else if (name === "Довжина")
+              else if (name === t("filter.length"))
                 available = availableValues.tertiaryValues;
-              else if (name === "Обʼєм") available = availableValues.mainValues;
-
-              console.log(available);
-              console.log(values);
-              console.log(availableValues.mainValues);
+              else if (name === t("filter.volume"))
+                available = availableValues.mainValues;
 
               return (
                 <ProductAttributes
@@ -351,7 +343,7 @@ const ProductCard = () => {
               </button>
               <input
                 type="number"
-                value={count}
+                value={count > maxCount ? maxCount : count}
                 min={1}
                 max={maxCount}
                 onChange={(e) => {
