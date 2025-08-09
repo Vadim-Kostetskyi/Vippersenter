@@ -1,6 +1,14 @@
-export interface Attributes{
+export interface Attributes {
   name: string;
   attributeName: string;
+  attribute_main?: string;
+  value_main?: string;
+  attribute_secondary?: string;
+  value_secondary?: string;
+  attribute_tertiary?: string;
+  value_tertiary?: string;
+  quantity?: number;
+  [key: string]: any;
 }
 
 export interface CartItem {

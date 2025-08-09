@@ -19,7 +19,7 @@ interface ShoppingBagCardProps {
   assignedQuantity: number;
   setProducts: (items: CartItem[]) => void;
   delProduct: (productId: string, attributes?: Attributes[]) => void;
-  attributes?: Attributes[];
+  assignedAttributes?: Attributes[];
 }
 
 const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
@@ -27,18 +27,61 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
   assignedQuantity,
   setProducts,
   delProduct,
-  attributes,
+  assignedAttributes,
 }) => {
   const { data: product } = useGetProductBySlugQuery(slug);
-  const { name = "", image = "", price = 0, quantity = 0 } = product ?? {};
-  const [count, setCount] = useState(assignedQuantity);  
+  const {
+    name = "",
+    image = "",
+    price = 0,
+    quantity = 0,
+    attributes,
+  } = product ?? {};
+  const [count, setCount] = useState(assignedQuantity);
+
+  console.log(product);
+  console.log(assignedAttributes);
+  console.log(attributes);
+
+  const findQuantity = (
+    allAttributes: Attributes[],
+    searchAttributes: Attributes[]
+  ): number | null => {
+    console.log(23234);
+    console.log(allAttributes);
+    console.log(searchAttributes);
+    
+    
+    
+    const found = allAttributes.find((attr) => {
+      return searchAttributes.every((search) => {
+        if (search.name === attr.attribute_main) {
+          return search.attributeName === attr.value_main;
+        }
+        if (search.name === attr.attribute_secondary) {
+          return search.attributeName === attr.value_secondary;
+        }
+        if (search.name === attr.attribute_tertiary) {
+          return search.attributeName === attr.value_tertiary;
+        }
+        return false;
+      });
+    });
+
+    return found ? found.quantity ? found.quantity : null : null;
+  }
+
+  const quantityy = findQuantity(attributes ?? [], assignedAttributes);
+  console.log(quantityy);
+
+  
 
   const { t } = useTranslation();
 
   const handleIncrement = () => {
     setCount((prev) => {
       const newCount = prev + 1;
-      updateCartItemQuantity(slug, newCount, attributes);
+      updateCartItemQuantity(slug, newCount, assignedAttributes);
       const cards = getCartItems();
       setProducts(cards);
       return newCount;
@@ -48,7 +91,7 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
   const handleDecrement = () => {
     setCount((prev) => {
       const newCount = prev > 1 ? prev - 1 : 1;
-      updateCartItemQuantity(slug, newCount, attributes);
+      updateCartItemQuantity(slug, newCount, assignedAttributes);
       const cards = getCartItems();
       setProducts(cards);
       return newCount;
@@ -56,6 +99,11 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
   };
 
   const totalPrice = count * +price;
+  const maxQuantity = attributes?.length === 0 ? +quantity : quantityy || 0;
+  console.log(123);
+  
+  console.log(maxQuantity);
+  
 
   return (
     <div className={styles.shoppingBagCard}>
@@ -69,28 +117,32 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
           </Link>
           <button
             onClick={() => {
-              removeCartItem(slug, attributes);
-              delProduct(slug, attributes);
+              removeCartItem(slug, assignedAttributes);
+              delProduct(slug, assignedAttributes);
             }}
           >
             <img src={TrashIcon} alt="delete item" />
           </button>
         </div>
-        {attributes?.map(({ name, attributeName }) => (
+        {assignedAttributes?.map(({ name, attributeName }) => (
           <div key={name} className={styles.attributes}>
             <span>{name}:</span> <span>{attributeName}</span>
           </div>
         ))}
         <div>
           <div className={styles.quantityBox}>
-            <button onClick={handleDecrement}>
+            <button
+              className={count === 1 ? styles.disabled : ""}
+              onClick={handleDecrement}
+              disabled={count === 1}
+            >
               <Minus />
             </button>
             <input type="number" value={count} />
             <button
-              className={count >= +quantity ? styles.disabled : ''}
+              className={count >= maxQuantity ? styles.disabled : ""}
               onClick={handleIncrement}
-              disabled={count >= +quantity}
+              disabled={count >= maxQuantity}
             >
               <PlusSubtle />
             </button>

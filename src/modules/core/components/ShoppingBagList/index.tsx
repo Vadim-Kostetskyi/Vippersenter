@@ -22,7 +22,7 @@ const ShoppingBagList: FC<ShoppingBagListProps> = ({
         assignedQuantity={quantity}
         setProducts={setProducts}
         delProduct={delProduct}
-        attributes={attributes}
+        assignedAttributes={attributes}
       />
     ))}
   </div>
