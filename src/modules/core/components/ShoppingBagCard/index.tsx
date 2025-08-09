@@ -13,6 +13,7 @@ import {
   updateCartItemQuantity,
 } from "utils/card";
 import { Attributes } from "utils/card";
+import { Attribute } from "storeRedux/types";
 
 interface ShoppingBagCardProps {
   slug: string;
@@ -44,15 +45,13 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
   console.log(attributes);
 
   const findQuantity = (
-    allAttributes: Attributes[],
+    allAttributes: Attribute[],
     searchAttributes: Attributes[]
   ): number | null => {
     console.log(23234);
     console.log(allAttributes);
     console.log(searchAttributes);
-    
-    
-    
+
     const found = allAttributes.find((attr) => {
       return searchAttributes.every((search) => {
         if (search.name === attr.attribute_main) {
@@ -68,13 +67,13 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
       });
     });
 
-    return found ? found.quantity ? found.quantity : null : null;
-  }
+    return found ? (found.quantity ? +found.quantity : null) : null;
+  };
 
-  const quantityy = findQuantity(attributes ?? [], assignedAttributes);
-  console.log(quantityy);
-
-  
+  const productQuantity = findQuantity(
+    attributes ?? [],
+    assignedAttributes ?? []
+  );
 
   const { t } = useTranslation();
 
@@ -99,10 +98,8 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
   };
 
   const totalPrice = count * +price;
-  const maxQuantity = attributes?.length === 0 ? +quantity : quantityy || 0;
-  console.log(123);
-  
-  console.log(maxQuantity);
+  const maxQuantity =
+    attributes?.length === 0 ? +quantity : productQuantity || 0;
   
 
   return (

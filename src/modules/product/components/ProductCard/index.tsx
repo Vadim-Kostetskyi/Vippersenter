@@ -67,6 +67,10 @@ const ProductCard = () => {
   const [count, setCount] = useState(1);
   const [maxCount, setMaxCount] = useState(0);
   const [selectedAttributes, setSelectedAttributes] = useState<Value[]>([]);
+  console.log(productId);
+  
+  console.log(product);
+  
 
   const { t } = useTranslation();
 

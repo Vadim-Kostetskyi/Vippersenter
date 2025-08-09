@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
@@ -8,8 +8,15 @@ import { useGetRandomProductsQuery } from "storeRedux/productsApi";
 import styles from "./index.module.scss";
 
 const AlsoLikeSwiper = () => {
-  const { data: products } = useGetRandomProductsQuery();
+  const { productId } = useParams();
+  const { data: products } = useGetRandomProductsQuery({
+    slug: productId,
+  });
   const { t } = useTranslation();
+  console.log(productId);
+  console.log(products);
+  
+  
 
   return (
     <div className={styles.alsoLike}>
