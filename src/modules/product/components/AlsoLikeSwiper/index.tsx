@@ -13,10 +13,6 @@ const AlsoLikeSwiper = () => {
     slug: productId,
   });
   const { t } = useTranslation();
-  console.log(productId);
-  console.log(products);
-  
-  
 
   return (
     <div className={styles.alsoLike}>

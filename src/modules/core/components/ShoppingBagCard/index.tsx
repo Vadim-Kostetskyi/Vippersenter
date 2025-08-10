@@ -40,18 +40,10 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
   } = product ?? {};
   const [count, setCount] = useState(assignedQuantity);
 
-  console.log(product);
-  console.log(assignedAttributes);
-  console.log(attributes);
-
   const findQuantity = (
     allAttributes: Attribute[],
     searchAttributes: Attributes[]
   ): number | null => {
-    console.log(23234);
-    console.log(allAttributes);
-    console.log(searchAttributes);
-
     const found = allAttributes.find((attr) => {
       return searchAttributes.every((search) => {
         if (search.name === attr.attribute_main) {

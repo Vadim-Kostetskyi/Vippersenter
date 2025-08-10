@@ -13,7 +13,25 @@ export interface SlidesProps {
   price?: string;
 }
 
-const Banner = () => (
+const Banner = () => {
+  
+  
+  const postalCode = "0010"; // приклад
+  fetch(
+    `http://localhost/vise-data-base/api/v1/order/index.php?postalCode=${postalCode}`
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("Pickup points:", data);
+      // Рендериш список відділень у формі
+    })
+    .catch((err) => console.error("Error:", err));
+  console.log(123);
+  
+
+  
+
+  return (
   <div className={styles.wrapper}>
     <CoreSwiper
       modules={[EffectFade, Autoplay]}
@@ -36,6 +54,6 @@ const Banner = () => (
       ))}
     </CoreSwiper>
   </div>
-);
+)};
 
 export default Banner;
