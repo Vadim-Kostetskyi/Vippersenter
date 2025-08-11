@@ -1,0 +1,45 @@
+@use "styles/bootstrap" as *;
+
+.dropdown {
+  position: relative;
+  width: 100%;
+}
+
+.button {
+  position: relative;
+  padding: 10px;
+  font-size: 14px;
+  background-color: $whiteColor;
+  border: none;
+  width: 100%;
+  border: 1px solid $slateGrayDark;
+  cursor: pointer;
+
+  & span{
+  display: flex;
+  justify-content: space-between;
+  }
+}
+
+.arrow {
+  transform: rotate(180deg);
+}
+
+.list {
+  width: 100%;
+  background-color: $whiteColor;
+  z-index: 1000;
+
+  & button {
+    display: flex;
+    width: 100%;
+    padding: 10px;
+
+    &:hover,
+    &:focus {
+      color: $whiteColor;
+      background-color: $darkBlue;
+      cursor: pointer;
+    }
+  }
+}

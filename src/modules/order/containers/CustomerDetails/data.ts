@@ -1,4 +1,4 @@
-export const Inputs = [
+export const inputs = [
   {
     title: "name",
     placeholder: "",
@@ -14,7 +14,7 @@ export const Inputs = [
   {
     title: "email",
     placeholder: "",
-    type: "email"
+    type: "email",
   },
 
   {
@@ -32,6 +32,7 @@ export const Inputs = [
   {
     title: "county",
     placeholder: "",
+    dropdown: true,
   },
   {
     title: "postcode/ZIP",

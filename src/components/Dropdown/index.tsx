@@ -5,9 +5,15 @@ interface DropdownProps {
   title: string;
   list: any[];
   onSetTitle: (item: string) => void;
+  className?: string;
 }
 
-const Dropdown: FC<DropdownProps> = ({ title, list, onSetTitle }) => {
+const Dropdown: FC<DropdownProps> = ({
+  title,
+  list,
+  onSetTitle,
+  className,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOpen = () => {
@@ -20,7 +26,7 @@ const Dropdown: FC<DropdownProps> = ({ title, list, onSetTitle }) => {
   };
 
   return (
-    <div className={styles.dropdown}>
+    <div className={`${styles.dropdown}, ${className}`}>
       <button
         className={`${styles.button} ${isOpen ? styles.open : ""}`}
         onClick={handleOpen}

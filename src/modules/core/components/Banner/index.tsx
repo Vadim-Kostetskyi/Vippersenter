@@ -16,16 +16,31 @@ export interface SlidesProps {
 const Banner = () => {
   
   
-  const postalCode = "0010"; // приклад
+const postalCode = "2670";
+
+fetch(
+  `http://localhost/vise-data-base/api/v1/order/index.php?postalCode=${postalCode}`
+)
+  .then((res) => res.json())
+  .then((data) => {
+    if (data.error) {
+      console.warn(`Помилка: ${data.error} (код: ${data.status})`);
+      alert("Вибачте, для цього поштового коду немає пунктів видачі.");
+      return;
+    }
+
+    console.log("Pickup points:", data);
+    // тут уже рендеримо список відділень
+  })
+  .catch((err) => {
+    console.error("Помилка мережі:", err);
+    alert("Не вдалося отримати дані. Спробуйте пізніше.");
+  });
   fetch(
-    `http://localhost/vise-data-base/api/v1/order/index.php?postalCode=${postalCode}`
-  )
-    .then((res) => res.json())
-    .then((data) => {
-      console.log("Pickup points:", data);
-      // Рендериш список відділень у формі
-    })
-    .catch((err) => console.error("Error:", err));
+    "http://localhost/vise-data-base/api/v1/order/post-offices.php?city=Otta"
+  ).then((res)=> res.json()).then((data) => console.log(data)
+  );
+
   console.log(123);
   
 
