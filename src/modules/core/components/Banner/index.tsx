@@ -19,13 +19,13 @@ const Banner = () => {
 const postalCode = "2670";
 
 fetch(
-  `http://localhost/vise-data-base/api/v1/order/index.php?postalCode=${postalCode}`
+  `http://localhost/vise-data-base/api/v1/order/posten/index.php?postalCode=${postalCode}`
 )
   .then((res) => res.json())
   .then((data) => {
     if (data.error) {
       console.warn(`Помилка: ${data.error} (код: ${data.status})`);
-      alert("Вибачте, для цього поштового коду немає пунктів видачі.");
+      // alert("Вибачте, для цього поштового коду немає пунктів видачі.");
       return;
     }
 
@@ -34,12 +34,13 @@ fetch(
   })
   .catch((err) => {
     console.error("Помилка мережі:", err);
-    alert("Не вдалося отримати дані. Спробуйте пізніше.");
+    // alert("Не вдалося отримати дані. Спробуйте пізніше.");
   });
   fetch(
-    "http://localhost/vise-data-base/api/v1/order/post-offices.php?city=Otta"
-  ).then((res)=> res.json()).then((data) => console.log(data)
-  );
+    "http://localhost/vise-data-base/api/v1/order/posten/post-offices.php?city=Bergen"
+  )
+    .then((res) => res.json())
+    .then((data) => console.log(data));
 
   console.log(123);
   

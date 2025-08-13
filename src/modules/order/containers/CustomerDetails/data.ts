@@ -21,18 +21,18 @@ export const inputs = [
     title: "country/Region",
     placeholder: "",
   },
-  {
-    title: "streetAddress",
-    placeholder: "houseNumberAndStreetName",
-  },
+  // {
+  //   title: "streetAddress",
+  //   placeholder: "houseNumberAndStreetName",
+  // },
   {
     title: "town",
     placeholder: "",
+    dropdown: true,
   },
   {
     title: "county",
     placeholder: "",
-    dropdown: true,
   },
   {
     title: "postcode/ZIP",

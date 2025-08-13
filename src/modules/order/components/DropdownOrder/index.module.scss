@@ -5,6 +5,13 @@
   width: 100%;
 }
 
+.wrapper {
+  border: 1px solid $slateGrayDark;
+  border-radius: 4px;
+  display: inline-block;
+  width: 100%;
+}
+
 .button {
   position: relative;
   padding: 10px;
@@ -12,7 +19,7 @@
   background-color: $whiteColor;
   border: none;
   width: 100%;
-  border: 1px solid $slateGrayDark;
+  // border: 1px solid $slateGrayDark;
   cursor: pointer;
 
   & span{

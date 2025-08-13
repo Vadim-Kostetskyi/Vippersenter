@@ -23,28 +23,40 @@ const DropdownOrder: FC<DropdownProps> = ({
 
   const onSendInfo = (item: string) => {
     onSetTitle(item);
-    handleOpen();
-  };  
+    setIsOpen(false);
+  };
 
   return (
     <div className={styles.dropdown}>
       <h4>{title}</h4>
-      <button className={styles.button} onClick={handleOpen}>
-        <span>
-          {selected}
-          <ArrowTriangle className={isOpen ? styles.open : styles.arrow} />
-        </span>
+
+      {/* Обгортка з рамкою */}
+      <div className={`${styles.wrapper} ${isOpen ? styles.open : ""}`}>
+        <button className={styles.button} onClick={handleOpen} type="button">
+          <span>
+            {selected}
+            <ArrowTriangle className={isOpen ? styles.open : styles.arrow} />
+          </span>
+        </button>
+
         {isOpen && (
           <div className={styles.list}>
-            <input type="text" />
+            <input
+              type="text"
+              onClick={(e) => e.stopPropagation()} // Щоб клік по інпуту не закривав
+            />
             {list.map((label) => (
-              <button key={label} onClick={() => onSendInfo(label)}>
+              <button
+                type="button"
+                key={label}
+                onClick={() => onSendInfo(label)}
+              >
                 {label}
               </button>
             ))}
           </div>
         )}
-      </button>
+      </div>
     </div>
   );
 };
