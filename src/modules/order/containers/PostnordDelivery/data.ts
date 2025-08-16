@@ -1,22 +1,4 @@
 export const inputs = [
-  {
-    title: "name",
-    placeholder: "",
-  },
-  {
-    title: "lasName",
-    placeholder: "",
-  },
-  {
-    title: "phone",
-    placeholder: "",
-  },
-  {
-    title: "email",
-    placeholder: "",
-    type: "email",
-  },
-
   // {
   //   title: "country/Region",
   //   placeholder: "",
@@ -34,8 +16,9 @@ export const inputs = [
   //   title: "county",
   //   placeholder: "",
   // },
-  // {
-  //   title: "postcode/ZIP",
-  //   placeholder: "",
-  // },
+  {
+    title: "postcode/ZIP",
+    placeholder: "",
+    type: "number"
+  },
 ];

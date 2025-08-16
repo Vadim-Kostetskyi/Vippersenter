@@ -1,68 +1,26 @@
-import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { inputs } from "./data";
 import InputField from "components/InputField";
-import DropdownOrder from "modules/order/components/DropdownOrder";
+import PostnordDelivery from "../PostnordDelivery";
 import styles from "./index.module.scss";
 
 const CustomerDetails = () => {
-  const [selectedCity, setSelectedCity] = useState('вапвап');
-  const [countriesList, setCountriesList] = useState([]);
-  console.log(countriesList);
-  
-
   const { t } = useTranslation();
-
-  const onSelectCity = (city: string) => {
-    setSelectedCity(city);
-  }
-
-  useEffect(() => {
-    fetch("http://localhost/vise-data-base/api/v1/order/posten/sities.php")
-      .then((res) => res.json())
-      .then((data) => setCountriesList(data))
-      .catch((err) => console.error("Fetch error:", err));
-  }, []);
-
-  const list = [
-    {
-      key: "sdfsdfsfd",
-      label: "dfgdfgdfg",
-    },
-    {
-      key: "sdfsdfsfd",
-      label: "sgdfgdgfh",
-    },
-    {
-      key: "sdfsdfsfd",
-      label: "dfgdffghgfhgdfg",
-    },
-  ];
-
 
   return (
     <div className={styles.customerDetails}>
       <h3>{t("order.billingShipping")}</h3>
       <div className={styles.detailsBox}>
-        {inputs.map(({ title, placeholder, type, dropdown }) =>
-          dropdown ? (
-            <DropdownOrder
-              key={title}
-              title={t(`order.${title}`)}
-              list={countriesList}
-              onSetTitle={onSelectCity}
-              selected={selectedCity}
-            />
-          ) : (
-            <InputField
-              key={title}
-              type={type}
-              title={t(`order.${title}`)}
-              placeholder={placeholder ? t(`order.${placeholder}`) : ""}
-              require={true}
-            />
-          )
-        )}
+        {inputs.map(({ title, placeholder, type }) => (
+          <InputField
+            key={title}
+            type={type}
+            title={t(`order.${title}`)}
+            placeholder={placeholder ? t(`order.${placeholder}`) : ""}
+            require={true}
+          />
+        ))}
+        <PostnordDelivery />
         <label htmlFor="orderComments" className={styles.orderComments}>
           <span>{t("order.orderNotes")}</span>
           <textarea

@@ -30,7 +30,6 @@ const DropdownOrder: FC<DropdownProps> = ({
     <div className={styles.dropdown}>
       <h4>{title}</h4>
 
-      {/* Обгортка з рамкою */}
       <div className={`${styles.wrapper} ${isOpen ? styles.open : ""}`}>
         <button className={styles.button} onClick={handleOpen} type="button">
           <span>
@@ -43,7 +42,7 @@ const DropdownOrder: FC<DropdownProps> = ({
           <div className={styles.list}>
             <input
               type="text"
-              onClick={(e) => e.stopPropagation()} // Щоб клік по інпуту не закривав
+              onClick={(e) => e.stopPropagation()}
             />
             {list.map((label) => (
               <button
