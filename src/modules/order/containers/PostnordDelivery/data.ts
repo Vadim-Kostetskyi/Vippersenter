@@ -19,6 +19,6 @@ export const inputs = [
   {
     title: "postcode/ZIP",
     placeholder: "",
-    type: "number"
+    type: "number",
   },
 ];
