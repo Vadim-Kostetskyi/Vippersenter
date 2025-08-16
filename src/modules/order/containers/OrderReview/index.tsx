@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import ShoppingBagList from "modules/core/components/ShoppingBagList";
 import { Attributes, CartItem, getCartItems } from "utils/card";
 import styles from "./index.module.scss";
@@ -6,6 +7,12 @@ import styles from "./index.module.scss";
 const OrderReview = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
+  const { t } = useTranslation();
+
+  const cartPrices = cartItems.map((e) => e.price * e.quantity)
+  const totalCartPrice = cartPrices.reduce((acc, num) => acc + num, 0);
+  console.log(totalCartPrice);
+  
   useEffect(() => {
     setCartItems(getCartItems());
   }, []);
@@ -44,6 +51,13 @@ const OrderReview = () => {
         setProducts={onSetProducts}
         delProduct={removeCartItem}
       />
+      <div className={styles.totalBox}>
+        <span>{t("order.total")}</span>
+        <span>
+          {totalCartPrice}
+          {t("currency")}
+        </span>
+      </div>
     </div>
   );
 };
