@@ -18,7 +18,7 @@ const CustomerDetails = () => {
   }
 
   useEffect(() => {
-    fetch("http://localhost/vise-data-base/api/v1/order/sities.php")
+    fetch("http://localhost/vise-data-base/api/v1/order/posten/sities.php")
       .then((res) => res.json())
       .then((data) => setCountriesList(data))
       .catch((err) => console.error("Fetch error:", err));

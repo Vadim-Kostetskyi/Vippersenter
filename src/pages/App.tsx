@@ -9,6 +9,7 @@ import ProductFormPage from "./ProductFormPage";
 import PrivateRoute from "storeRedux/PrivateRoute";
 import ProductCategoryPage from "./ProductCategoryPage";
 import ProductCategoriesPage from "./ProductCategoriesPage";
+import DeliverySelector from "./DeliverySelector";
 
 const App = () => (
   <>
@@ -17,7 +18,7 @@ const App = () => (
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/about-us" element={<AboutUs />} />
-      <Route path="/checkout" element={<CheckoutPage />} />
+      <Route path="/checkout" element={<DeliverySelector />} />
       <Route path="/product/:productId" element={<ProductPage />} />
       <Route path="/product-category" element={<ProductCategoriesPage />} />
       <Route
