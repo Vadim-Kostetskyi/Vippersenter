@@ -72,7 +72,7 @@ const PostnordDelivery = () => {
         onSetTitle={handleSelect}
         selected={selectedPoint?.id}
       />}
-      {deliveryPrice !== null && <div>Ціна доставки: {deliveryPrice} NOK</div>} {/* delete */}
+      {deliveryPrice !== null && <div>Ціна доставки: {deliveryPrice} шекелів</div>} {/* delete */}
     </div>
   );
 };
