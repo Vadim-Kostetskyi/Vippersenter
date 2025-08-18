@@ -70,15 +70,22 @@ const ProductCard = () => {
 
   const { t } = useTranslation();
 
+  const selected = useMemo(() => {
+    return Object.fromEntries(
+      selectedAttributes.map(({ name, attributeName }) => [name, attributeName])
+    );
+  }, [selectedAttributes]);
+
+  useEffect(() => {
+    setCount(1);
+  }, [selected]);
+
+
   const getSelectedVariantData = (
     attributes: Attribute[],
     selectedAttributes: Value[]
   ): Attribute | null => {
     if (selectedAttributes.length === 0) return null;
-
-    const selected = Object.fromEntries(
-      selectedAttributes.map(({ name, attributeName }) => [name, attributeName])
-    );
 
     return (
       attributes.find((attr) => {
