@@ -17,7 +17,10 @@ const ProductAttributes: FC<ProductAttributesProps> = ({
   onSelect,
   availableValues,
   lastAttr,
-}) => (
+}) => {
+  console.log(availableValues);
+  
+  return (
   <>
     <h3 className={styles.title}>{title}</h3>
     <div className={styles.valueBox}>
@@ -28,10 +31,10 @@ const ProductAttributes: FC<ProductAttributesProps> = ({
             selectedValue === attribute ? styles.active : ""
           } ${
             !availableValues.has(attribute)
-              ? styles.disabled && lastAttr
+              ? styles.disabled
               : selectedValue === attribute
               ? styles.active
-              : ""
+              : "sdfsdf"
           }`}
           onClick={() => onSelect(title, attribute)}
           disabled={!availableValues.has(attribute) && lastAttr}
@@ -41,6 +44,6 @@ const ProductAttributes: FC<ProductAttributesProps> = ({
       ))}
     </div>
   </>
-);
+)};
 
 export default ProductAttributes;

@@ -31,12 +31,15 @@
 }
 
 .disabled{
-  cursor: no-drop;
+  // cursor: no-drop;
   border-color: $blackLightTransparent;
+    color: $grayMedium;
+
 
   &:hover,
   &:focus {
-    color: $blackLightTransparent;
-    background-color: $whiteColor;
+    color: $grayMedium;
+    // color: $blackLightTransparent;
+    // background-color: $whiteColor;
   }
 }
