@@ -4,9 +4,9 @@ import { skipToken } from "@reduxjs/toolkit/query";
 import InputField from "components/InputField";
 import DropdownOrder from "modules/order/components/DropdownOrder";
 import { inputs } from "./data";
-import styles from "./index.module.scss";
 import { useCalculateDeliveryQuery, useGetPostnordServicePointsQuery } from "storeRedux/ordersApi";
 import Loader from "components/Loader";
+import styles from "./index.module.scss";
 
 interface PostnordDeliveryProps {
   setPrice: (price: number) => void;
@@ -23,8 +23,10 @@ const PostnordDelivery: FC<PostnordDeliveryProps> = ({ setPrice }) => {
     postalCode >= 1000 && postalCode < 10000 ? String(postalCode) : skipToken
   );
 
-  const { data: deliveryData, refetch: refetchDelivery } =
+  const { data: deliveryData } =
     useCalculateDeliveryQuery(selectedPoint?.postalCode || skipToken);
+  
+  useEffect(() => setPrice(0), []);
 
   useEffect(() => {
     if (data) {
@@ -50,10 +52,6 @@ const PostnordDelivery: FC<PostnordDeliveryProps> = ({ setPrice }) => {
     if (!point) return;
     setSelectedPoint(point);
   };
-
-  console.log(isSuccess);
-  
-  
 
   return (
     <div className={styles.postnordDelivery}>

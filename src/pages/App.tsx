@@ -9,7 +9,6 @@ import ProductFormPage from "./ProductFormPage";
 import PrivateRoute from "storeRedux/PrivateRoute";
 import ProductCategoryPage from "./ProductCategoryPage";
 import ProductCategoriesPage from "./ProductCategoriesPage";
-import CustomerDetails from "modules/order/containers/CustomerDetails/indexPosten";
 
 const App = () => (
   <>
@@ -17,7 +16,7 @@ const App = () => (
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/about-us" element={<CustomerDetails />} />
+      <Route path="/about-us" element={<AboutUs />} />
       <Route path="/checkout" element={<CheckoutPage />} />
       <Route path="/product/:productId" element={<ProductPage />} />
       <Route path="/product-category" element={<ProductCategoriesPage />} />

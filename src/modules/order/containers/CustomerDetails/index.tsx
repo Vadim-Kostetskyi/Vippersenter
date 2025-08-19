@@ -6,6 +6,7 @@ import { inputs } from "./data";
 import postnordLogo from 'assets/image/post/postnordLogo.webp'
 import postenLogo from "assets/image/post/postenLogo.png";
 import styles from "./index.module.scss";
+import PostenDelivery from "../PostenDelivery";
 
 interface CustomerDetailsProps {
   setPrice: (price: number) => void;
@@ -56,8 +57,10 @@ const CustomerDetails: FC<CustomerDetailsProps> = ({ setPrice }) => {
           </label>
         </div>
 
-        {delivery === "postnord" ? null : (
+        {delivery === "postnord" ? (
           <PostnordDelivery setPrice={setPrice} />
+        ) : (
+          <PostenDelivery />
         )}
         <label htmlFor="orderComments" className={styles.orderComments}>
           <span>{t("order.orderNotes")}</span>

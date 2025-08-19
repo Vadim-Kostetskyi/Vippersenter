@@ -13,7 +13,7 @@ const DropdownOrder: FC<DropdownProps> = ({
   list,
   selected,
   onSetTitle,
-}) =>  (
+}) => (
   <select
     className={styles.dropdown}
     onChange={(e) => onSetTitle(e.target.value)}
@@ -23,9 +23,10 @@ const DropdownOrder: FC<DropdownProps> = ({
       {title}
     </option>
     {list.map((p) => (
-      <option key={p.id} value={p.id}>
-        {p.name} — {p.address}, {p.city}
-      </option>
+      // <option key={p.id} value={p.id}>
+      //   {p.name} — {p.address}, {p.city}
+      // </option>
+      <option key={p} value={p}>{p}</option>
     ))}
   </select>
 );

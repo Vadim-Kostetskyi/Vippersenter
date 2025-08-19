@@ -1,0 +1,34 @@
+@use "styles/bootstrap" as *;
+
+.postnordDelivery {
+
+  margin-bottom: 15px;
+
+  input[type=number] {
+    -moz-appearance: textfield;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+}
+
+.plug{
+  width: 100%;
+  height: 39px;
+  text-align: center;
+  border: 1px solid $slateGrayDark;
+
+  & span{
+    line-height: 39px;
+    color: $alertRed;
+  }
+}
+
+.plugError{
+  @extend .plug;
+
+  border-color: $alertRed;
+}
