@@ -56,3 +56,16 @@ export interface RegisterResponse {
 }
 
 export interface User {}
+
+export interface ServicePoint {
+  id: string;
+  name: string;
+  address: string;
+  postalCode: string;
+  city: string;
+}
+
+export interface PlaceOrderRequest {
+  items: { productId: string; quantity: number }[];
+  totalPrice: number;
+}

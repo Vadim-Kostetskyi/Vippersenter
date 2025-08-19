@@ -16,7 +16,6 @@ const OrderReview: FC<OrderReviewProps> = ({ deliveryPrice }) => {
 
   const cartPrices = cartItems.map((e) => e.price * e.quantity);
   const totalCartPrice = cartPrices.reduce((acc, num) => acc + num, 0);
-  console.log(totalCartPrice);
 
   useEffect(() => {
     setCartItems(getCartItems());

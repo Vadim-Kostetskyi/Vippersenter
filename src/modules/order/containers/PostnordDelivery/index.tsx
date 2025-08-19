@@ -1,9 +1,11 @@
 import { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { skipToken } from "@reduxjs/toolkit/query";
 import InputField from "components/InputField";
 import DropdownOrder from "modules/order/components/DropdownOrder";
 import { inputs } from "./data";
 import styles from "./index.module.scss";
+import { useCalculateDeliveryQuery, useGetPostnordServicePointsQuery } from "storeRedux/ordersApi";
 
 interface PostnordDeliveryProps {
   setPrice: (price: number) => void;
@@ -12,49 +14,40 @@ interface PostnordDeliveryProps {
 const PostnordDelivery: FC<PostnordDeliveryProps> = ({ setPrice }) => {
   const [postalCode, setPostalCode] = useState(0);
   const [points, setPoints] = useState<any[]>([]);
-  const [selectedPoint, setSelectedPoint] = useState<any>(null);
-
-  useEffect(() => {
-    if (postalCode >= 1000 && postalCode < 10000) {
-      fetchPoints();
-    }
-  }, [postalCode]);
-
+  const [selectedPoint, setSelectedPoint] = useState<any>(null);  
 
   const { t } = useTranslation();
 
-  const fetchPoints = async () => {
-    const res = await fetch(
-      `/myAPI/api/v1/order/postnord/getServicePoints.php?postalCode=${postalCode}`
-    );
-    const data = await res.json();
-    setPoints(data);
-    setSelectedPoint(null);
-    setPrice(0);
-  };
+  const { data, isFetching } = useGetPostnordServicePointsQuery(
+    postalCode >= 1000 && postalCode < 10000 ? String(postalCode) : skipToken
+  );  
 
-  const handleSelect = async (pointId: string) => {
-    const point = points.find((p) => p.id === pointId);
-    if (!point) return;
+  const { data: deliveryData, refetch: refetchDelivery } =
+    useCalculateDeliveryQuery(selectedPoint?.postalCode || skipToken);
 
-    setSelectedPoint(point);
-
-    try {
-      const res = await fetch(
-        `/myAPI/api/v1/order/postnord/calculateDelivery.php?toPostalCode=${point.postalCode}`
-      );
-      const data = await res.json();
-
-      if (data.error) {
-        setPrice(0);
-        alert(data.error);
-      } else {
-        setPrice(data.price);
-      }
-    } catch (err) {
-      console.error(err);
+  useEffect(() => {
+    if (data) {
+      setPoints(data);
+      setSelectedPoint(null);
       setPrice(0);
     }
+  }, [data]);
+
+  useEffect(() => {
+    if (deliveryData) {
+      if (deliveryData.error) {
+        setPrice(0);
+        alert(deliveryData.error);
+      } else {
+        setPrice(deliveryData.price);
+      }
+    }
+  }, [deliveryData]);
+
+  const handleSelect = (pointId: string) => {
+    const point = points.find((p) => p.id === pointId);
+    if (!point) return;
+    setSelectedPoint(point);
   };
 
   return (

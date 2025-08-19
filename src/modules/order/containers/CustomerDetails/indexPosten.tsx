@@ -7,9 +7,7 @@ import styles from "./index.module.scss";
 
 const CustomerDetails = () => {
   const [selectedCity, setSelectedCity] = useState('вапвап');
-  const [countriesList, setCountriesList] = useState([]);
-  console.log(countriesList);
-  
+  const [countriesList, setCountriesList] = useState([]);  
 
   const { t } = useTranslation();
 
