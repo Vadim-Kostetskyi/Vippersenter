@@ -18,5 +18,17 @@
 .plug{
   width: 100%;
   height: 39px;
+  text-align: center;
   border: 1px solid $slateGrayDark;
+
+  & span{
+    line-height: 39px;
+    color: $alertRed;
+  }
+}
+
+.plugError{
+  @extend .plug;
+
+  border-color: $alertRed;
 }

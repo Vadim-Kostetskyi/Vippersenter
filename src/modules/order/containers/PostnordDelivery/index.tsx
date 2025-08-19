@@ -6,6 +6,7 @@ import DropdownOrder from "modules/order/components/DropdownOrder";
 import { inputs } from "./data";
 import styles from "./index.module.scss";
 import { useCalculateDeliveryQuery, useGetPostnordServicePointsQuery } from "storeRedux/ordersApi";
+import Loader from "components/Loader";
 
 interface PostnordDeliveryProps {
   setPrice: (price: number) => void;
@@ -18,9 +19,9 @@ const PostnordDelivery: FC<PostnordDeliveryProps> = ({ setPrice }) => {
 
   const { t } = useTranslation();
 
-  const { data, isFetching } = useGetPostnordServicePointsQuery(
+  const { data, isFetching, isSuccess } = useGetPostnordServicePointsQuery(
     postalCode >= 1000 && postalCode < 10000 ? String(postalCode) : skipToken
-  );  
+  );
 
   const { data: deliveryData, refetch: refetchDelivery } =
     useCalculateDeliveryQuery(selectedPoint?.postalCode || skipToken);
@@ -50,6 +51,10 @@ const PostnordDelivery: FC<PostnordDeliveryProps> = ({ setPrice }) => {
     setSelectedPoint(point);
   };
 
+  console.log(isSuccess);
+  
+  
+
   return (
     <div className={styles.postnordDelivery}>
       {inputs.map(({ title, placeholder, type }) => (
@@ -70,7 +75,16 @@ const PostnordDelivery: FC<PostnordDeliveryProps> = ({ setPrice }) => {
           selected={selectedPoint?.id}
         />
       ) : (
-        <div className={styles.plug}></div>
+        <div
+          className={
+            !isFetching && isSuccess ? styles.plugError : styles.plug
+          }
+        >
+          {isFetching ? <Loader /> : null}{" "}
+          {!isFetching && isSuccess ? (
+            <span>{t("order.incorrectBranchNumber")}</span>
+          ) : null}
+        </div>
       )}
     </div>
   );

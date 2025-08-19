@@ -1,9 +1,12 @@
 import Load from "assets/svg/Load";
+import styles from "./index.module.scss";
 
 const Loader = () => {
-  return <>
-  <Load />
-  </>
+  return (
+    <div className={styles.loader}>
+      <Load />
+    </div>
+  )
 };
 
 export default Loader;

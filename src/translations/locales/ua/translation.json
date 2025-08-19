@@ -93,7 +93,9 @@
     "selectBranch": "Виберіть відділення",
     "total": "Разом",
     "productPrice": "Ціна товару",
-    "shippingCost": "Ціна доставки"
+    "shippingCost": "Ціна доставки",
+    "enterBranchNumber": "Введіть номер відділення",
+    "incorrectBranchNumber": "Невірний номер відділення"
   },
 
   "catalog": "Каталог",

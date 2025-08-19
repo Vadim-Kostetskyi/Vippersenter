@@ -77,7 +77,7 @@ const removeCartItem = (slug: string, attributes?: Attributes[]) => {
       />
       <div className={styles.priceBox}>
         {prices.map((props) => (
-          <OrderPrice {...props} />
+          <OrderPrice key={props.title} {...props} />
         ))}
       </div>
     </div>

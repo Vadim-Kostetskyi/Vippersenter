@@ -3,10 +3,10 @@ import { JSX } from "react";
 const Load = ({ className }: { className?: string }): JSX.Element => (
   <svg
     className={className}
-    viewBox="2 2 28 28"
+    viewBox="-2 -2 28 28"
     fill="fff"
-    width="20px"
-    height="20px"
+    width="25px"
+    height="25px"
   >
       <path d="M9.873 2.387c0 1.318 1.069 2.387 2.387 2.387s2.387-1.069 2.387-2.387v0c0-1.318-1.069-2.387-2.387-2.387s-2.387 1.069-2.387 2.387v0z"></path>
       <path d="M15.792 4.395c0 1.243 1.008 2.251 2.251 2.251s2.251-1.008 2.251-2.251v0c0-1.243-1.008-2.251-2.251-2.251s-2.251 1.008-2.251 2.251v0z"></path>

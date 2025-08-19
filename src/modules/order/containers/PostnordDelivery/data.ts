@@ -18,7 +18,7 @@ export const inputs = [
   // },
   {
     title: "postcode/ZIP",
-    placeholder: "",
+    placeholder: "enterBranchNumber",
     type: "number",
   },
 ];
