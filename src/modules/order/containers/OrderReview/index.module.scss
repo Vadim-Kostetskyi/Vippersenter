@@ -1,15 +1,19 @@
 @use "styles/bootstrap" as *;
 
 .orderReview{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   padding: 20px;
   border: 1px solid $lightGrey;
   border-radius: 4px;
+  background-color: $whiteColor;
 }
 
-.totalBox{
-  display: flex;
-  justify-content: space-between;
+.priceBox{
   padding: 30px 0;
-  font-size: 16px;
-  font-weight: 700;
+
+  & > div:not(:last-child){
+    margin-bottom: 10px;
+  }
 }

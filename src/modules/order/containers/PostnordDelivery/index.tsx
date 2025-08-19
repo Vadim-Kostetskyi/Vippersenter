@@ -1,53 +1,62 @@
+import { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import InputField from "components/InputField";
+import DropdownOrder from "modules/order/components/DropdownOrder";
 import { inputs } from "./data";
 import styles from "./index.module.scss";
-import { useState } from "react";
-import DropdownOrder from "modules/order/components/DropdownOrder";
 
-const PostnordDelivery = () => {
+interface PostnordDeliveryProps {
+  setPrice: (price: number) => void;
+}
+
+const PostnordDelivery: FC<PostnordDeliveryProps> = ({ setPrice }) => {
   const [postalCode, setPostalCode] = useState(0);
-    const [points, setPoints] = useState<any[]>([]);
-    const [selectedPoint, setSelectedPoint] = useState<any>(null);
-    const [deliveryPrice, setDeliveryPrice] = useState<number | null>(null);
+  const [points, setPoints] = useState<any[]>([]);
+  const [selectedPoint, setSelectedPoint] = useState<any>(null);
+
+  useEffect(() => {
+    if (postalCode >= 1000 && postalCode < 10000) {
+      fetchPoints();
+    }
+  }, [postalCode]);
+
 
   const { t } = useTranslation();
 
-    const fetchPoints = async () => {
+  const fetchPoints = async () => {
+    const res = await fetch(
+      `/myAPI/api/v1/order/postnord/getServicePoints.php?postalCode=${postalCode}`
+    );
+    const data = await res.json();
+    setPoints(data);
+    setSelectedPoint(null);
+    setPrice(0);
+  };
+
+  const handleSelect = async (pointId: string) => {
+    const point = points.find((p) => p.id === pointId);
+    if (!point) return;
+
+    setSelectedPoint(point);
+
+    try {
       const res = await fetch(
-        `http://localhost/vise-data-base/api/v1/order/postnord/getServicePoints.php?postalCode=${postalCode}`
+        `/myAPI/api/v1/order/postnord/calculateDelivery.php?toPostalCode=${point.postalCode}`
       );
       const data = await res.json();
-      setPoints(data);
-      setSelectedPoint(null);
-      setDeliveryPrice(null);
-  };
-  
-  const handleSelect = async (pointId: string) => {
-    
-      const point = points.find((p) => p.id === pointId);
-      if (!point) return;
 
-      setSelectedPoint(point);
-
-      try {
-        const res = await fetch(
-          `http://localhost/vise-data-base/api/v1/order/postnord/calculateDelivery.php?toPostalCode=${point.postalCode}`
-        );
-        const data = await res.json();
-
-        if (data.error) {
-          setDeliveryPrice(null);
-          alert(data.error);
-        } else {
-          setDeliveryPrice(data.price);
-        }
-      } catch (err) {
-        console.error(err);
-        setDeliveryPrice(null);
+      if (data.error) {
+        setPrice(0);
+        alert(data.error);
+      } else {
+        setPrice(data.price);
       }
+    } catch (err) {
+      console.error(err);
+      setPrice(0);
+    }
   };
-  
+
   return (
     <div className={styles.postnordDelivery}>
       {inputs.map(({ title, placeholder, type }) => (
@@ -57,22 +66,19 @@ const PostnordDelivery = () => {
           title={t(`order.${title}`)}
           placeholder={placeholder ? t(`order.${placeholder}`) : ""}
           onChange={(e) => setPostalCode(+e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && postalCode >= 1000) {
-              fetchPoints();
-            }
-          }}
           require={true}
         />
       ))}
-
-      {points.length > 0 && <DropdownOrder
-        title={t("order.selectBranch")}
-        list={points}
-        onSetTitle={handleSelect}
-        selected={selectedPoint?.id}
-      />}
-      {deliveryPrice !== null && <div>Ціна доставки: {deliveryPrice} шекелів</div>} {/* delete */}
+      {points.length > 0 ? (
+        <DropdownOrder
+          title={t("order.selectBranch")}
+          list={points}
+          onSetTitle={handleSelect}
+          selected={selectedPoint?.id}
+        />
+      ) : (
+        <div className={styles.plug}></div>
+      )}
     </div>
   );
 };

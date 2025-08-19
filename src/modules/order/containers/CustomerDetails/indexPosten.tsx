@@ -28,7 +28,7 @@ const CustomerDetails = () => {
     <div className={styles.customerDetails}>
       <h3>{t("order.billingShipping")}</h3>
       <div className={styles.detailsBox}>
-        {inputs.map(({ title, placeholder, type }) =>
+        {inputs.map(({ title, placeholder, type, dropdown }) =>
           dropdown ? (
             <DropdownOrder
               key={title}

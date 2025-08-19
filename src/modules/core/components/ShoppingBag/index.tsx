@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import ShoppingCard from "assets/svg/ShoppingCard";
 import CardButton from "../CardButton";
 import ShoppingBagList from "../ShoppingBagList";
 import { Attributes, CartItem, getCartItems } from "utils/card";
-import { usePlaceOrderMutation } from "storeRedux/productsApi";
+// import { usePlaceOrderMutation } from "storeRedux/productsApi";
 import emptyImg from "assets/svg/EmptyCart.svg";
 import styles from "./index.module.scss";
 
 const ShoppingBag = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [placeOrder] = usePlaceOrderMutation();
+  // const [placeOrder] = usePlaceOrderMutation();
 
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  
 
   const { t } = useTranslation();
   useEffect(() => {
@@ -79,22 +81,22 @@ const ShoppingBag = () => {
     setTimeout(() => setIsVisible(false), 300);
   };
 
-  const onPlaceAnOrder = async () => {
-    const orderData = {
-      items: cartItems.map(({ slug, quantity }) => ({
-        productId: slug,
-        quantity,
-      })),
-      totalPrice: totalCartPrice,
-    };
+  // const onPlaceAnOrder = async () => {
+  //   const orderData = {
+  //     items: cartItems.map(({ slug, quantity }) => ({
+  //       productId: slug,
+  //       quantity,
+  //     })),
+  //     totalPrice: totalCartPrice,
+  //   };
 
-    try {
-      await placeOrder(orderData).unwrap();
-      setCartItems([]);
-    } catch (err) {
-      console.error("Order error:", err);
-    }
-  };
+  //   try {
+  //     await placeOrder(orderData).unwrap();
+  //     setCartItems([]);
+  //   } catch (err) {
+  //     console.error("Order error:", err);
+  //   }
+  // };
 
   return (
     <>
@@ -142,11 +144,13 @@ const ShoppingBag = () => {
                 title={t("shoppingCard.continueShopping")}
                 onClick={onClose}
               />
-              <CardButton
-                title={t("shoppingCard.placeAnOrder")}
-                onClick={onPlaceAnOrder}
-                placeOrder={true}
-              />
+              <Link to={cartItems.length > 0 ? "/checkout" : "#"}>
+                <CardButton
+                  title={t("shoppingCard.placeAnOrder")}
+                  // onClick={onPlaceAnOrder}
+                  placeOrder={true}
+                />
+              </Link>
             </div>
           </div>
         </div>

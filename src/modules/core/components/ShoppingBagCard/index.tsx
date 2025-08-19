@@ -127,7 +127,7 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
             >
               <Minus />
             </button>
-            <input type="number" value={count} />
+            <input type="number" value={count} readOnly />
             <button
               className={count >= maxQuantity ? styles.disabled : ""}
               onClick={handleIncrement}

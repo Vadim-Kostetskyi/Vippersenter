@@ -9,7 +9,7 @@
   bottom: 0;
   width: 100%;
   padding: 0 0 5px;
-  background-color: $pageBackground;
+  background-color: $whiteColor;
   z-index: 10000;
 
   @include media(laptop) {

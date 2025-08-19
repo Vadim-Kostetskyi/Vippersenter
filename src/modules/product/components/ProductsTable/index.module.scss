@@ -42,7 +42,7 @@
 .trashIcon {
   width: 30px;
   height: 30px;
-  fill: $pageBackground;
+  fill: $whiteColor;
   // background-color: red;
   border-radius: 50%;
 }
@@ -76,7 +76,7 @@
 
   & span{
     padding: 2px 5px;
-    border: 1px solid $pageBackground;
+    border: 1px solid $whiteColor;
   }
 
   & input{

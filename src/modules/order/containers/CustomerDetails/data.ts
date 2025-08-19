@@ -25,11 +25,11 @@ export const inputs = [
   // //   title: "streetAddress",
   // //   placeholder: "houseNumberAndStreetName",
   // // },
-  // {
-  //   title: "town",
-  //   placeholder: "",
-  //   // dropdown: true,
-  // },
+  {
+    title: "town",
+    placeholder: "",
+    dropdown: true,
+  },
   // {
   //   title: "county",
   //   placeholder: "",

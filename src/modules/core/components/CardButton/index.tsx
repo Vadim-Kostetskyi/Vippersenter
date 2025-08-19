@@ -3,7 +3,7 @@ import styles from "./index.module.scss";
 
 interface CardButtonProps {
   title: string;
-  onClick: () => void;
+  onClick?: () => void;
   placeOrder?: boolean;
 }
 
