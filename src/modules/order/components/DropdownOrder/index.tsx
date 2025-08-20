@@ -1,5 +1,6 @@
 import { FC } from "react";
 import styles from "./index.module.scss";
+import { useTranslation } from "react-i18next";
 
 interface DropdownProps {
   title: string;
@@ -13,22 +14,39 @@ const DropdownOrder: FC<DropdownProps> = ({
   list,
   selected,
   onSetTitle,
-}) => (
-  <select
-    className={styles.dropdown}
-    onChange={(e) => onSetTitle(e.target.value)}
-    value={selected || ""}
-  >
-    <option value="" disabled>
-      {title}
-    </option>
-    {list.map((p) => (
-      // <option key={p.id} value={p.id}>
-      //   {p.name} — {p.address}, {p.city}
-      // </option>
-      <option key={p} value={p}>{p}</option>
-    ))}
-  </select>
-);
+}) => {
+  const { t } = useTranslation();
+
+  // console.log(list);
+  // console.log(title);
+  
+  
+
+  return (
+    <select
+      className={styles.dropdown}
+      onChange={(e) => onSetTitle(e.target.value)}
+      value={selected || ""}
+    >
+      <option value="" disabled>
+        {title}
+      </option>
+      {list.map((p) => {
+        if (typeof p === "string") {
+          return (
+            <option key={p} value={p}>
+              {p}
+            </option>
+          );
+        }
+
+          return (
+          <option key={p.postal_code} value={p.postal_code}>
+            {p.city} — {p.postal_code} {p.address || ""}
+          </option>
+        );
+      })}
+    </select>
+  );};
 
 export default DropdownOrder;
