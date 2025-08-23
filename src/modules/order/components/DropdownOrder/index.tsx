@@ -17,11 +17,6 @@ const DropdownOrder: FC<DropdownProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  // console.log(list);
-  // console.log(title);
-  
-  
-
   return (
     <select
       className={styles.dropdown}
@@ -41,10 +36,10 @@ const DropdownOrder: FC<DropdownProps> = ({
         }
 
           return (
-          <option key={p.postal_code} value={p.postal_code}>
-            {p.city} — {p.postal_code} {p.address || ""}
-          </option>
-        );
+            <option key={p.id} value={p.id}>
+              {p.name} — {p.address || ""}, {p.city}
+            </option>
+          );
       })}
     </select>
   );};

@@ -22,10 +22,17 @@ const PostenDelivery = () => {
 
   useEffect(() => {
     fetch(
-      `http://localhost/vise-data-base/api/v1/order/posten/post-offices.php?postalCode=2560`
+      "http://localhost/vise-data-base/api/v1/order/posten/post-offices.php?postalCode=0170"
     )
       .then((res) => res.json())
-      .then((data) => console.log(data));
+      .then((data) => console.log('data', data));
+
+
+
+
+    // https://api.bring.com/address/api/NO/addresses?address_type=street&q=Skrautvål
+
+
 
   }, [selectedCity]);
   
