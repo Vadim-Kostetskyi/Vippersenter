@@ -5,16 +5,15 @@ import ShoppingCard from "assets/svg/ShoppingCard";
 import CardButton from "../CardButton";
 import ShoppingBagList from "../ShoppingBagList";
 import { Attributes, CartItem, getCartItems } from "utils/card";
-// import { usePlaceOrderMutation } from "storeRedux/productsApi";
 import emptyImg from "assets/svg/EmptyCart.svg";
 import styles from "./index.module.scss";
 
 const ShoppingBag = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
-  // const [placeOrder] = usePlaceOrderMutation();
-
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  console.log(cartItems);
+  
   
 
   const { t } = useTranslation();
@@ -81,23 +80,6 @@ const ShoppingBag = () => {
     setTimeout(() => setIsVisible(false), 300);
   };
 
-  // const onPlaceAnOrder = async () => {
-  //   const orderData = {
-  //     items: cartItems.map(({ slug, quantity }) => ({
-  //       productId: slug,
-  //       quantity,
-  //     })),
-  //     totalPrice: totalCartPrice,
-  //   };
-
-  //   try {
-  //     await placeOrder(orderData).unwrap();
-  //     setCartItems([]);
-  //   } catch (err) {
-  //     console.error("Order error:", err);
-  //   }
-  // };
-
   return (
     <>
       <button className={styles.shoppingBagBtn} onClick={onOpenBag}>
@@ -147,7 +129,6 @@ const ShoppingBag = () => {
               <Link to={cartItems.length > 0 ? "/checkout" : "#"}>
                 <CardButton
                   title={t("shoppingCard.placeAnOrder")}
-                  // onClick={onPlaceAnOrder}
                   placeOrder={true}
                 />
               </Link>

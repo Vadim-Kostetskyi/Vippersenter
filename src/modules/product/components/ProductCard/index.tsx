@@ -199,7 +199,7 @@ const ProductCard = () => {
     product;
 
   const extraPrice = variant ? parseFloat(variant.extraPrice) || 0 : 0;
-  const displayPrice = Number(price) + extraPrice;
+  const fullPrice = Number(price) + extraPrice;
 
   const handleIncrement = () => setCount((prev) => prev + 1);
   const handleDecrement = () => setCount((prev) => (prev > 1 ? prev - 1 : 1));
@@ -207,7 +207,7 @@ const ProductCard = () => {
   const grouped = groupAttributes(attributes || []);
 
   const onAddToCart = () => {
-    addProductToCart(slug, +price, count, selectedAttributes);
+    addProductToCart(slug, +fullPrice, count, selectedAttributes);
     setMaxCount((prev) => prev - count);
     window.dispatchEvent(new Event("cartUpdated"));
   };
@@ -302,7 +302,7 @@ const ProductCard = () => {
       <div className={styles.infoBox}>
         <h1 className={styles.title}>{name}</h1>
         <p className={styles.price}>
-          {displayPrice.toFixed(2)}
+          {fullPrice.toFixed(2)}
           {t("currency")}
         </p>
         {inStock ? (

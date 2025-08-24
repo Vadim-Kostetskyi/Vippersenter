@@ -9,9 +9,9 @@ import { inputs } from "./data";
 const PostenDelivery = () => {
   const [countriesList, setCountriesList] = useState([]);
   const [selectedCity, setSelectedCity] = useState("");
-  const [postList, setPostList] = useState([]);
-  const [selectedPost, setSelectedPost] = useState("");
-  console.log(postList);
+  // const [postList, setPostList] = useState([]);
+  // const [selectedPost, setSelectedPost] = useState("");
+  // console.log(postList);
   
 
   const { t } = useTranslation();
@@ -20,21 +20,15 @@ const PostenDelivery = () => {
     setSelectedCity(city);
   };
 
-  useEffect(() => {
-    fetch(
-      "http://localhost/vise-data-base/api/v1/order/posten/post-offices.php?postalCode=0170"
-    )
-      .then((res) => res.json())
-      .then((data) => console.log('data', data));
-
-
-
-
-    // https://api.bring.com/address/api/NO/addresses?address_type=street&q=Skrautvål
-
-
-
-  }, [selectedCity]);
+  // useEffect(() => {
+// const postalCode = "5019"; // або взяти динамічно
+// fetch(
+//   `http://localhost/vise-data-base/api/v1/order/posten/post-offices.php?postalCode=${postalCode}`
+// )
+//   .then((res) => res.json())
+//   .then((data) => console.log("data", data))
+//   .catch((err) => console.error("Fetch error:", err));
+//   }, [selectedCity]);
   
 // fetch(
 //   `http://localhost/vise-data-base/api/v1/order/posten/post-offices.php?postalCode=4601&city=Kristiansand&street=Markens&streetNumber=12`
@@ -61,14 +55,15 @@ const PostenDelivery = () => {
         selected: selectedCity, // тут поточне значення
         onSetTitle: onSelectCity, // тут функція зміни
       };
-    } else if (input.title === "ZIP") {
-      return {
-        ...input,
-        list: postList || [],
-        selected: selectedPost,
-        onSetTitle: setSelectedPost,
-      };
     }
+    // else if (input.title === "ZIP") {
+    //   return {
+    //     ...input,
+    //     list: postList || [],
+    //     selected: selectedPost,
+    //     onSetTitle: setSelectedPost,
+    //   };
+    // }
     return input;
   });
 
@@ -91,25 +86,30 @@ const PostenDelivery = () => {
   return (
     <div className={styles.customerDetails}>
       <div className={styles.detailsBox}>
-        {props.map(
-          ({ title, placeholder, dropdown, list, selected, onSetTitle }) =>
-            dropdown ? (
+        {props.map((input) => {
+          if ("list" in input) {
+            return (
               <DropdownOrder
-                key={title}
-                title={t(`order.${title}`)}
-                list={list || []} // list беремо з props
-                onSetTitle={onSetTitle} // функція зміни
-                selected={selected} // поточне значення
+                key={input.title}
+                title={t(`order.${input.title}`)}
+                list={input.list}
+                onSetTitle={input.onSetTitle}
+                selected={input.selected}
               />
-            ) : (
+            );
+          } else {
+            return (
               <InputField
-                key={title}
-                title={t(`order.${title}`)}
-                placeholder={placeholder ? t(`order.${placeholder}`) : ""}
+                key={input.title}
+                title={t(`order.${input.title}`)}
+                placeholder={
+                  input.placeholder ? t(`order.${input.placeholder}`) : ""
+                }
                 require={true}
               />
-            )
-        )}
+            );
+          }
+        })}
       </div>
     </div>
   );

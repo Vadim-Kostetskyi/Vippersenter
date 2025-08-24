@@ -4,9 +4,9 @@ export const inputs = [
     placeholder: "",
     dropdown: true,
   },
-  {
-    title: "ZIP",
-    placeholder: "",
-    dropdown: true,
-  },
+  // {
+  //   title: "ZIP",
+  //   placeholder: "",
+  //   dropdown: true,
+  // },
 ];

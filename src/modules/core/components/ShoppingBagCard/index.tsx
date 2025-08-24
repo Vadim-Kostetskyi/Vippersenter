@@ -17,6 +17,7 @@ import { Attribute } from "storeRedux/types";
 
 interface ShoppingBagCardProps {
   slug: string;
+  savedPrice: number;
   assignedQuantity: number;
   setProducts: (items: CartItem[]) => void;
   delProduct: (productId: string, attributes?: Attributes[]) => void;
@@ -25,6 +26,7 @@ interface ShoppingBagCardProps {
 
 const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
   slug,
+  savedPrice,
   assignedQuantity,
   setProducts,
   delProduct,
@@ -34,7 +36,7 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
   const {
     name = "",
     image = "",
-    price = 0,
+    // price = 0,
     quantity = 0,
     attributes,
   } = product ?? {};
@@ -89,7 +91,7 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
     });
   };
 
-  const totalPrice = count * +price;
+  const totalPrice = count * +savedPrice;
   const maxQuantity =
     attributes?.length === 0 ? +quantity : productQuantity || 0;
   

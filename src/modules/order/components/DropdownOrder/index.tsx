@@ -1,6 +1,5 @@
 import { FC } from "react";
 import styles from "./index.module.scss";
-import { useTranslation } from "react-i18next";
 
 interface DropdownProps {
   title: string;
@@ -14,10 +13,7 @@ const DropdownOrder: FC<DropdownProps> = ({
   list,
   selected,
   onSetTitle,
-}) => {
-  const { t } = useTranslation();
-
-  return (
+}) => (
     <select
       className={styles.dropdown}
       onChange={(e) => onSetTitle(e.target.value)}
@@ -42,6 +38,6 @@ const DropdownOrder: FC<DropdownProps> = ({
           );
       })}
     </select>
-  );};
+  );
 
 export default DropdownOrder;
