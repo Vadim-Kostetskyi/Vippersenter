@@ -147,16 +147,23 @@ const ProductCard = () => {
   );
 
   useEffect(() => {
+    console.log(!product?.attributes);
+
     if (!product?.attributes) return;
+    // console.log(23);
+    
 
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
     if (product.attributes.length === 0) {
-      const productInCart = cart.find((p: any) => p.slug === productId); 
-      const maxAddable = Math.max(+product?.quantity - productInCart?.quantity, 0);
+      const productInCart = cart.find((p: any) => p.slug === productId);
+      const maxAddable = Math.max(
+        +product?.quantity - productInCart?.quantity,
+        0
+      );
 
       setMaxCount(productInCart ? maxAddable : +product?.quantity);
-      return
+      return;
     }
 
     const variant = getSelectedVariantData(
@@ -169,13 +176,10 @@ const ProductCard = () => {
       (p: any) =>
         p.slug === productId &&
         p.attributes[0]?.attributeName ===
-        selectedAttributes[0]?.attributeName
-        &&
+          selectedAttributes[0]?.attributeName &&
         (p.attributes[1]?.attributeName === undefined ||
           p.attributes[1]?.attributeName ===
-        selectedAttributes[1]?.attributeName
-    )
-      &&
+            selectedAttributes[1]?.attributeName) &&
         (p.attributes[2]?.attributeName === undefined ||
           p.attributes[2]?.attributeName ===
             selectedAttributes[2]?.attributeName)
@@ -183,14 +187,22 @@ const ProductCard = () => {
 
     const alreadyInCart = productInCart?.quantity || 0;
     const maxAddable = Math.max(qty - alreadyInCart, 0);
+    const alreadyInCartMaxAddable = Math.max(
+      +product.quantity - alreadyInCart,
+      0
+    );
+
+    console.log(variant);
+    
 
     if (variant) {
       setMaxCount(maxAddable);
-    }
-    else {
+    } else if (alreadyInCart) {
+      setMaxCount(alreadyInCartMaxAddable);
+    } else {
       setMaxCount(+product.quantity);
     }
-  }, [selectedAttributes, product, productId]);
+  }, [selectedAttributes, product, productId, product?.attributes]);
 
   if (isLoading) return <div>...</div>;
   if (isError || !product) return <div>Data loading error</div>;

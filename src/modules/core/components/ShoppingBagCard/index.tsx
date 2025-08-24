@@ -36,7 +36,7 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
   const {
     name = "",
     image = "",
-    // price = 0,
+    price = 0,
     quantity = 0,
     attributes,
   } = product ?? {};
@@ -90,10 +90,14 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
       return newCount;
     });
   };
-
+  console.log(count);
+  
+  
+  
   const totalPrice = count * +savedPrice;
   const maxQuantity =
-    attributes?.length === 0 ? +quantity : productQuantity || 0;
+  attributes?.length === 1 ? +quantity : productQuantity || 0;
+  console.log(attributes?.length);
   
 
   return (
