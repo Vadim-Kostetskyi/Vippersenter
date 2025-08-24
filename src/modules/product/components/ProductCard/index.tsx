@@ -80,7 +80,6 @@ const ProductCard = () => {
     setCount(1);
   }, [selected]);
 
-
   const getSelectedVariantData = (
     attributes: Attribute[],
     selectedAttributes: Value[]
@@ -97,7 +96,7 @@ const ProductCard = () => {
           attr.value_secondary === selected[attr.attribute_secondary];
         const tertiaryMatch =
           attr.attribute_tertiary &&
-          attr.value_tertiary === selected[attr.attribute_tertiary];        
+          attr.value_tertiary === selected[attr.attribute_tertiary];
 
         if (selectedAttributes.length === 3) {
           return mainMatch && secondaryMatch && tertiaryMatch;
@@ -146,12 +145,9 @@ const ProductCard = () => {
     [product?.attributes, selectedAttributes]
   );
 
-  useEffect(() => {
-    console.log(!product?.attributes);
-
+useEffect(() => {
+  const updateMaxCount = () => {
     if (!product?.attributes) return;
-    // console.log(23);
-    
 
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
@@ -161,7 +157,6 @@ const ProductCard = () => {
         +product?.quantity - productInCart?.quantity,
         0
       );
-
       setMaxCount(productInCart ? maxAddable : +product?.quantity);
       return;
     }
@@ -192,9 +187,6 @@ const ProductCard = () => {
       0
     );
 
-    console.log(variant);
-    
-
     if (variant) {
       setMaxCount(maxAddable);
     } else if (alreadyInCart) {
@@ -202,7 +194,14 @@ const ProductCard = () => {
     } else {
       setMaxCount(+product.quantity);
     }
-  }, [selectedAttributes, product, productId, product?.attributes]);
+  };
+
+  updateMaxCount(); // перший запуск
+
+  window.addEventListener("cartUpdated", updateMaxCount);
+  return () => window.removeEventListener("cartUpdated", updateMaxCount);
+}, [selectedAttributes, product, productId, product?.attributes]);
+
 
   if (isLoading) return <div>...</div>;
   if (isError || !product) return <div>Data loading error</div>;
@@ -294,7 +293,7 @@ const ProductCard = () => {
     });
 
     return { mainValues, secondaryValues, tertiaryValues };
-  }
+  };
 
   const availableValues = getAvailableAttributeValues(
     product.attributes ?? [],
