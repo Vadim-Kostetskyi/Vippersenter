@@ -47,7 +47,7 @@ const FooterInfo = () => {
         </ul>
       </div>
       <div className={styles.copyright}>
-        <p>@ EFFECT 2023</p>
+        <p>@ Vipper Senter 2023</p>
       </div>
     </div>
   );
