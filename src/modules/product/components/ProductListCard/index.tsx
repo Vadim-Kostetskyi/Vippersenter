@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Link } from "react-router-dom";
+import LangLink from "utils/LangLink";
 import { useTranslation } from "react-i18next";
 import styles from "./index.module.scss";
 
@@ -19,7 +19,7 @@ const ProductListCard: FC<ProductListCardProps> = ({
   const { t } = useTranslation();
 
   return (
-    <Link to={`/product/${slug}`} className={styles.productListCard}>
+    <LangLink to={`/product/${slug}`} className={styles.productListCard}>
       <div className={styles.imageBox}>
         <img src={image} alt={name} />
       </div>
@@ -31,7 +31,7 @@ const ProductListCard: FC<ProductListCardProps> = ({
         </p>
         <button>{t("goToProduct")}</button>
       </div>
-    </Link>
+    </LangLink>
   );
 };
 

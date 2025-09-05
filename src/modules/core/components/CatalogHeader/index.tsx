@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import styles from "./index.module.scss";
 import CategoryNames from "components/CategoryNames";
+import LangLink from "utils/LangLink";
+import styles from "./index.module.scss";
 
 const CatalogHeader = () => {
   const { t } = useTranslation();
@@ -10,15 +10,15 @@ const CatalogHeader = () => {
   return (
     <div className={styles.catalogHeader}>
       <div className={styles.lickBox}>
-        <Link to="/product-category" className={styles.link}>
+        <LangLink to="/product-category" className={styles.link}>
           {t("catalog")}
-        </Link>
+        </LangLink>
       </div>
       <div className={styles.subMenu}>
         <ul>
           {list.map(({ key, label }) => (
             <li key={key}>
-              <Link to={`/product-category/${key}`}>{label}</Link>
+              <LangLink to={`/product-category/${key}`}>{label}</LangLink>
             </li>
           ))}
         </ul>

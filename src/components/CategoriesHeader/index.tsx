@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import styles from "./index.module.scss";
+import LangLink from "utils/LangLink";
 import Arrow from "assets/svg/Arrow";
 import CategoryNames from "components/CategoryNames";
+import styles from "./index.module.scss";
 
 const CategoriesHeader = () => {
   const { t } = useTranslation();
@@ -13,7 +13,7 @@ const CategoriesHeader = () => {
       {list.map(({ key, label }) => {
         return (
           <li key={key}>
-            <Link to={`/product-category/${key}`}>{label}</Link>
+            <LangLink to={`/product-category/${key}`}>{label}</LangLink>
             <Arrow />
           </li>
         );

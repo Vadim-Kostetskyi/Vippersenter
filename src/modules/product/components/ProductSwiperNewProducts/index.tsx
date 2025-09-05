@@ -1,5 +1,5 @@
 import { SwiperSlide } from "swiper/react";
-import { Link } from "react-router-dom";
+import LangLink from "utils/LangLink";
 import { useTranslation } from "react-i18next";
 import CoreSwiper from "components/CoreSwiper";
 import { breakpoints } from "utils/constants";
@@ -19,7 +19,7 @@ const ProductSwiperNewProducts = () => {
         {newProducts &&
           newProducts.map(({ name, image, price, slug }) => (
             <SwiperSlide>
-              <Link to={`/product/${slug}`} className={styles.itemsWrapper}>
+              <LangLink to={`/product/${slug}`} className={styles.itemsWrapper}>
                 <div>
                   <div className={styles.imageWrapper}>
                     <picture>
@@ -35,7 +35,7 @@ const ProductSwiperNewProducts = () => {
                   </div>
                 </div>
                 <button>{t("goToProduct")}</button>
-              </Link>
+              </LangLink>
             </SwiperSlide>
           ))}
       </CoreSwiper>

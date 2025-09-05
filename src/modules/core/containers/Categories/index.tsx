@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import LangLink from "utils/LangLink";
 import CategoryCard from "modules/core/components/CategoryCard";
 import CategoryNames from "components/CategoryNames";
 import { categories } from "./data";
@@ -12,13 +12,13 @@ const Categories = () => {
   return (
     <div className={styles.categories}>
       {categories.map(({ image, categoryName }) => (
-        <Link to={`/product-category/${categoryName}`} key={categoryName}>
+        <LangLink to={`/product-category/${categoryName}`} key={categoryName}>
           <CategoryCard
             image={image}
             categoryName={byKey[categoryName]}
             key={categoryName}
           />
-        </Link>
+        </LangLink>
       ))}
     </div>
   );

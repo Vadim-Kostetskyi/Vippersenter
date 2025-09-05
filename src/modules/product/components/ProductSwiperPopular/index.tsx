@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import LangLink from "utils/LangLink";
 import { SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import { useTranslation } from "react-i18next";
@@ -25,7 +25,7 @@ const ProductSwiperPopular = () => {
         {popularProducts &&
           popularProducts.map(({ name, image, price, slug }) => (
             <SwiperSlide>
-              <Link to={`/product/${slug}`} className={styles.itemsWrapper}>
+              <LangLink to={`/product/${slug}`} className={styles.itemsWrapper}>
                 <div>
                   <div className={styles.imageWrapper}>
                     <picture>
@@ -41,7 +41,7 @@ const ProductSwiperPopular = () => {
                   </div>
                 </div>
                 <button>{t("goToProduct")}</button>
-              </Link>
+              </LangLink>
             </SwiperSlide>
           ))}
       </CoreSwiper>

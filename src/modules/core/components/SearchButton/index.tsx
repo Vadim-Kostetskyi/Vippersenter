@@ -1,5 +1,5 @@
 import { useState, FC } from "react";
-import { Link } from "react-router-dom";
+import LangLink from "utils/LangLink";
 import { useGetProductsBySearchQuery } from "storeRedux/productsApi";
 import Search from "assets/svg/Search";
 import styles from "./index.module.scss";
@@ -58,14 +58,14 @@ const SearchButton: FC<SearchButtonProps> = ({ isLaptop }) => {
                   {products?.length ? (
                     products.map(({ image, name, slug }) => (
                       <li key={slug}>
-                        <Link to={`/product/${slug}`}>
+                        <LangLink to={`/product/${slug}`}>
                           <img
                             src={image}
                             alt={name}
                             className={styles.searchListImage}
                           />
                           {name}
-                        </Link>
+                        </LangLink>
                       </li>
                     ))
                   ) : (

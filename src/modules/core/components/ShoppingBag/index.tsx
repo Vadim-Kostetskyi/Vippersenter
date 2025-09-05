@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import LangLink from "utils/LangLink";
 import ShoppingCard from "assets/svg/ShoppingCard";
 import CardButton from "../CardButton";
 import ShoppingBagList from "../ShoppingBagList";
@@ -45,10 +45,7 @@ const ShoppingBag = () => {
     window.dispatchEvent(new Event("cartUpdated"));
   };
 
-  const removeCartItem = (
-    slug: string,
-    attributes?: Attributes[]
-  ) => {
+  const removeCartItem = (slug: string, attributes?: Attributes[]) => {
     const updatedCart = cartItems.filter((item) => {
       if (item.slug !== slug) return true;
 
@@ -57,7 +54,11 @@ const ShoppingBag = () => {
       if (item.attributes.length !== attributes.length) return true;
 
       const isSame = item.attributes.every((attr) =>
-        attributes.some((a) => a.attributeName === attr.name && a.attributeName === attr.attributeName)
+        attributes.some(
+          (a) =>
+            a.attributeName === attr.name &&
+            a.attributeName === attr.attributeName
+        )
       );
 
       return !isSame;
@@ -123,12 +124,12 @@ const ShoppingBag = () => {
                 title={t("shoppingCard.continueShopping")}
                 onClick={onClose}
               />
-              <Link to={cartItems.length > 0 ? "/checkout" : "#"}>
+              <LangLink to={cartItems.length > 0 ? "/checkout" : "#"}>
                 <CardButton
                   title={t("shoppingCard.placeAnOrder")}
                   placeOrder={true}
                 />
-              </Link>
+              </LangLink>
             </div>
           </div>
         </div>

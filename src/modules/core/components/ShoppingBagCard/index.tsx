@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { Link } from "react-router-dom";
+import LangLink from "utils/LangLink";
 import { useGetProductBySlugQuery } from "storeRedux/productsApi";
 import TrashIcon from "assets/svg/TrashCan.svg";
 import styles from "./index.module.scss";
@@ -90,21 +90,21 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
       return newCount;
     });
   };
-  
+
   const totalPrice = count * +savedPrice;
   const maxQuantity =
-  attributes?.length === 1 ? +quantity : productQuantity || 0;  
+    attributes?.length === 1 ? +quantity : productQuantity || 0;
 
   return (
     <div className={styles.shoppingBagCard}>
-      <Link to={`/product/${slug}`}>
+      <LangLink to={`/product/${slug}`}>
         {!!image && <img src={image} alt="" />}
-      </Link>
+      </LangLink>
       <div className={styles.infoBox}>
         <div>
-          <Link to={`/product/${slug}`}>
+          <LangLink to={`/product/${slug}`}>
             <h3>{name}</h3>
-          </Link>
+          </LangLink>
           <button
             onClick={() => {
               removeCartItem(slug, assignedAttributes);

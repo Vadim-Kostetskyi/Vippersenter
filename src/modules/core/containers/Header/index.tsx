@@ -1,4 +1,5 @@
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import LangLink from "utils/LangLink";
 import BurgerMenu from "modules/core/components/BurgerMenu";
 import SearchButton from "modules/core/components/SearchButton";
 import HeaderIcons from "modules/core/components/HeaderIcons";
@@ -18,9 +19,9 @@ const Header = () => {
         {isHome ? (
           <Logo />
         ) : (
-          <Link to="/">
+          <LangLink to="/">
             <Logo />
-          </Link>
+          </LangLink>
         )}
         <HeaderIcons />
         <BurgerMenu />
