@@ -3,6 +3,7 @@ import Cross from "assets/svg/Cross";
 import Logo from "assets/svg/Logo";
 import HeaderModalNavigation from "modules/core/containers/HeaderModalNavigation";
 import styles from "./index.module.scss";
+import LanguageSelector from "components/LanguageSelector";
 
 interface HeaderModalProps {
   onClose: () => void;
@@ -20,6 +21,7 @@ const HeaderModal: FC<HeaderModalProps> = ({ onClose }) => {
       <nav>
         <HeaderModalNavigation />
       </nav>
+      <LanguageSelector mobile={true} />
     </div>
   );
 };

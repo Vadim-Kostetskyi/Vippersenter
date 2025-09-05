@@ -1,7 +1,7 @@
 {
   "categories": {
-    "falseEyelashes": "Falske øyevipper",
-    "glueForEyelashes": "Lim for øyevipper",
+    "falseEyelashes": "Falske vipper",
+    "glueForEyelashes": "Vippelim",
     "remover": "Fjerner",
     "preparations": "Preparater"
   },
@@ -16,14 +16,14 @@
     "paymentAndDelivery": "Betaling og levering",
     "exchangeAndReturn": "Bytte og retur",
     "ourAddress": "Vår adresse",
-    "Contacts": "Kontakt",
-    "main": "Hjem",
+    "Contacts": "Kontakter",
+    "main": "Hovedside",
     "shoppingCard": "Handlekurv"
   },
 
   "login": {
     "login": "Logg inn",
-    "usernameOrEmailAddress": "Brukernavn eller e-postadresse",
+    "usernameOrEmailAddress": "Brukernavn eller e-post",
     "password": "Passord",
     "logInToSystem": "Logg inn i systemet",
     "rememberMe": "Husk meg"
@@ -36,7 +36,7 @@
     "characteristics": "Egenskaper",
     "confirmDelete": "Slett produkt",
     "updateError": "Oppdateringsfeil",
-    "deleteError": "Slettefeil"
+    "deleteError": "Slettingsfeil"
   },
 
   "form": {
@@ -52,8 +52,8 @@
   },
 
   "filter": {
-    "filters": "Filtere",
-    "clearEverything": "Fjern alt",
+    "filters": "Filtre",
+    "clearEverything": "Tøm alt",
     "filterProducts": "Filtrer produkter",
     "categories": "Kategorier",
     "lines": "linjer",
@@ -69,18 +69,41 @@
   "shoppingCard": {
     "card": "handlekurv",
     "yourCardEmpty": "Handlekurven din er tom",
-    "returnToStore": "Gå tilbake til butikken",
+    "returnToStore": "Tilbake til butikken",
     "continueShopping": "Fortsett å handle",
     "total": "Totalt",
     "placeAnOrder": "Legg inn bestilling"
   },
 
+  "order": {
+    "placingOrder": "Legge inn bestilling",
+    "name": "Fornavn",
+    "lasName": "Etternavn",
+    "phone": "Telefon",
+    "email": "E-post",
+    "country/Region": "Land / Region",
+    "streetAddress": "Gateadresse",
+    "town": "By",
+    "county": "Fylke",
+    "postcode/ZIP": "Postnummer / ZIP",
+    "billingShipping": "Frakt",
+    "houseNumberAndStreetName": "Husnummer og gatenavn",
+    "orderNotes": "Ordrenotater",
+    "notesAboutOrder": "Notater om bestillingen din, for eksempel spesielle merknader om levering",
+    "selectBranch": "Velg filial",
+    "total": "Totalt",
+    "productPrice": "Produktpris",
+    "shippingCost": "Fraktkostnad",
+    "enterBranchNumber": "Skriv inn filialnummer",
+    "incorrectBranchNumber": "Ugyldig filialnummer"
+  },
+
   "catalog": "Katalog",
   "popularProducts": "Populære produkter",
   "newProducts": "Nyheter",
-  "goToProduct": "Gå til produktet",
+  "goToProduct": "Gå til produkt",
   "category": "Kategori",
-  "eyelashes": "Øyevipper",
+  "eyelashes": "Vipper",
   "youMayAlsoLike": "Du vil kanskje også like",
-  "currency": "₴"
+  "currency": "kr"
 }

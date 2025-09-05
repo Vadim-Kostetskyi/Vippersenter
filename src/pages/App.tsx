@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import AboutUs from "./AboutUs";
 import HomePage from "./HomePage";
 import LoginPage from "./LoginPage";
@@ -24,6 +25,18 @@ const App = () => (
         path="/product-category/:category"
         element={<ProductCategoryPage />}
       />
+      <Route path="/en" element={<Outlet />}>
+        <Route index element={<HomePage />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="about-us" element={<AboutUs />} />
+        <Route path="checkout" element={<CheckoutPage />} />
+        <Route path="product/:productId" element={<ProductPage />} />
+        <Route path="product-category" element={<ProductCategoriesPage />} />
+        <Route
+          path="product-category/:category"
+          element={<ProductCategoryPage />}
+        />
+      </Route>
       <Route
         path="/dashboard"
         element={

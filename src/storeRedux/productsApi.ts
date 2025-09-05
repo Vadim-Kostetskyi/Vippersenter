@@ -121,8 +121,13 @@ export const productsApi = createApi({
       query: ({ page, size }) => `product?page=${page}&size=${size}`,
     }),
 
-    getRandomProducts: builder.query<Product[], void>({
-      query: () => `products/randomProducts`,
+    getRandomProducts: builder.query<Product[], { slug?: string } | void>({
+      query: (params) => {
+        if (params?.slug) {
+          return `products/randomProducts?slug=${params.slug}`;
+        }
+        return `products/randomProducts`;
+      },
       transformResponse: (response: Product[]) =>
         response.map((product) => ({
           ...product,

@@ -1,14 +1,18 @@
-import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
+import LangLink from "utils/LangLink";
 import CoreSwiper from "components/CoreSwiper";
 import { breakpoints } from "utils/constants";
 import { useGetRandomProductsQuery } from "storeRedux/productsApi";
 import styles from "./index.module.scss";
 
 const AlsoLikeSwiper = () => {
-  const { data: products } = useGetRandomProductsQuery();
+  const { productId } = useParams();
+  const { data: products } = useGetRandomProductsQuery({
+    slug: productId,
+  });
   const { t } = useTranslation();
 
   return (
@@ -23,7 +27,7 @@ const AlsoLikeSwiper = () => {
         {products &&
           products.map(({ name, image, price, slug }) => (
             <SwiperSlide key={slug}>
-              <Link to={`/product/${slug}`} className={styles.itemsWrapper}>
+              <LangLink to={`/product/${slug}`} className={styles.itemsWrapper}>
                 <div>
                   <div>
                     <picture>
@@ -39,7 +43,7 @@ const AlsoLikeSwiper = () => {
                   </div>
                 </div>
                 <button>{t("goToProduct")}</button>
-              </Link>
+              </LangLink>
             </SwiperSlide>
           ))}
       </CoreSwiper>

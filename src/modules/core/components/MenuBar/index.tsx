@@ -1,26 +1,26 @@
 import { useTranslation } from "react-i18next";
+import LangLink from "utils/LangLink";
 import Home from "assets/svg/Home";
 import Catalog from "assets/svg/Catalog";
-import { Link } from "react-router-dom";
 import ShoppingBag from "../ShoppingBag";
 import styles from "./index.module.scss";
 
 const MenuBar = () => {
   const { t } = useTranslation();
-  
+
   return (
     <ul className={styles.menuBar}>
       <li>
-        <Link to="/">
+        <LangLink to="/">
           <Home className={styles.icon} />
           {t("footer.main")}
-        </Link>
+        </LangLink>
       </li>
       <li>
-        <Link to="/product-category ">
+        <LangLink to="/product-category ">
           <Catalog className={styles.icon} />
           {t("catalog")}
-        </Link>
+        </LangLink>
       </li>
       <li className={styles.shoppingBag}>
         <ShoppingBag />

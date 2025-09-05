@@ -7,6 +7,7 @@ interface ProductAttributesProps {
   selectedValue?: string;
   onSelect: (title: string, value: string) => void;
   availableValues: Set<string>;
+  // lastAttr?: boolean;
 }
 
 const ProductAttributes: FC<ProductAttributesProps> = ({
@@ -15,6 +16,7 @@ const ProductAttributes: FC<ProductAttributesProps> = ({
   selectedValue,
   onSelect,
   availableValues,
+  // lastAttr,
 }) => (
   <>
     <h3 className={styles.title}>{title}</h3>
@@ -29,10 +31,10 @@ const ProductAttributes: FC<ProductAttributesProps> = ({
               ? styles.disabled
               : selectedValue === attribute
               ? styles.active
-              : ""
+              : "sdfsdf"
           }`}
           onClick={() => onSelect(title, attribute)}
-          disabled={!availableValues.has(attribute)}
+          // disabled={!availableValues.has(attribute) && lastAttr}
         >
           {attribute}
         </button>

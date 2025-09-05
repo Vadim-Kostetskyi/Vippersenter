@@ -1,4 +1,4 @@
-export const Inputs = [
+export const inputs = [
   {
     title: "name",
     placeholder: "",
@@ -14,27 +14,28 @@ export const Inputs = [
   {
     title: "email",
     placeholder: "",
-    type: "email"
+    type: "email",
   },
 
-  {
-    title: "country/Region",
-    placeholder: "",
-  },
-  {
-    title: "streetAddress",
-    placeholder: "houseNumberAndStreetName",
-  },
+  // {
+  //   title: "country/Region",
+  //   placeholder: "",
+  // },
+  // // {
+  // //   title: "streetAddress",
+  // //   placeholder: "houseNumberAndStreetName",
+  // // },
   {
     title: "town",
     placeholder: "",
+    dropdown: true,
   },
-  {
-    title: "county",
-    placeholder: "",
-  },
-  {
-    title: "postcode/ZIP",
-    placeholder: "",
-  },
+  // {
+  //   title: "county",
+  //   placeholder: "",
+  // },
+  // {
+  //   title: "postcode/ZIP",
+  //   placeholder: "",
+  // },
 ];

@@ -1,17 +1,17 @@
 import { useTranslation } from "react-i18next";
 import CategoriesHeader from "components/CategoriesHeader";
+import LangLink from "utils/LangLink";
 import styles from "./index.module.scss";
-import { Link } from "react-router-dom";
 
 const HeaderModalNavigation = () => {
   const { t } = useTranslation();
   return (
     <div className={styles.headerModalNavigation}>
-      <Link to={"/product-category"}>{t("catalog")}</Link>
+      <LangLink to={"/product-category"}>{t("catalog")}</LangLink>
       <CategoriesHeader />
-      <Link to={"/about-us"}>{t("header.aboutUs")}</Link>
+      <LangLink to={"/about-us"}>{t("header.aboutUs")}</LangLink>
     </div>
   );
 };
 
-export default HeaderModalNavigation
+export default HeaderModalNavigation;

@@ -346,14 +346,24 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
           <input
             type="text"
             placeholder="Додаткова ціна"
-            value={getCurrentVariant()?.price || ""}
+            value={
+              getCurrentVariant()?.price && +getCurrentVariant()!.price > 0
+                ? getCurrentVariant()!.price
+                : ""
+            }
             onChange={(e) => updateVariant("price", e.target.value)}
           />
+
           <input
             type="text"
             placeholder="Кількість"
-            value={getCurrentVariant()?.quantity || ""}
             onChange={(e) => updateVariant("quantity", e.target.value)}
+            value={
+              getCurrentVariant()?.quantity &&
+              +getCurrentVariant()!.quantity > 0
+                ? getCurrentVariant()!.quantity
+                : ""
+            }
           />
         </div>
       )}

@@ -66,19 +66,25 @@ const ProductCard = () => {
   const [loaded, setLoaded] = useState(false);
   const [count, setCount] = useState(1);
   const [maxCount, setMaxCount] = useState(0);
-  const [selectedAttributes, setSelectedAttributes] = useState<Value[]>([]);    
+  const [selectedAttributes, setSelectedAttributes] = useState<Value[]>([]);
 
   const { t } = useTranslation();
+
+  const selected = useMemo(() => {
+    return Object.fromEntries(
+      selectedAttributes.map(({ name, attributeName }) => [name, attributeName])
+    );
+  }, [selectedAttributes]);
+
+  useEffect(() => {
+    setCount(1);
+  }, [selected]);
 
   const getSelectedVariantData = (
     attributes: Attribute[],
     selectedAttributes: Value[]
   ): Attribute | null => {
     if (selectedAttributes.length === 0) return null;
-
-    const selected = Object.fromEntries(
-      selectedAttributes.map(({ name, attributeName }) => [name, attributeName])
-    );
 
     return (
       attributes.find((attr) => {
@@ -90,7 +96,7 @@ const ProductCard = () => {
           attr.value_secondary === selected[attr.attribute_secondary];
         const tertiaryMatch =
           attr.attribute_tertiary &&
-          attr.value_tertiary === selected[attr.attribute_tertiary];        
+          attr.value_tertiary === selected[attr.attribute_tertiary];
 
         if (selectedAttributes.length === 3) {
           return mainMatch && secondaryMatch && tertiaryMatch;
@@ -139,8 +145,21 @@ const ProductCard = () => {
     [product?.attributes, selectedAttributes]
   );
 
-  useEffect(() => {
+useEffect(() => {
+  const updateMaxCount = () => {
     if (!product?.attributes) return;
+
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+    if (product.attributes.length === 0) {
+      const productInCart = cart.find((p: any) => p.slug === productId);
+      const maxAddable = Math.max(
+        +product?.quantity - productInCart?.quantity,
+        0
+      );
+      setMaxCount(productInCart ? maxAddable : +product?.quantity);
+      return;
+    }
 
     const variant = getSelectedVariantData(
       product.attributes,
@@ -148,33 +167,41 @@ const ProductCard = () => {
     );
     const qty = parseInt(variant?.quantity || "0");
 
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
     const productInCart = cart.find(
       (p: any) =>
         p.slug === productId &&
-        p.attributes[0].attributeName ===
-        selectedAttributes[0]?.attributeName
-        &&
-        (p.attributes[1].attributeName === undefined ||
-          p.attributes[1].attributeName ===
-        selectedAttributes[1]?.attributeName
-    )
-      &&
-        (p.attributes[2].attributeName === undefined ||
-          p.attributes[2].attributeName ===
+        p.attributes[0]?.attributeName ===
+          selectedAttributes[0]?.attributeName &&
+        (p.attributes[1]?.attributeName === undefined ||
+          p.attributes[1]?.attributeName ===
+            selectedAttributes[1]?.attributeName) &&
+        (p.attributes[2]?.attributeName === undefined ||
+          p.attributes[2]?.attributeName ===
             selectedAttributes[2]?.attributeName)
     );
 
     const alreadyInCart = productInCart?.quantity || 0;
     const maxAddable = Math.max(qty - alreadyInCart, 0);
+    const alreadyInCartMaxAddable = Math.max(
+      +product.quantity - alreadyInCart,
+      0
+    );
 
     if (variant) {
       setMaxCount(maxAddable);
-    }
-    else {
+    } else if (alreadyInCart) {
+      setMaxCount(alreadyInCartMaxAddable);
+    } else {
       setMaxCount(+product.quantity);
     }
-  }, [selectedAttributes, product, productId]);
+  };
+
+  updateMaxCount(); // перший запуск
+
+  window.addEventListener("cartUpdated", updateMaxCount);
+  return () => window.removeEventListener("cartUpdated", updateMaxCount);
+}, [selectedAttributes, product, productId, product?.attributes]);
+
 
   if (isLoading) return <div>...</div>;
   if (isError || !product) return <div>Data loading error</div>;
@@ -183,7 +210,7 @@ const ProductCard = () => {
     product;
 
   const extraPrice = variant ? parseFloat(variant.extraPrice) || 0 : 0;
-  const displayPrice = Number(price) + extraPrice;
+  const fullPrice = Number(price) + extraPrice;
 
   const handleIncrement = () => setCount((prev) => prev + 1);
   const handleDecrement = () => setCount((prev) => (prev > 1 ? prev - 1 : 1));
@@ -191,7 +218,7 @@ const ProductCard = () => {
   const grouped = groupAttributes(attributes || []);
 
   const onAddToCart = () => {
-    addProductToCart(slug, +price, count, selectedAttributes);
+    addProductToCart(slug, +fullPrice, count, selectedAttributes);
     setMaxCount((prev) => prev - count);
     window.dispatchEvent(new Event("cartUpdated"));
   };
@@ -230,8 +257,6 @@ const ProductCard = () => {
       const qty = parseInt(attr.quantity || "0");
       if (qty <= 0) return;
 
-      // const selectedNames = selected.map((s) => s.name);
-
       const isCompatible = (checkAttrName: string) => {
         return selected.every(({ name, attributeName }) => {
           if (name === checkAttrName) return true;
@@ -245,27 +270,30 @@ const ProductCard = () => {
         });
       };
 
-      if (isCompatible("Вигин") && attr.attribute_main) {
+      if (isCompatible(t("filter.bend")) && attr.attribute_main) {
         mainValues.add(attr.value_main);
       }
       if (
-        isCompatible("Товщина") &&
+        isCompatible(t("filter.thickness")) &&
         attr.attribute_secondary &&
         attr.value_secondary
       ) {
         secondaryValues.add(attr.value_secondary);
       }
       if (
-        isCompatible("Довжина") &&
+        isCompatible(t("filter.length")) &&
         attr.attribute_tertiary &&
         attr.value_tertiary
       ) {
         tertiaryValues.add(attr.value_tertiary);
       }
+      if (isCompatible(t("filter.volume")) && attr.attribute_main) {
+        mainValues.add(attr.value_main);
+      }
     });
 
     return { mainValues, secondaryValues, tertiaryValues };
-  }
+  };
 
   const availableValues = getAvailableAttributeValues(
     product.attributes ?? [],
@@ -285,7 +313,7 @@ const ProductCard = () => {
       <div className={styles.infoBox}>
         <h1 className={styles.title}>{name}</h1>
         <p className={styles.price}>
-          {displayPrice.toFixed(2)}
+          {fullPrice.toFixed(2)}
           {t("currency")}
         </p>
         {inStock ? (
@@ -298,11 +326,14 @@ const ProductCard = () => {
             {grouped.map(({ name, values }) => {
               let available: Set<string> = new Set();
 
-              if (name === "Вигин") available = availableValues.mainValues;
-              else if (name === "Товщина")
+              if (name === t("filter.bend"))
+                available = availableValues.mainValues;
+              else if (name === t("filter.thickness"))
                 available = availableValues.secondaryValues;
-              else if (name === "Довжина")
+              else if (name === t("filter.length"))
                 available = availableValues.tertiaryValues;
+              else if (name === t("filter.volume"))
+                available = availableValues.mainValues;
 
               return (
                 <ProductAttributes
@@ -322,12 +353,15 @@ const ProductCard = () => {
             <p className={styles.quantity}>{t("product.quantity")}</p>
 
             <div className={styles.quantityBox}>
-              <button onClick={handleDecrement}>
+              <button
+                className={count === 1 ? styles.disable : ""}
+                onClick={handleDecrement}
+              >
                 <Minus />
               </button>
               <input
                 type="number"
-                value={count}
+                value={count > maxCount ? maxCount : count}
                 min={1}
                 max={maxCount}
                 onChange={(e) => {
@@ -340,12 +374,16 @@ const ProductCard = () => {
                 }}
               />
 
-              <button onClick={handleIncrement} disabled={count >= maxCount}>
+              <button
+                className={maxCount <= count ? styles.disable : ""}
+                onClick={handleIncrement}
+                disabled={count >= maxCount}
+              >
                 <PlusSubtle />
               </button>
             </div>
             <button
-              className={(maxCount < count) ? styles.disable : ''}
+              className={maxCount < count ? styles.disable : ""}
               style={{
                 padding: 15,
                 backgroundColor: "black",

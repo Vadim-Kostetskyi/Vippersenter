@@ -1,18 +1,16 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import LangLink from "utils/LangLink";
 import ShoppingCard from "assets/svg/ShoppingCard";
 import CardButton from "../CardButton";
 import ShoppingBagList from "../ShoppingBagList";
 import { Attributes, CartItem, getCartItems } from "utils/card";
-import { usePlaceOrderMutation } from "storeRedux/productsApi";
 import emptyImg from "assets/svg/EmptyCart.svg";
 import styles from "./index.module.scss";
 
 const ShoppingBag = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [placeOrder] = usePlaceOrderMutation();
-
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   const { t } = useTranslation();
@@ -47,10 +45,7 @@ const ShoppingBag = () => {
     window.dispatchEvent(new Event("cartUpdated"));
   };
 
-  const removeCartItem = (
-    slug: string,
-    attributes?: Attributes[]
-  ) => {
+  const removeCartItem = (slug: string, attributes?: Attributes[]) => {
     const updatedCart = cartItems.filter((item) => {
       if (item.slug !== slug) return true;
 
@@ -59,7 +54,11 @@ const ShoppingBag = () => {
       if (item.attributes.length !== attributes.length) return true;
 
       const isSame = item.attributes.every((attr) =>
-        attributes.some((a) => a.attributeName === attr.name && a.attributeName === attr.attributeName)
+        attributes.some(
+          (a) =>
+            a.attributeName === attr.name &&
+            a.attributeName === attr.attributeName
+        )
       );
 
       return !isSame;
@@ -77,23 +76,6 @@ const ShoppingBag = () => {
   const onClose = () => {
     setIsAnimating(false);
     setTimeout(() => setIsVisible(false), 300);
-  };
-
-  const onPlaceAnOrder = async () => {
-    const orderData = {
-      items: cartItems.map(({ slug, quantity }) => ({
-        productId: slug,
-        quantity,
-      })),
-      totalPrice: totalCartPrice,
-    };
-
-    try {
-      await placeOrder(orderData).unwrap();
-      setCartItems([]);
-    } catch (err) {
-      console.error("Order error:", err);
-    }
   };
 
   return (
@@ -142,11 +124,12 @@ const ShoppingBag = () => {
                 title={t("shoppingCard.continueShopping")}
                 onClick={onClose}
               />
-              <CardButton
-                title={t("shoppingCard.placeAnOrder")}
-                onClick={onPlaceAnOrder}
-                placeOrder={true}
-              />
+              <LangLink to={cartItems.length > 0 ? "/checkout" : "#"}>
+                <CardButton
+                  title={t("shoppingCard.placeAnOrder")}
+                  placeOrder={true}
+                />
+              </LangLink>
             </div>
           </div>
         </div>

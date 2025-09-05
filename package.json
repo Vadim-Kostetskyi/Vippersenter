@@ -11,10 +11,10 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
-    "i18next": "^25.2.1",
+    "i18next": "^25.4.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-i18next": "^15.5.2",
+    "react-i18next": "^15.7.2",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.6.2",
     "redux": "^5.0.1",

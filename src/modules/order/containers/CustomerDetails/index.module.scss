@@ -4,6 +4,7 @@
   padding: 20px;
   border: 1px solid $lightGrey;
   border-radius: 4px;
+  background-color: $whiteColor;
 
   & h3{
     font-size: 24px;
@@ -30,5 +31,53 @@
     padding: 5px 10px;
     margin-top: 5px;
     outline: none;
+  }
+}
+
+.postBox{
+  display: flex;
+  margin: auto;
+  width: fit-content;
+  margin-bottom: 15px;
+  border: 1px solid $gainsboro;
+  border-radius: 4px;
+  
+  & label:last-child{
+    position: relative;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 20;
+      left: 0;
+      height: calc(100% - 40px);
+      border-left: 1px solid gainsboro;
+    }
+    
+    & input{
+      margin-right: 15px;
+    }
+  }
+}
+
+.post{
+  display: flex;
+  align-items: center;
+
+  padding: 15px;
+  background-color: $whiteColor;
+
+  & input{
+    margin-top: 15px;
+  }
+  
+  & span {
+    display: flex;
+    height: 60px;
+  }
+
+  & img{
+  width: 200px;
+  object-fit: cover;
   }
 }

@@ -15,14 +15,15 @@ const ShoppingBagList: FC<ShoppingBagListProps> = ({
   delProduct,
 }) => (
   <div className={styles.shoppingBagList}>
-    {products.map(({ slug, quantity, attributes }, index) => (
+    {products.map(({ slug, quantity, attributes, price }, index) => (
       <ShoppingBagCard
         key={slug + index}
         slug={slug}
+        savedPrice={price}
         assignedQuantity={quantity}
         setProducts={setProducts}
         delProduct={delProduct}
-        attributes={attributes}
+        assignedAttributes={attributes}
       />
     ))}
   </div>

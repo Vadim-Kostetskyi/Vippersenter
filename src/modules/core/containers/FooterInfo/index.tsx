@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
+import LangLink from "utils/LangLink";
 import { useTranslation } from "react-i18next";
 import { data } from "./data";
 import CategoryNames from "../../../../components/CategoryNames";
-import Logo from "assets/svg/Logo";
+import Logo from "components/Logo";
 import styles from "./index.module.scss";
 
 const FooterInfo = () => {
@@ -12,7 +12,7 @@ const FooterInfo = () => {
   return (
     <div className={styles.wrapper}>
       <div>
-        <Logo className={styles.logo} />
+        <Logo footer={true} />
         <ul>
           {data.map(({ title, text }, index) => (
             <li key={title}>
@@ -21,9 +21,9 @@ const FooterInfo = () => {
                 index === 1 ? (
                   <nav>
                     {text.map((item) => (
-                      <Link to="#" key={item}>
+                      <LangLink to="#" key={item}>
                         {t(item)}
-                      </Link>
+                      </LangLink>
                     ))}
                   </nav>
                 ) : (
@@ -36,9 +36,9 @@ const FooterInfo = () => {
               ) : (
                 <nav>
                   {list.map(({ key, label }) => (
-                    <Link to={`/product-category/${key}`} key={label}>
+                    <LangLink to={`/product-category/${key}`} key={label}>
                       {label}
-                    </Link>
+                    </LangLink>
                   ))}
                 </nav>
               )}
@@ -47,7 +47,7 @@ const FooterInfo = () => {
         </ul>
       </div>
       <div className={styles.copyright}>
-        <p>@ EFFECT 2023</p>
+        <p>@ Vipper Senter 2025</p>
       </div>
     </div>
   );

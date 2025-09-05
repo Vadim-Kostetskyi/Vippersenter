@@ -9,19 +9,40 @@
     text-transform: uppercase;
     margin-bottom: 15px;
     text-align: center;
-  }
+  };
 
   :global(.swiper-button-prev) {
+    width: 40px;
+    height: 40px;
+
     &::after {
-      content: url(../../../../assets/svg/ArrowSwiper.svg);
-    }
-    cursor: pointer;
-  }
-  :global(.swiper-button-next) {
-    &::after {
-      content: url(../../../../assets/svg/ArrowSwiper.svg);
+      content: "";
+      display: block;
+      width: 40px;
+      height: 40px;
+      background-image: url(../../../../assets/svg/Round.svg);
+      background-size: contain;
+      background-repeat: no-repeat;
+      transform: translateX(13px);
       rotate: 180deg;
-      transform: translateY(-8px);
+    }
+
+    cursor: pointer;
+  };
+
+  :global(.swiper-button-next) {
+    width: 40px;
+    height: 40px;
+
+    &::after {
+    content: "";
+    display: block;
+    width: 40px;
+    height: 40px;
+    background-image: url(../../../../assets/svg/Round.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    transform: translate(13px, -8px);
     }
     cursor: pointer;
   }
@@ -30,7 +51,7 @@
     display: none;
   }
 
-      :global(.swiper-slide) {
+  :global(.swiper-slide) {
     height: auto;
   }
 }

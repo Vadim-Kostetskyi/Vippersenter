@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import LangLink from "utils/LangLink";
 import CatalogHeader from "../CatalogHeader";
 import { list } from "./headerList";
 import styles from "./index.module.scss";
@@ -13,7 +13,7 @@ const HeaderNavigation = () => {
         {list.map(({ title, link }, index) =>
           index ? (
             <li key={title}>
-              <Link to={link}>{t(title)}</Link>
+              <LangLink to={link}>{t(title)}</LangLink>
             </li>
           ) : (
             <li key={title}>

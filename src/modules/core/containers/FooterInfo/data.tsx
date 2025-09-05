@@ -11,7 +11,7 @@ export const data = [
   },
   {
     title: "footer.Contacts",
-    text: ["380634800268", "effectlash2021@gmail.com"],
+    text: ["+380634800268", "market@vippersenter.no"],
     subtitles: [
       { subtitle: "footer.telephones", text: ["TELEPHONES"] },
       { subtitle: "Email", text: ["EMAILS"] },

@@ -1,9 +1,10 @@
-import { Link, useLocation } from "react-router-dom";
-import Logo from "assets/svg/Logo";
+import { useLocation } from "react-router-dom";
+import LangLink from "utils/LangLink";
 import BurgerMenu from "modules/core/components/BurgerMenu";
 import SearchButton from "modules/core/components/SearchButton";
 import HeaderIcons from "modules/core/components/HeaderIcons";
 import HeaderNavigation from "modules/core/components/HeaderNavigation";
+import Logo from "components/Logo";
 import styles from "./index.module.scss";
 
 const Header = () => {
@@ -16,11 +17,11 @@ const Header = () => {
         <SearchButton />
         <HeaderNavigation />
         {isHome ? (
-          <Logo className={styles.logo} />
+          <Logo />
         ) : (
-          <Link to="/">
-            <Logo className={styles.logo} />
-          </Link>
+          <LangLink to="/">
+            <Logo />
+          </LangLink>
         )}
         <HeaderIcons />
         <BurgerMenu />
