@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { data } from "./data";
 import CategoryNames from "../../../../components/CategoryNames";
-import Logo from "assets/svg/Logo";
+import Logo from "components/Logo";
 import styles from "./index.module.scss";
 
 const FooterInfo = () => {
@@ -12,7 +12,7 @@ const FooterInfo = () => {
   return (
     <div className={styles.wrapper}>
       <div>
-        <Logo className={styles.logo} />
+        <Logo footer={true} />
         <ul>
           {data.map(({ title, text }, index) => (
             <li key={title}>
