@@ -15,7 +15,6 @@ const LanguageSelector: FC<LanguageSelectorProps> = ({ mobile }) => {
   const handleChange = (lang: string) => {
     const language = lang.toLowerCase();
     i18n.changeLanguage(language);
-    console.log(i18n.language);
 
     const { pathname } = location;
     const segments = pathname.split("/").filter(Boolean);

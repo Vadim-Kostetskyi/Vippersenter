@@ -51,11 +51,11 @@ const Banner = () => {
         }}
         rewind={true}
       >
-        {slides.map(({ text, image, imageSmall }) => (
+        {slides.map(({ text, image }) => (
           <SwiperSlide>
             <div className={styles.itemsWrapper}>
               <picture>
-                <source media="(max-width: 960px)" srcSet={imageSmall} />
+                {/* <source media="(max-width: 960px)" srcSet={imageSmall} /> */}
                 <img src={image} alt={text} className={styles.image} />
               </picture>
             </div>
