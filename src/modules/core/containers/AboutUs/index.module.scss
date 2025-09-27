@@ -17,7 +17,7 @@
   }
 
   & > div:last-child {
-    padding: 25px;
+    padding: 0 25px;
     font-size: 22px;
   }
 
@@ -27,6 +27,7 @@
 }
 
 .list {
+  font-size: 26px;
   & p,
   & span {
     display: inline-block;
