@@ -59,9 +59,9 @@
     "lines": "linjer",
     "lines20": "20 linjer",
     "lines28": "28 linjer",
-    "bend": "Bøy",
-    "length": "Lengde",
-    "thickness": "Tykkelse",
+    "Bøy": "Bøy",
+    "Lengde": "Lengde",
+    "Tykkelse": "Tykkelse",
     "volume": "Volum",
     "thereAreNoProducts": "Dessverre finnes det ingen slike produkter :("
   },

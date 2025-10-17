@@ -57,7 +57,7 @@ const ProductCategory = () => {
         category={category}
       />
       <div className={styles.productWrapper}>
-        <FilterButton filtration={onFiltrationAttributes} />
+        <FilterButton filtration={onFiltrationAttributes} products={products} />
         <ProductListCategory products={products} />
       </div>
     </>
