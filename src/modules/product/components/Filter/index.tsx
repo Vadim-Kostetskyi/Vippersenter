@@ -1,61 +1,15 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import DropdownFilter from "../DropdownFilter";
-import { categories, subCategories } from "./data";
+import { categories } from "./data";
+import { collectAttributesFromProducts } from "utils/collectAttributes";
 import { Product } from "storeRedux/types";
 import styles from "./index.module.scss";
-
-export interface Attribute {
-  attribute_main?: string;
-  value_main?: string;
-  attribute_secondary?: string;
-  value_secondary?: string;
-  attribute_tertiary?: string;
-  value_tertiary?: string;
-}
 
 interface AttributeList {
   label: string;
   items: string[];
-}
-
-export function collectAttributesFromProducts(
-  products: Product[]
-): AttributeList[] {
-  const attributesMap = new Map<string, Set<string>>();
-
-  for (const product of products) {
-    if (!product.attributes || !Array.isArray(product.attributes)) continue;
-
-    for (const attr of product.attributes) {
-      if (attr.attribute_main && attr.value_main) {
-        if (!attributesMap.has(attr.attribute_main)) {
-          attributesMap.set(attr.attribute_main, new Set());
-        }
-        attributesMap.get(attr.attribute_main)!.add(attr.value_main);
-      }
-
-      if (attr.attribute_secondary && attr.value_secondary) {
-        if (!attributesMap.has(attr.attribute_secondary)) {
-          attributesMap.set(attr.attribute_secondary, new Set());
-        }
-        attributesMap.get(attr.attribute_secondary)!.add(attr.value_secondary);
-      }
-
-      if (attr.attribute_tertiary && attr.value_tertiary) {
-        if (!attributesMap.has(attr.attribute_tertiary)) {
-          attributesMap.set(attr.attribute_tertiary, new Set());
-        }
-        attributesMap.get(attr.attribute_tertiary)!.add(attr.value_tertiary);
-      }
-    }
-  }
-
-  return Array.from(attributesMap.entries()).map(([label, values]) => ({
-    label,
-    items: Array.from(values),
-  }));
 }
 
 interface FilterProps {
@@ -64,27 +18,19 @@ interface FilterProps {
 }
 
 const Filter: FC<FilterProps> = ({ filtration, products }) => {
-  const { t } = useTranslation();
+  const [attributes, setAttributes] = useState<AttributeList[]>([]);
 
+  const { t } = useTranslation();
   const { category } = useParams();
+
+  useEffect(() => {
+    if (products && attributes.length === 0) {
+      setAttributes(collectAttributesFromProducts(products));
+    }
+  }, [products]);
 
   const filteredValuesCategory =
     category && categories.length > 0 ? categories[0][category] ?? [] : [];
-
-  // const filteredValuesSubCategory = category
-  //   ? subCategories.find((obj) => category in obj)?.[category] ?? []
-  //   : [];
-
-  // console.log(products[0].attributes);
-  // console.log(filteredValuesSubCategory);
-  let attributes: AttributeList[] = [];
-
-  if (products) {
-    attributes = collectAttributesFromProducts(products);
-  }
-
-  console.log(attributes);
-  console.log(filteredValuesCategory);
 
   return (
     <div className={styles.filter}>
