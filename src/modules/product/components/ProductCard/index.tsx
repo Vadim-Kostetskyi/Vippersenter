@@ -6,55 +6,10 @@ import PlusSubtle from "assets/svg/PlusSubtle";
 import Minus from "assets/svg/Minus";
 import { addProductToCart } from "utils/card";
 import ProductAttributes from "../ProductAttributes";
-import styles from "./index.module.scss";
 import { parseDescription } from "utils/text";
-import { Attribute } from "storeRedux/types";
-
-interface Value {
-  name: string;
-  attributeName: string;
-}
-
-interface SelectedAttributes {
-  name: string;
-  attributeName: string;
-}
-
-const groupAttributes = (
-  attrs: {
-    attribute_main: string;
-    value_main: string;
-    attribute_secondary?: string;
-    value_secondary?: string;
-    attribute_tertiary?: string;
-    value_tertiary?: string;
-  }[]
-): { name: string; values: string[] }[] => {
-  const grouped: { name: string; values: string[] }[] = [];
-
-  attrs.forEach((attr) => {
-    const entries = [
-      { name: attr.attribute_main, value: attr.value_main },
-      { name: attr.attribute_secondary, value: attr.value_secondary },
-      { name: attr.attribute_tertiary, value: attr.value_tertiary },
-    ];
-
-    entries.forEach(({ name, value }) => {
-      if (!name || !value) return;
-
-      const existing = grouped.find((item) => item.name === name);
-      if (existing) {
-        if (!existing.values.includes(value)) {
-          existing.values.push(value);
-        }
-      } else {
-        grouped.push({ name, values: [value] });
-      }
-    });
-  });
-
-  return grouped;
-};
+import { Attribute, SelectedAttributes } from "storeRedux/types";
+import { groupAttributes } from "utils/groupAttributes";
+import styles from "./index.module.scss";
 
 const ProductCard = () => {
   const { productId } = useParams();
@@ -66,7 +21,9 @@ const ProductCard = () => {
   const [loaded, setLoaded] = useState(false);
   const [count, setCount] = useState(1);
   const [maxCount, setMaxCount] = useState(0);
-  const [selectedAttributes, setSelectedAttributes] = useState<Value[]>([]);
+  const [selectedAttributes, setSelectedAttributes] = useState<
+    SelectedAttributes[]
+  >([]);
 
   const { t } = useTranslation();
 
@@ -82,7 +39,7 @@ const ProductCard = () => {
 
   const getSelectedVariantData = (
     attributes: Attribute[],
-    selectedAttributes: Value[]
+    selectedAttributes: SelectedAttributes[]
   ): Attribute | null => {
     if (selectedAttributes.length === 0) return null;
 
@@ -110,7 +67,7 @@ const ProductCard = () => {
   useEffect(() => {
     if (product?.attributes && product.attributes.length > 0) {
       const grouped: Record<string, Set<string>> = {};
-      const selected: Value[] = [];
+      const selected: SelectedAttributes[] = [];
 
       product.attributes.forEach((attr) => {
         const entries = [
@@ -145,63 +102,62 @@ const ProductCard = () => {
     [product?.attributes, selectedAttributes]
   );
 
-useEffect(() => {
-  const updateMaxCount = () => {
-    if (!product?.attributes) return;
+  useEffect(() => {
+    const updateMaxCount = () => {
+      if (!product?.attributes) return;
 
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+      const cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
-    if (product.attributes.length === 0) {
-      const productInCart = cart.find((p: any) => p.slug === productId);
-      const maxAddable = Math.max(
-        +product?.quantity - productInCart?.quantity,
+      if (product.attributes.length === 0) {
+        const productInCart = cart.find((p: any) => p.slug === productId);
+        const maxAddable = Math.max(
+          +product?.quantity - productInCart?.quantity,
+          0
+        );
+        setMaxCount(productInCart ? maxAddable : +product?.quantity);
+        return;
+      }
+
+      const variant = getSelectedVariantData(
+        product.attributes,
+        selectedAttributes
+      );
+      const qty = parseInt(variant?.quantity || "0");
+
+      const productInCart = cart.find(
+        (p: any) =>
+          p.slug === productId &&
+          p.attributes[0]?.attributeName ===
+            selectedAttributes[0]?.attributeName &&
+          (p.attributes[1]?.attributeName === undefined ||
+            p.attributes[1]?.attributeName ===
+              selectedAttributes[1]?.attributeName) &&
+          (p.attributes[2]?.attributeName === undefined ||
+            p.attributes[2]?.attributeName ===
+              selectedAttributes[2]?.attributeName)
+      );
+
+      const alreadyInCart = productInCart?.quantity || 0;
+      const maxAddable = Math.max(qty - alreadyInCart, 0);
+      const alreadyInCartMaxAddable = Math.max(
+        +product.quantity - alreadyInCart,
         0
       );
-      setMaxCount(productInCart ? maxAddable : +product?.quantity);
-      return;
-    }
 
-    const variant = getSelectedVariantData(
-      product.attributes,
-      selectedAttributes
-    );
-    const qty = parseInt(variant?.quantity || "0");
+      if (variant) {
+        setMaxCount(maxAddable);
+      } else if (alreadyInCart) {
+        setMaxCount(alreadyInCartMaxAddable);
+      } else {
+        setMaxCount(+product.quantity);
+      }
+    };
 
-    const productInCart = cart.find(
-      (p: any) =>
-        p.slug === productId &&
-        p.attributes[0]?.attributeName ===
-          selectedAttributes[0]?.attributeName &&
-        (p.attributes[1]?.attributeName === undefined ||
-          p.attributes[1]?.attributeName ===
-            selectedAttributes[1]?.attributeName) &&
-        (p.attributes[2]?.attributeName === undefined ||
-          p.attributes[2]?.attributeName ===
-            selectedAttributes[2]?.attributeName)
-    );
+    updateMaxCount(); // перший запуск
 
-    const alreadyInCart = productInCart?.quantity || 0;
-    const maxAddable = Math.max(qty - alreadyInCart, 0);
-    const alreadyInCartMaxAddable = Math.max(
-      +product.quantity - alreadyInCart,
-      0
-    );
-
-    if (variant) {
-      setMaxCount(maxAddable);
-    } else if (alreadyInCart) {
-      setMaxCount(alreadyInCartMaxAddable);
-    } else {
-      setMaxCount(+product.quantity);
-    }
-  };
-
-  updateMaxCount(); // перший запуск
-
-  window.addEventListener("cartUpdated", updateMaxCount);
-  return () => window.removeEventListener("cartUpdated", updateMaxCount);
-}, [selectedAttributes, product, productId, product?.attributes]);
-
+    window.addEventListener("cartUpdated", updateMaxCount);
+    return () => window.removeEventListener("cartUpdated", updateMaxCount);
+  }, [selectedAttributes, product, productId, product?.attributes]);
 
   if (isLoading) return <div>...</div>;
   if (isError || !product) return <div>Data loading error</div>;
@@ -224,7 +180,7 @@ useEffect(() => {
   };
 
   const handleSelectAttribute = (name: string, value: string) => {
-    const valueAsValues: Value = {
+    const valueAsValues: SelectedAttributes = {
       name,
       attributeName: value,
     };
@@ -299,6 +255,8 @@ useEffect(() => {
     product.attributes ?? [],
     selectedAttributes
   );
+  // console.log(123);
+  // console.log(availableValues);
 
   const inStock = variant ? variant?.quantity : product.quantity;
 

@@ -12,7 +12,7 @@ const AboutUs = () => {
     t("aboutUs.text3"),
     t("aboutUs.text4"),
   ];
-  console.log(data[2]);
+  // console.log(data[2]);
 
   return (
     <section className={styles.aboutUs}>

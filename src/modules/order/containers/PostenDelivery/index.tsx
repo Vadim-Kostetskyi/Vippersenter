@@ -12,7 +12,7 @@ const PostenDelivery = () => {
   // const [postList, setPostList] = useState([]);
   // const [selectedPost, setSelectedPost] = useState("");
   // console.log(postList);
-  
+  console.log(selectedCity);
 
   const { t } = useTranslation();
 
@@ -20,30 +20,29 @@ const PostenDelivery = () => {
     setSelectedCity(city);
   };
 
-  // useEffect(() => {
-// const postalCode = "5019"; // або взяти динамічно
-// fetch(
-//   `http://localhost/vise-data-base/api/v1/order/posten/post-offices.php?postalCode=${postalCode}`
-// )
-//   .then((res) => res.json())
-//   .then((data) => console.log("data", data))
-//   .catch((err) => console.error("Fetch error:", err));
-//   }, [selectedCity]);
-  
-// fetch(
-//   `http://localhost/vise-data-base/api/v1/order/posten/post-offices.php?postalCode=4601&city=Kristiansand&street=Markens&streetNumber=12`
-// )
-//   .then((res) => res.json())
-//   .then((data) => console.log(data));
+  useEffect(() => {
+    const postalCode = "5019"; // або взяти динамічно
+    fetch(
+      `http://localhost/vise-data-base/api/v1/order/posten/post-offices.php?postalCode=${postalCode}`
+    )
+      .then((res) => res.json())
+      .then((data) => console.log("data", data))
+      .catch((err) => console.error("Fetch error:", err));
+  }, [selectedCity]);
 
-
-
-
+  // fetch(
+  //   `http://localhost/vise-data-base/api/v1/order/posten/post-offices.php?postalCode=4601&city=Kristiansand&street=Markens&streetNumber=12`
+  // )
+  //   .then((res) => res.json())
+  //   .then((data) => console.log(data));
 
   useEffect(() => {
     fetch("http://localhost/vise-data-base/api/v1/order/posten/sities.php")
       .then((res) => res.json())
-      .then((data) => setCountriesList(data))
+      .then((data) => {
+        console.log("data:", data);
+        setCountriesList(data);
+      })
       .catch((err) => console.error("Fetch error:", err));
   }, []);
 
@@ -77,11 +76,8 @@ const PostenDelivery = () => {
 
   // const pp = getAddressFromCoords("62.1143425350427", "10.6165444446212");
   // console.log(pp);
-  
-
 
   // console.log(props);
-  
 
   return (
     <div className={styles.customerDetails}>
@@ -113,7 +109,6 @@ const PostenDelivery = () => {
       </div>
     </div>
   );
-
 };
 
 export default PostenDelivery;

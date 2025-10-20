@@ -75,3 +75,8 @@ export interface PlaceOrderRequest {
   items: { productId: string; quantity: number }[];
   totalPrice: number;
 }
+
+export interface SelectedAttributes {
+  name: string;
+  attributeName: string;
+}
