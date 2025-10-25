@@ -226,18 +226,18 @@ const ProductCard = () => {
         });
       };
 
-      if (isCompatible(t("filter.bend")) && attr.attribute_main) {
+      if (isCompatible(t("filter.Bøy")) && attr.attribute_main) {
         mainValues.add(attr.value_main);
       }
       if (
-        isCompatible(t("filter.thickness")) &&
+        isCompatible(t("filter.Tykkelse")) &&
         attr.attribute_secondary &&
         attr.value_secondary
       ) {
         secondaryValues.add(attr.value_secondary);
       }
       if (
-        isCompatible(t("filter.length")) &&
+        isCompatible(t("filter.Lengde")) &&
         attr.attribute_tertiary &&
         attr.value_tertiary
       ) {
@@ -255,8 +255,6 @@ const ProductCard = () => {
     product.attributes ?? [],
     selectedAttributes
   );
-  // console.log(123);
-  // console.log(availableValues);
 
   const inStock = variant ? variant?.quantity : product.quantity;
 
@@ -284,11 +282,11 @@ const ProductCard = () => {
             {grouped.map(({ name, values }) => {
               let available: Set<string> = new Set();
 
-              if (name === t("filter.bend"))
+              if (name === t("filter.Bøy"))
                 available = availableValues.mainValues;
-              else if (name === t("filter.thickness"))
+              else if (name === t("filter.Tykkelse"))
                 available = availableValues.secondaryValues;
-              else if (name === t("filter.length"))
+              else if (name === t("filter.Lengde"))
                 available = availableValues.tertiaryValues;
               else if (name === t("filter.volume"))
                 available = availableValues.mainValues;
