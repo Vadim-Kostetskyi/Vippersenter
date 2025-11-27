@@ -75,13 +75,25 @@ const ProductCard = () => {
 
       product.attributes.forEach((attr) => {
         const entries = [
-          { name: attr.attribute_main, value: attr.value_main },
-          { name: attr.attribute_secondary, value: attr.value_secondary },
-          { name: attr.attribute_tertiary, value: attr.value_tertiary },
+          {
+            name: attr.attribute_main,
+            value: attr.value_main,
+            qty: parseInt(attr.quantity || "0"),
+          },
+          {
+            name: attr.attribute_secondary,
+            value: attr.value_secondary,
+            qty: parseInt(attr.quantity || "0"),
+          },
+          {
+            name: attr.attribute_tertiary,
+            value: attr.value_tertiary,
+            qty: parseInt(attr.quantity || "0"),
+          },
         ];
 
-        entries.forEach(({ name, value }) => {
-          if (name && value) {
+        entries.forEach(({ name, value, qty }) => {
+          if (name && value && qty > 0) {
             if (!grouped[name]) {
               grouped[name] = new Set();
             }
@@ -92,11 +104,11 @@ const ProductCard = () => {
 
       for (const name in grouped) {
         const values = Array.from(grouped[name]);
-
         if (values.length > 0) {
           selected.push({ parameter: name, attribute: values[0] });
         }
       }
+
       setSelectedAttributes(selected);
     }
   }, [product]);
@@ -105,6 +117,7 @@ const ProductCard = () => {
     () => getSelectedVariantData(product?.attributes ?? [], selectedAttributes),
     [product?.attributes, selectedAttributes]
   );
+  console.log(product);
 
   useEffect(() => {
     const updateMaxCount = () => {
@@ -174,7 +187,6 @@ const ProductCard = () => {
   const handleDecrement = () => setCount((prev) => (prev > 1 ? prev - 1 : 1));
 
   const grouped = groupAttributes(attributes || []);
-  console.log(attributes);
 
   const onAddToCart = () => {
     addProductToCart(slug, +fullPrice, count, selectedAttributes);
