@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import image from "assets/image/applies-eyelashes.jpeg";
 import styles from "./index.module.scss";
 import { data } from "../FooterInfo/data";
+import test from "node:test";
 
 const AboutUs = () => {
   const { t } = useTranslation();
@@ -23,19 +24,19 @@ const AboutUs = () => {
           {list.map((text, index) =>
             index ? (
               index === 1 ? (
-                <span>{text}</span>
+                <span key={text}>{text}</span>
               ) : (
-                <p>{text}</p>
+                <p key={text}>{text}</p>
               )
             ) : (
-              <b>{text}</b>
+              <b key={text}>{text}</b>
             )
           )}
         </div>
         <h2>{t("aboutUs.contactDetails")}</h2>
         <div className={styles.about}>
           {data[2].text.map((item) => (
-            <span>
+            <span key={item}>
               <span className={styles.text} key={item}>
                 {t(item)}
               </span>

@@ -51,7 +51,7 @@ const DropdownFilter: FC<DropdownFilterProps> = ({
         style={{ maxHeight: height }}
       >
         {items.map((item) => (
-          <label>
+          <label key={item}>
             <input
               type="checkbox"
               onChange={(e) => onFilter(title, item, e.target.checked)}

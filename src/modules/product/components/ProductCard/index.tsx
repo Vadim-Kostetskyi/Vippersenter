@@ -10,6 +10,7 @@ import { parseDescription } from "utils/text";
 import { Attribute, SelectedAttributes } from "storeRedux/types";
 import { groupAttributes } from "utils/groupAttributes";
 import styles from "./index.module.scss";
+import { getAvailableAttributeValues } from "utils/getAvailableAttributeValuesProductCard";
 
 const ProductCard = () => {
   const { productId } = useParams();
@@ -29,7 +30,10 @@ const ProductCard = () => {
 
   const selected = useMemo(() => {
     return Object.fromEntries(
-      selectedAttributes.map(({ name, attributeName }) => [name, attributeName])
+      selectedAttributes.map(({ parameter, attribute }) => [
+        parameter,
+        attribute,
+      ])
     );
   }, [selectedAttributes]);
 
@@ -90,7 +94,7 @@ const ProductCard = () => {
         const values = Array.from(grouped[name]);
 
         if (values.length > 0) {
-          selected.push({ name, attributeName: values[0] });
+          selected.push({ parameter: name, attribute: values[0] });
         }
       }
       setSelectedAttributes(selected);
@@ -127,14 +131,12 @@ const ProductCard = () => {
       const productInCart = cart.find(
         (p: any) =>
           p.slug === productId &&
-          p.attributes[0]?.attributeName ===
-            selectedAttributes[0]?.attributeName &&
+          p.attributes[0]?.attributeName === selectedAttributes[0]?.attribute &&
           (p.attributes[1]?.attributeName === undefined ||
             p.attributes[1]?.attributeName ===
-              selectedAttributes[1]?.attributeName) &&
+              selectedAttributes[1]?.attribute) &&
           (p.attributes[2]?.attributeName === undefined ||
-            p.attributes[2]?.attributeName ===
-              selectedAttributes[2]?.attributeName)
+            p.attributes[2]?.attributeName === selectedAttributes[2]?.attribute)
       );
 
       const alreadyInCart = productInCart?.quantity || 0;
@@ -172,6 +174,7 @@ const ProductCard = () => {
   const handleDecrement = () => setCount((prev) => (prev > 1 ? prev - 1 : 1));
 
   const grouped = groupAttributes(attributes || []);
+  console.log(attributes);
 
   const onAddToCart = () => {
     addProductToCart(slug, +fullPrice, count, selectedAttributes);
@@ -181,11 +184,11 @@ const ProductCard = () => {
 
   const handleSelectAttribute = (name: string, value: string) => {
     const valueAsValues: SelectedAttributes = {
-      name,
-      attributeName: value,
+      parameter: name,
+      attribute: value,
     };
     setSelectedAttributes((prev) => {
-      const existsIndex = prev.findIndex((attr) => attr.name === name);
+      const existsIndex = prev.findIndex((attr) => attr.parameter === name);
 
       if (existsIndex !== -1) {
         const updated = [...prev];
@@ -197,64 +200,14 @@ const ProductCard = () => {
     });
   };
 
-  const getAvailableAttributeValues = (
-    attributes: Attribute[],
-    selected: SelectedAttributes[]
-  ): {
-    mainValues: Set<string>;
-    secondaryValues: Set<string>;
-    tertiaryValues: Set<string>;
-  } => {
-    const mainValues = new Set<string>();
-    const secondaryValues = new Set<string>();
-    const tertiaryValues = new Set<string>();
-
-    attributes.forEach((attr) => {
-      const qty = parseInt(attr.quantity || "0");
-      if (qty <= 0) return;
-
-      const isCompatible = (checkAttrName: string) => {
-        return selected.every(({ name, attributeName }) => {
-          if (name === checkAttrName) return true;
-          if (name === attr.attribute_main)
-            return attr.value_main === attributeName;
-          if (name === attr.attribute_secondary)
-            return attr.value_secondary === attributeName;
-          if (name === attr.attribute_tertiary)
-            return attr.value_tertiary === attributeName;
-          return true;
-        });
-      };
-
-      if (isCompatible(t("filter.Bøy")) && attr.attribute_main) {
-        mainValues.add(attr.value_main);
-      }
-      if (
-        isCompatible(t("filter.Tykkelse")) &&
-        attr.attribute_secondary &&
-        attr.value_secondary
-      ) {
-        secondaryValues.add(attr.value_secondary);
-      }
-      if (
-        isCompatible(t("filter.Lengde")) &&
-        attr.attribute_tertiary &&
-        attr.value_tertiary
-      ) {
-        tertiaryValues.add(attr.value_tertiary);
-      }
-      if (isCompatible(t("filter.volume")) && attr.attribute_main) {
-        mainValues.add(attr.value_main);
-      }
-    });
-
-    return { mainValues, secondaryValues, tertiaryValues };
-  };
-
   const availableValues = getAvailableAttributeValues(
     product.attributes ?? [],
     selectedAttributes
   );
+
+  const availableValuesArray = Object.values(availableValues).flatMap((set) => [
+    ...set,
+  ]);
 
   const inStock = variant ? variant?.quantity : product.quantity;
 
@@ -279,32 +232,19 @@ const ProductCard = () => {
         )}
         {quantity ? (
           <>
-            {grouped.map(({ name, values }) => {
-              let available: Set<string> = new Set();
-
-              if (name === t("filter.Bøy"))
-                available = availableValues.mainValues;
-              else if (name === t("filter.Tykkelse"))
-                available = availableValues.secondaryValues;
-              else if (name === t("filter.Lengde"))
-                available = availableValues.tertiaryValues;
-              else if (name === t("filter.volume"))
-                available = availableValues.mainValues;
-
-              return (
-                <ProductAttributes
-                  key={name}
-                  title={name}
-                  values={values}
-                  selectedValue={
-                    selectedAttributes.find((attr) => attr.name === name)
-                      ?.attributeName
-                  }
-                  onSelect={handleSelectAttribute}
-                  availableValues={available}
-                />
-              );
-            })}
+            {grouped.map(({ name, values }) => (
+              <ProductAttributes
+                key={name}
+                title={name}
+                values={values}
+                selectedValue={
+                  selectedAttributes.find((attr) => attr.parameter === name)
+                    ?.attribute
+                }
+                onSelect={handleSelectAttribute}
+                availableValues={availableValuesArray}
+              />
+            ))}
 
             <p className={styles.quantity}>{t("product.quantity")}</p>
 

@@ -44,7 +44,7 @@ const Filter: FC<FilterProps> = ({ filtration, products }) => {
             const isLast = index === filteredValuesCategory.length - 1;
 
             return (
-              <label>
+              <label key={item}>
                 <input type="checkbox" defaultChecked={isLast} />
                 <span>{t(item)}</span>
               </label>
@@ -53,6 +53,7 @@ const Filter: FC<FilterProps> = ({ filtration, products }) => {
         </div>
         {attributes.map(({ label, items }) => (
           <DropdownFilter
+            key={label}
             title={t(`filter.${label}`)}
             items={items}
             onFilter={filtration}

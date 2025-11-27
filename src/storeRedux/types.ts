@@ -77,6 +77,6 @@ export interface PlaceOrderRequest {
 }
 
 export interface SelectedAttributes {
-  name: string;
-  attributeName: string;
+  parameter: string;
+  attribute: string;
 }

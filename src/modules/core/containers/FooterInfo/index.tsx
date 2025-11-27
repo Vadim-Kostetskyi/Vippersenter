@@ -28,7 +28,7 @@ const FooterInfo = () => {
                   </nav>
                 ) : (
                   text.map((item) => (
-                    <span>
+                    <span key={item}>
                       <span className={styles.text} key={item}>
                         {t(item)}
                       </span>
