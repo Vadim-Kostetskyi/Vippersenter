@@ -1,112 +1,95 @@
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-
+import { skipToken } from "@reduxjs/toolkit/query";
 import InputField from "components/InputField";
 import DropdownOrder from "modules/order/components/DropdownOrder";
+import Loader from "components/Loader";
+import {
+  useGetPickupPointsQuery,
+  useLazyGetShippingPriceQuery,
+} from "storeRedux/ordersApi";
+import { postenDeliveryPrice } from "utils/postenDeliveryPrice";
 import styles from "./index.module.scss";
-import { inputs } from "./data";
 
-const PostenDelivery = () => {
-  const [countriesList, setCountriesList] = useState([]);
-  const [selectedCity, setSelectedCity] = useState("");
-  // const [postList, setPostList] = useState([]);
-  // const [selectedPost, setSelectedPost] = useState("");
-  // console.log(postList);
-  console.log(selectedCity);
+interface PostenDeliveryProps {
+  setPrice: (price: number) => void;
+}
+
+const PostenDelivery: FC<PostenDeliveryProps> = ({ setPrice }) => {
+  const [postalCode, setPostalCode] = useState("");
+  const [selectedPickup, setSelectedPickup] = useState<any>(null);
 
   const { t } = useTranslation();
 
-  const onSelectCity = (city: string) => {
-    setSelectedCity(city);
+  const {
+    data: pickupPoints = [],
+    isFetching: loadingPoints,
+    isError,
+  } = useGetPickupPointsQuery(
+    postalCode.length === 4 ? String(postalCode) : skipToken
+  );
+  // console.log(selectedPickup.visitingPostalCode);
+
+  const [fetchShipping, { data: shippingData }] =
+    useLazyGetShippingPriceQuery();
+
+  useEffect(() => setPrice(0), []);
+
+  useEffect(() => {
+    if (shippingData) {
+      const deliveryPrice = postenDeliveryPrice(shippingData)[0].amountWithVAT;
+      setPrice(+deliveryPrice);
+    }
+  }, [shippingData]);
+
+  console.log(shippingData);
+
+  const handleSelect = (id: string) => {
+    const point = pickupPoints.find((p: any) => p.id === id);
+    if (!point) return;
+
+    setSelectedPickup(point);
+    fetchShipping({
+      postalCode: selectedPickup.visitingPostalCode,
+      pickupId: id,
+    });
   };
 
-  useEffect(() => {
-    const postalCode = "5019"; // або взяти динамічно
-    fetch(
-      `http://localhost/vise-data-base/api/v1/order/posten/post-offices.php?postalCode=${postalCode}`
-    )
-      .then((res) => res.json())
-      .then((data) => console.log("data", data))
-      .catch((err) => console.error("Fetch error:", err));
-  }, [selectedCity]);
-
-  // fetch(
-  //   `http://localhost/vise-data-base/api/v1/order/posten/post-offices.php?postalCode=4601&city=Kristiansand&street=Markens&streetNumber=12`
-  // )
-  //   .then((res) => res.json())
-  //   .then((data) => console.log(data));
-
-  useEffect(() => {
-    fetch("http://localhost/vise-data-base/api/v1/order/posten/sities.php")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("data:", data);
-        setCountriesList(data);
-      })
-      .catch((err) => console.error("Fetch error:", err));
-  }, []);
-
-  const props = inputs.map((input) => {
-    if (input.title === "town") {
-      return {
-        ...input,
-        list: countriesList,
-        selected: selectedCity, // тут поточне значення
-        onSetTitle: onSelectCity, // тут функція зміни
-      };
-    }
-    // else if (input.title === "ZIP") {
-    //   return {
-    //     ...input,
-    //     list: postList || [],
-    //     selected: selectedPost,
-    //     onSetTitle: setSelectedPost,
-    //   };
-    // }
-    return input;
-  });
-
-  // const getAddressFromCoords = async (lat: string, lon: string) => {
-  //   const res = await fetch(
-  //     `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`
-  //   );
-  //   const data = await res.json();
-  //   console.log(data); // повна адреса
-  // };
-
-  // const pp = getAddressFromCoords("62.1143425350427", "10.6165444446212");
-  // console.log(pp);
-
-  // console.log(props);
-
   return (
-    <div className={styles.customerDetails}>
-      <div className={styles.detailsBox}>
-        {props.map((input) => {
-          if ("list" in input) {
-            return (
-              <DropdownOrder
-                key={input.title}
-                title={t(`order.${input.title}`)}
-                list={input.list}
-                onSetTitle={input.onSetTitle}
-                selected={input.selected}
-              />
-            );
-          } else {
-            return (
-              <InputField
-                key={input.title}
-                title={t(`order.${input.title}`)}
-                placeholder={
-                  input.placeholder ? t(`order.${input.placeholder}`) : ""
-                }
-                require={true}
-              />
-            );
-          }
-        })}
-      </div>
+    <div className={styles.postnordDelivery}>
+      <InputField
+        type="text"
+        title="Postal Code"
+        placeholder="Enter your postal code"
+        onChange={(e) => setPostalCode(e.target.value)}
+        require={true}
+      />
+
+      {pickupPoints?.length > 0 ? (
+        <DropdownOrder
+          title={t("order.selectBranch")}
+          list={pickupPoints
+            .filter((p: any) => p && p.id)
+            .map((p: any) => ({
+              id: p.id,
+              title: `${p.name || ""} - ${p.city || ""} (${
+                p.postalCode || ""
+              })`,
+            }))}
+          onSetTitle={handleSelect}
+          selected={selectedPickup?.id}
+          posten={true}
+        />
+      ) : (
+        <div
+          className={!loadingPoints && isError ? styles.plugError : styles.plug}
+        >
+          {loadingPoints ? <Loader /> : null}
+          {!loadingPoints && isError ? (
+            <span>{t("order.incorrectBranchNumber")}</span>
+          ) : null}
+        </div>
+      )}
     </div>
   );
 };

@@ -3,8 +3,11 @@ import { useTranslation } from "react-i18next";
 import { skipToken } from "@reduxjs/toolkit/query";
 import InputField from "components/InputField";
 import DropdownOrder from "modules/order/components/DropdownOrder";
-import { inputs } from "./data";
-import { useCalculateDeliveryQuery, useGetPostnordServicePointsQuery } from "storeRedux/ordersApi";
+import { inputsPostnord } from "utils/post";
+import {
+  useCalculateDeliveryQuery,
+  useGetPostnordServicePointsQuery,
+} from "storeRedux/ordersApi";
 import Loader from "components/Loader";
 import styles from "./index.module.scss";
 
@@ -13,19 +16,20 @@ interface PostnordDeliveryProps {
 }
 
 const PostnordDelivery: FC<PostnordDeliveryProps> = ({ setPrice }) => {
-  const [postalCode, setPostalCode] = useState(0);
+  const [postalCode, setPostalCode] = useState("");
   const [points, setPoints] = useState<any[]>([]);
-  const [selectedPoint, setSelectedPoint] = useState<any>(null);  
+  const [selectedPoint, setSelectedPoint] = useState<any>(null);
 
   const { t } = useTranslation();
 
   const { data, isFetching, isSuccess } = useGetPostnordServicePointsQuery(
-    postalCode >= 1000 && postalCode < 10000 ? String(postalCode) : skipToken
+    postalCode.length === 4 ? String(postalCode) : skipToken
   );
 
-  const { data: deliveryData } =
-    useCalculateDeliveryQuery(selectedPoint?.postalCode || skipToken);
-  
+  const { data: deliveryData } = useCalculateDeliveryQuery(
+    selectedPoint?.postalCode || skipToken
+  );
+
   useEffect(() => setPrice(0), []);
 
   useEffect(() => {
@@ -52,16 +56,17 @@ const PostnordDelivery: FC<PostnordDeliveryProps> = ({ setPrice }) => {
     if (!point) return;
     setSelectedPoint(point);
   };
+  console.log(points);
 
   return (
     <div className={styles.postnordDelivery}>
-      {inputs.map(({ title, placeholder, type }) => (
+      {inputsPostnord.map(({ title, placeholder, type }) => (
         <InputField
           key={title}
           type={type}
           title={t(`order.${title}`)}
           placeholder={placeholder ? t(`order.${placeholder}`) : ""}
-          onChange={(e) => setPostalCode(+e.target.value)}
+          onChange={(e) => setPostalCode(e.target.value)}
           require={true}
         />
       ))}
@@ -74,9 +79,7 @@ const PostnordDelivery: FC<PostnordDeliveryProps> = ({ setPrice }) => {
         />
       ) : (
         <div
-          className={
-            !isFetching && isSuccess ? styles.plugError : styles.plug
-          }
+          className={!isFetching && isSuccess ? styles.plugError : styles.plug}
         >
           {isFetching ? <Loader /> : null}{" "}
           {!isFetching && isSuccess ? (
@@ -88,4 +91,4 @@ const PostnordDelivery: FC<PostnordDeliveryProps> = ({ setPrice }) => {
   );
 };
 
-export default PostnordDelivery
+export default PostnordDelivery;

@@ -6,6 +6,7 @@ interface DropdownProps {
   list: any[];
   selected: string;
   onSetTitle: (item: string) => void;
+  posten?: boolean;
 }
 
 const DropdownOrder: FC<DropdownProps> = ({
@@ -13,31 +14,40 @@ const DropdownOrder: FC<DropdownProps> = ({
   list,
   selected,
   onSetTitle,
+  posten,
 }) => (
-    <select
-      className={styles.dropdown}
-      onChange={(e) => onSetTitle(e.target.value)}
-      value={selected || ""}
-    >
-      <option value="" disabled>
-        {title}
-      </option>
-      {list.map((p) => {
-        if (typeof p === "string") {
-          return (
-            <option key={p} value={p}>
-              {p}
-            </option>
-          );
-        }
+  <select
+    className={styles.dropdown}
+    onChange={(e) => onSetTitle(e.target.value)}
+    value={selected || ""}
+  >
+    <option value="" disabled>
+      {title}
+    </option>
+    {list.map((p) => {
+      if (typeof p === "string") {
+        return (
+          <option key={p} value={p}>
+            {p}
+          </option>
+        );
+      }
 
-          return (
-            <option key={p.id} value={p.id}>
-              {p.name} — {p.address || ""}, {p.city}
-            </option>
-          );
-      })}
-    </select>
-  );
+      if (posten) {
+        return (
+          <option key={p.id} value={p.id}>
+            {p.title}
+          </option>
+        );
+      }
+
+      return (
+        <option key={p.id} value={p.id}>
+          {p.name} — {p.address || ""}, {p.city}
+        </option>
+      );
+    })}
+  </select>
+);
 
 export default DropdownOrder;

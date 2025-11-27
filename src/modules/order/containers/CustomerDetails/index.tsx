@@ -60,7 +60,7 @@ const CustomerDetails: FC<CustomerDetailsProps> = ({ setPrice }) => {
         {delivery === "postnord" ? (
           <PostnordDelivery setPrice={setPrice} />
         ) : (
-          <PostenDelivery />
+          <PostenDelivery setPrice={setPrice} />
         )}
         <label htmlFor="orderComments" className={styles.orderComments}>
           <span>{t("order.orderNotes")}</span>
