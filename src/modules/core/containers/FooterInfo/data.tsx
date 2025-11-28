@@ -11,13 +11,7 @@ export const data = [
   },
   {
     title: "footer.Contacts",
-    text: [
-      "Organisasjonsur 934090535",
-      "Beauty Skoryk Iryna",
-      "+4796820818",
-      "vippersenter@gmail.com",
-      "Bergen Norway",
-    ],
+    text: ["+380634800268", "market@vippersenter.no"],
     subtitles: [
       { subtitle: "footer.telephones", text: ["TELEPHONES"] },
       { subtitle: "Email", text: ["EMAILS"] },

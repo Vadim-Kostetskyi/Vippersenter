@@ -18,7 +18,7 @@ let pathLang: "en" | "nb" = "nb";
 if (path.startsWith("/en")) {
   pathLang = "en";
 }
-// console.log(pathLang);
+console.log(pathLang);
 
 i18n.use(initReactI18next).init({
   resources,

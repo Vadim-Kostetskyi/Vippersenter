@@ -16,13 +16,7 @@ export type ValueKey = keyof AttributeValue;
 export type Attribute = {
   extraPrice: string;
   quantity: string;
-} & AttributeValue &
-  Attributes;
-
-export interface AttributeList {
-  label: string;
-  items: string[];
-}
+} & AttributeValue & Attributes;
 
 export interface Product {
   name: string;
@@ -74,9 +68,4 @@ export interface ServicePoint {
 export interface PlaceOrderRequest {
   items: { productId: string; quantity: number }[];
   totalPrice: number;
-}
-
-export interface SelectedAttributes {
-  parameter: string;
-  attribute: string;
 }

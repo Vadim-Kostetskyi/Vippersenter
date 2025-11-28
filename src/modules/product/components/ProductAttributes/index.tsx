@@ -1,5 +1,4 @@
 import { FC } from "react";
-import { useTranslation } from "react-i18next";
 import styles from "./index.module.scss";
 
 interface ProductAttributesProps {
@@ -7,7 +6,8 @@ interface ProductAttributesProps {
   values: string[];
   selectedValue?: string;
   onSelect: (title: string, value: string) => void;
-  availableValues: string[];
+  availableValues: Set<string>;
+  // lastAttr?: boolean;
 }
 
 const ProductAttributes: FC<ProductAttributesProps> = ({
@@ -16,35 +16,31 @@ const ProductAttributes: FC<ProductAttributesProps> = ({
   selectedValue,
   onSelect,
   availableValues,
-}) => {
-  const { t } = useTranslation();
-
-  return (
-    <>
-      <h3 className={styles.title}>{t(`filter.${title}`)}</h3>
-      <div className={styles.valueBox}>
-        {values.map((attribute) => {
-          return (
-            <button
-              key={attribute}
-              className={`${styles.button} ${
-                selectedValue === attribute ? styles.active : ""
-              } ${
-                !availableValues.includes(attribute)
-                  ? styles.disabled
-                  : selectedValue === attribute
-                  ? styles.active
-                  : ""
-              }`}
-              onClick={() => onSelect(title, attribute)}
-            >
-              {attribute}
-            </button>
-          );
-        })}
-      </div>
-    </>
-  );
-};
+  // lastAttr,
+}) => (
+  <>
+    <h3 className={styles.title}>{title}</h3>
+    <div className={styles.valueBox}>
+      {values.map((attribute) => (
+        <button
+          key={attribute}
+          className={`${styles.button} ${
+            selectedValue === attribute ? styles.active : ""
+          } ${
+            !availableValues.has(attribute)
+              ? styles.disabled
+              : selectedValue === attribute
+              ? styles.active
+              : "sdfsdf"
+          }`}
+          onClick={() => onSelect(title, attribute)}
+          // disabled={!availableValues.has(attribute) && lastAttr}
+        >
+          {attribute}
+        </button>
+      ))}
+    </div>
+  </>
+);
 
 export default ProductAttributes;

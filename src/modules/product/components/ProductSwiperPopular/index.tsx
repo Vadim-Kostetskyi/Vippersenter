@@ -24,7 +24,7 @@ const ProductSwiperPopular = () => {
       >
         {popularProducts &&
           popularProducts.map(({ name, image, price, slug }) => (
-            <SwiperSlide key={name}>
+            <SwiperSlide>
               <LangLink to={`/product/${slug}`} className={styles.itemsWrapper}>
                 <div>
                   <div className={styles.imageWrapper}>
