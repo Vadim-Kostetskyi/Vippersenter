@@ -49,74 +49,65 @@ const ProductsTable: FC<ProductsTableProps> = ({
   handleQuantityChange,
   handleQuantityBlur,
   handleAttributeChange,
-  handleDelete,
-}) => (
-  <table border={1} cellPadding={8} className={styles.productsTable}>
-    <thead>
-      <tr>
-        {titles.map((title) => (
-          <th key={title}>{title}</th>
-        ))}
-      </tr>
-    </thead>
-    <tbody>
-      {Object.entries(grouped).map(([category, items]) => (
-        <React.Fragment key={category}>
-          <tr>
-            <td colSpan={6} className={styles.category}>
-              {category}
-            </td>
-          </tr>
-          {items.map((product) => {
-            const attrValues = attributesTable(product);
+  handleDelete
+}) =>  (
+    <table border={1} cellPadding={8} className={styles.productsTable}>
+      <thead>
+        <tr>
+          {titles.map((title) => <th key={title}>{title}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {Object.entries(grouped).map(([category, items]) => (
+          <React.Fragment key={category}>
+            <tr>
+              <td colSpan={6} className={styles.category}>
+                {category}
+              </td>
+            </tr>
+            {items.map((product) => {
+              const attrValues = attributesTable(product);
 
-            const selected = selectedAttributes[product.slug] || {
-              main: "",
-              secondary: "",
-              tertiary: "",
-            };
+              const selected = selectedAttributes[product.slug] || {
+                main: "",
+                secondary: "",
+                tertiary: "",
+              };
 
-            const { main, secondary, tertiary } = selected;
+              const { main, secondary, tertiary } = selected;
 
-            const quantityKey = `${product.slug}_${main}_${secondary ?? ""}_${
-              tertiary ?? ""
-            }`;
-            const quantity =
-              quantities[quantityKey]?.quantity ?? product.quantity;
+              const quantityKey = `${product.slug}_${main}_${
+                secondary ?? ""
+              }_${tertiary ?? ""}`;
+              const quantity =
+                quantities[quantityKey]?.quantity ?? product.quantity;
 
-            return (
-              <tr key={product.slug}>
-                <td>{product.name}</td>
-                <td className={styles.center}>{product.price}</td>
-                <td>
-                  <input
-                    type="number"
-                    min={0}
-                    value={quantity}
-                    onChange={(e) =>
-                      handleQuantityChange(quantityKey, e.target.value)
-                    }
-                    onBlur={() =>
-                      handleQuantityBlur(
-                        product.slug,
-                        +quantity,
-                        main,
-                        secondary,
-                        tertiary
-                      )
-                    }
-                    className={styles.quantity}
-                  />
-                </td>
-                <td className={styles.attributes}>
-                  <div>
-                    {attrValues.map(({ title, attribute, values }) => (
-                      <div key={title}>
-                        <p>
-                          <b>{product.attributes?.[0]?.[attribute] || ""}</b>
-                        </p>
-                        {values.map((val) =>
-                          val ? (
+              return (
+                <tr key={product.slug}>
+                  <td>{product.name}</td>
+                  <td className={styles.center}>{product.price}</td>
+                  <td>
+                    <input
+                      type="number"
+                      min={0}
+                      value={quantity}
+                      onChange={(e) =>
+                        handleQuantityChange(quantityKey, e.target.value)
+                      }
+                      onBlur={() =>
+                        handleQuantityBlur(product.slug, +quantity, main, secondary, tertiary)
+                      }
+                      className={styles.quantity}
+                    />
+                  </td>
+                  <td className={styles.attributes}>
+                    <div>
+                      {attrValues.map(({ title, attribute, values }) => (
+                        <div key={title}>
+                          <p>
+                            <b>{product.attributes?.[0]?.[attribute] || ""}</b>
+                          </p>
+                          {values.map((val) => (
                             <div key={val} className={styles.radioWrapper}>
                               <label className={styles.radioLabel}>
                                 <input
@@ -135,27 +126,26 @@ const ProductsTable: FC<ProductsTableProps> = ({
                                 <span>{val}</span>
                               </label>
                             </div>
-                          ) : null
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </td>
-                <td>
-                  <p>{product.description}</p>
-                </td>
-                <td className={styles.center}>
-                  <button onClick={() => handleDelete(product.slug)}>
-                    <Cross className={styles.trashIcon} />
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
-        </React.Fragment>
-      ))}
-    </tbody>
-  </table>
-);
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  </td>
+                  <td>
+                    <p>{product.description}</p>
+                  </td>
+                  <td className={styles.center}>
+                    <button onClick={() => handleDelete(product.slug)}>
+                      <Cross className={styles.trashIcon} />
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </React.Fragment>
+        ))}
+      </tbody>
+    </table>
+  );
 
-export default ProductsTable;
+export default ProductsTable

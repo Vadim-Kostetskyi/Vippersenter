@@ -20,22 +20,11 @@ const ProductCategory = () => {
 
   const categoryChosen = list.filter(({ key }) => key === category);
   const filters: Record<string, string[]> = { ...attributes };
-  console.log(categoryChosen[0].label);
-  console.log(category);
-
-  const formattedCategory = category
-    .replace(/([A-Z])/g, " $1")
-    .replace(/^./, (char) => char.toUpperCase());
-
-  console.log(formattedCategory);
-
-  console.log(filters);
 
   const { data: products } = useGetProductsByCategoryQuery({
-    category: formattedCategory,
+    category: categoryChosen[0].label,
     filters,
   });
-  console.log(products);
 
   const onFiltrationAttributes = (
     attributeName: string,
@@ -68,7 +57,7 @@ const ProductCategory = () => {
         category={category}
       />
       <div className={styles.productWrapper}>
-        <FilterButton filtration={onFiltrationAttributes} products={products} />
+        <FilterButton filtration={onFiltrationAttributes} />
         <ProductListCategory products={products} />
       </div>
     </>

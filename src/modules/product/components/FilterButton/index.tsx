@@ -1,17 +1,15 @@
 import { useTranslation } from "react-i18next";
 import { FC, useState } from "react";
-import Filter from "../Filter";
 import Filters from "assets/svg/Filters";
 import Cross from "assets/svg/Cross";
-import { Product } from "storeRedux/types";
+import Filter from "../Filter";
 import styles from "./index.module.scss";
 
 interface FilterButtonProps {
   filtration: (attributeName: string, value: string, checked: boolean) => void;
-  products: Product[] | undefined;
 }
 
-const FilterButton: FC<FilterButtonProps> = ({ filtration, products }) => {
+const FilterButton: FC<FilterButtonProps> = ({ filtration }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
 
@@ -34,11 +32,11 @@ const FilterButton: FC<FilterButtonProps> = ({ filtration, products }) => {
             <Cross className={styles.crossIcon} />
           </button>
           <h2 className={styles.title}>{t("filter.filterProducts")}</h2>
-          <Filter filtration={filtration} products={products} />
+          <Filter filtration={filtration} />
         </div>
       )}
       <div className={styles.filter}>
-        <Filter filtration={filtration} products={products} />
+        <Filter filtration={filtration} />
       </div>
     </>
   );

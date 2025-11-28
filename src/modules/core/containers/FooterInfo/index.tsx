@@ -28,19 +28,9 @@ const FooterInfo = () => {
                   </nav>
                 ) : (
                   text.map((item) => (
-                    <span key={item}>
-                      <span className={styles.text} key={item}>
-                        {t(item)}
-                      </span>
-                      {item === "Bergen Norway" ? (
-                        <img
-                          src="https://flagcdn.com/w20/no.png"
-                          width="20"
-                          height="15"
-                          alt="Прапор Норвегії"
-                        />
-                      ) : null}
-                    </span>
+                    <p className={styles.text} key={item}>
+                      {t(item)}
+                    </p>
                   ))
                 )
               ) : (
