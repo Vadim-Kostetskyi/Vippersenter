@@ -20,11 +20,15 @@ const ProductCategory = () => {
 
   const categoryChosen = list.filter(({ key }) => key === category);
   const filters: Record<string, string[]> = { ...attributes };
+  console.log(categoryChosen[0].label);
+
+  console.log(filters);
 
   const { data: products } = useGetProductsByCategoryQuery({
     category: categoryChosen[0].label,
     filters,
   });
+  console.log(products);
 
   const onFiltrationAttributes = (
     attributeName: string,

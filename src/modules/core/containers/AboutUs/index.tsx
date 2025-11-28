@@ -1,8 +1,7 @@
 import { useTranslation } from "react-i18next";
 import image from "assets/image/applies-eyelashes.jpeg";
-import styles from "./index.module.scss";
 import { data } from "../FooterInfo/data";
-import test from "node:test";
+import styles from "./index.module.scss";
 
 const AboutUs = () => {
   const { t } = useTranslation();

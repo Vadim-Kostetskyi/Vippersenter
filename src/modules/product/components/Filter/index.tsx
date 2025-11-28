@@ -19,6 +19,7 @@ interface FilterProps {
 
 const Filter: FC<FilterProps> = ({ filtration, products }) => {
   const [attributes, setAttributes] = useState<AttributeList[]>([]);
+  console.log(attributes);
 
   const { t } = useTranslation();
   const { category } = useParams();
@@ -27,7 +28,7 @@ const Filter: FC<FilterProps> = ({ filtration, products }) => {
     if (products && attributes.length === 0) {
       setAttributes(collectAttributesFromProducts(products));
     }
-  }, [products]);
+  }, [products, category]);
 
   const filteredValuesCategory =
     category && categories.length > 0 ? categories[0][category] ?? [] : [];
@@ -54,7 +55,7 @@ const Filter: FC<FilterProps> = ({ filtration, products }) => {
         {attributes.map(({ label, items }) => (
           <DropdownFilter
             key={label}
-            title={t(`filter.${label}`)}
+            title={label}
             items={items}
             onFilter={filtration}
           />
