@@ -1,25 +1,37 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import DropdownFilter from "../DropdownFilter";
-import { categories, subCategories } from "./data";
+import { categories } from "./data";
+import { collectAttributesFromProducts } from "utils/collectAttributes";
+import { Product } from "storeRedux/types";
 import styles from "./index.module.scss";
+
+interface AttributeList {
+  label: string;
+  items: string[];
+}
 
 interface FilterProps {
   filtration: (attributeName: string, value: string, checked: boolean) => void;
+  products: Product[] | undefined;
 }
 
-const Filter: FC<FilterProps> = ({ filtration }) => {
-  const { t } = useTranslation();
+const Filter: FC<FilterProps> = ({ filtration, products }) => {
+  const [attributes, setAttributes] = useState<AttributeList[]>([]);
+  console.log(attributes);
 
+  const { t } = useTranslation();
   const { category } = useParams();
+
+  useEffect(() => {
+    if (products && attributes.length === 0) {
+      setAttributes(collectAttributesFromProducts(products));
+    }
+  }, [products, category]);
 
   const filteredValuesCategory =
     category && categories.length > 0 ? categories[0][category] ?? [] : [];
-
-  const filteredValuesSubCategory = category
-    ? subCategories.find((obj) => category in obj)?.[category] ?? []
-    : [];
 
   return (
     <div className={styles.filter}>
@@ -33,16 +45,17 @@ const Filter: FC<FilterProps> = ({ filtration }) => {
             const isLast = index === filteredValuesCategory.length - 1;
 
             return (
-              <label>
+              <label key={item}>
                 <input type="checkbox" defaultChecked={isLast} />
                 <span>{t(item)}</span>
               </label>
             );
           })}
         </div>
-        {filteredValuesSubCategory.map(({ label, items }) => (
+        {attributes.map(({ label, items }) => (
           <DropdownFilter
-            title={t(`filter.${label}`)}
+            key={label}
+            title={label}
             items={items}
             onFilter={filtration}
           />

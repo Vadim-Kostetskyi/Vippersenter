@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { Outlet } from "react-router-dom";
-import AboutUs from "./AboutUs";
+import AboutUsPage from "./AboutUsPage";
 import HomePage from "./HomePage";
 import LoginPage from "./LoginPage";
 import ProductPage from "./ProductPage";
@@ -17,7 +17,7 @@ const App = () => (
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/about-us" element={<AboutUs />} />
+      <Route path="/about-us" element={<AboutUsPage />} />
       <Route path="/checkout" element={<CheckoutPage />} />
       <Route path="/product/:productId" element={<ProductPage />} />
       <Route path="/product-category" element={<ProductCategoriesPage />} />
@@ -28,7 +28,7 @@ const App = () => (
       <Route path="/en" element={<Outlet />}>
         <Route index element={<HomePage />} />
         <Route path="login" element={<LoginPage />} />
-        <Route path="about-us" element={<AboutUs />} />
+        <Route path="about-us" element={<AboutUsPage />} />
         <Route path="checkout" element={<CheckoutPage />} />
         <Route path="product/:productId" element={<ProductPage />} />
         <Route path="product-category" element={<ProductCategoriesPage />} />

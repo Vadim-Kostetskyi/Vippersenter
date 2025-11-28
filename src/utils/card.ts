@@ -1,6 +1,6 @@
 export interface Attributes {
-  name: string;
-  attributeName: string;
+  parameter: string;
+  attribute: string;
   attribute_main?: string;
   value_main?: string;
   attribute_secondary?: string;
@@ -35,9 +35,7 @@ export const addProductToCart = (
 
     return item.attributes.every((attr) =>
       attributes.some(
-        (a) =>
-          a.name === attr.name &&
-          a.attributeName === attr.attributeName
+        (a) => a.name === attr.name && a.attributeName === attr.attributeName
       )
     );
   });
@@ -56,10 +54,7 @@ export const getCartItems = (): CartItem[] => {
   return storedCart ? JSON.parse(storedCart) : [];
 };
 
-const areAttributesEqual = (
-  a?: Attributes[],
-  b?: Attributes[]
-): boolean => {
+const areAttributesEqual = (a?: Attributes[], b?: Attributes[]): boolean => {
   if (!a && !b) return true;
   if (!a || !b) return false;
   if (a.length !== b.length) return false;
@@ -70,8 +65,7 @@ const areAttributesEqual = (
   return sortedA.every((attr, index) => {
     const bAttr = sortedB[index];
     return (
-      attr.name === bAttr.name &&
-      attr.attributeName === bAttr.attributeName 
+      attr.name === bAttr.name && attr.attributeName === bAttr.attributeName
     );
   });
 };
@@ -95,10 +89,7 @@ export const updateCartItemQuantity = (
   localStorage.setItem("cart", JSON.stringify(updatedCart));
 };
 
-export const removeCartItem = (
-  slug: string,
-  attributes?: Attributes[]
-) => {
+export const removeCartItem = (slug: string, attributes?: Attributes[]) => {
   const storedCart = localStorage.getItem("cart");
   const cart: CartItem[] = storedCart ? JSON.parse(storedCart) : [];
 
