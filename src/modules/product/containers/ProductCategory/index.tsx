@@ -21,11 +21,18 @@ const ProductCategory = () => {
   const categoryChosen = list.filter(({ key }) => key === category);
   const filters: Record<string, string[]> = { ...attributes };
   console.log(categoryChosen[0].label);
+  console.log(category);
+
+  const formattedCategory = category
+    .replace(/([A-Z])/g, " $1")
+    .replace(/^./, (char) => char.toUpperCase());
+
+  console.log(formattedCategory);
 
   console.log(filters);
 
   const { data: products } = useGetProductsByCategoryQuery({
-    category: categoryChosen[0].label,
+    category: formattedCategory,
     filters,
   });
   console.log(products);
