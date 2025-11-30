@@ -10,13 +10,14 @@ import styles from "./index.module.scss";
 const Header = () => {
   const location = useLocation();
   const isHome = location.pathname === "/";
+  const isHomeEn = location.pathname === "/en/";
 
   return (
     <header>
       <div className={styles.container}>
         <SearchButton />
         <HeaderNavigation />
-        {isHome ? (
+        {isHome || isHomeEn ? (
           <Logo />
         ) : (
           <LangLink to="/">
