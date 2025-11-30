@@ -56,7 +56,6 @@ const PostnordDelivery: FC<PostnordDeliveryProps> = ({ setPrice }) => {
     if (!point) return;
     setSelectedPoint(point);
   };
-  console.log(points);
 
   return (
     <div className={styles.postnordDelivery}>

@@ -1,41 +1,41 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+// import { useTranslation } from "react-i18next";
 import ProductCategoryModel from "modules/product/components/ProductCategoryModel";
 import ProductListCategory from "../ProductListCategory";
 import FilterButton from "modules/product/components/FilterButton";
-import CategoryNames from "components/CategoryNames";
 import { useGetProductsByCategoryQuery } from "storeRedux/productsApi";
 import { images } from "./data";
 import styles from "./index.module.scss";
+import { Product } from "storeRedux/types";
 
 type CategoryKey = keyof typeof images;
 
 const ProductCategory = () => {
   const [attributes, setAttributes] = useState<Record<string, string[]>>({});
-  const { t } = useTranslation();
-  const { list } = CategoryNames(t);
+  const [productsFirFilter, setProductsFirFilter] = useState<Product[]>([]);
+
+  // const { t } = useTranslation();
   const { category } = useParams();
   if (!category || !(category in images)) return null;
 
-  const categoryChosen = list.filter(({ key }) => key === category);
   const filters: Record<string, string[]> = { ...attributes };
-  console.log(categoryChosen[0].label);
-  console.log(category);
+  const filtersQuantity = Object.keys(filters).length;
 
   const formattedCategory = category
     .replace(/([A-Z])/g, " $1")
     .replace(/^./, (char) => char.toUpperCase());
 
-  console.log(formattedCategory);
-
-  console.log(filters);
-
   const { data: products } = useGetProductsByCategoryQuery({
     category: formattedCategory,
     filters,
   });
-  console.log(products);
+
+  useEffect(() => {
+    if (products && !filtersQuantity) {
+      setProductsFirFilter(products);
+    }
+  }, [products, !filtersQuantity]);
 
   const onFiltrationAttributes = (
     attributeName: string,
@@ -68,7 +68,10 @@ const ProductCategory = () => {
         category={category}
       />
       <div className={styles.productWrapper}>
-        <FilterButton filtration={onFiltrationAttributes} products={products} />
+        <FilterButton
+          filtration={onFiltrationAttributes}
+          products={productsFirFilter}
+        />
         <ProductListCategory products={products} />
       </div>
     </>

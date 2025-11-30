@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import DropdownFilter from "../DropdownFilter";
@@ -19,15 +19,27 @@ interface FilterProps {
 
 const Filter: FC<FilterProps> = ({ filtration, products }) => {
   const [attributes, setAttributes] = useState<AttributeList[]>([]);
-  console.log(attributes);
+
+  const { category } = useParams();
+  const prevProducts = useRef("");
+  const prevCategory = useRef(category);
 
   const { t } = useTranslation();
-  const { category } = useParams();
 
   useEffect(() => {
-    if (products && attributes.length === 0) {
+    if (!products || products.length === 0) return;
+
+    const currentProductsString = JSON.stringify(products);
+    const productsChanged = currentProductsString !== prevProducts.current;
+    const categoryChanged = category !== prevCategory.current;
+
+    if (productsChanged || categoryChanged) {
       setAttributes(collectAttributesFromProducts(products));
     }
+
+    // оновлюємо попередні значення
+    prevProducts.current = currentProductsString;
+    prevCategory.current = category;
   }, [products, category]);
 
   const filteredValuesCategory =

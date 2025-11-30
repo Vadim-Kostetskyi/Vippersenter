@@ -117,7 +117,6 @@ const ProductCard = () => {
     () => getSelectedVariantData(product?.attributes ?? [], selectedAttributes),
     [product?.attributes, selectedAttributes]
   );
-  console.log(product);
 
   useEffect(() => {
     const updateMaxCount = () => {

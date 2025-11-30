@@ -42,8 +42,6 @@ const PostenDelivery: FC<PostenDeliveryProps> = ({ setPrice }) => {
     }
   }, [shippingData]);
 
-  console.log(shippingData);
-
   const handleSelect = (id: string) => {
     const point = pickupPoints.find((p: any) => p.id === id);
     if (!point) return;

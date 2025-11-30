@@ -3,7 +3,6 @@ import { Product } from "storeRedux/types";
 import ProductsTableFunctional from "../ProductsTableFunctional";
 
 const ProductsDescription = () => {
-
   const { data: products, isLoading, isError } = useGetProductsQuery();
 
   if (isLoading) return <div>...</div>;
@@ -14,13 +13,9 @@ const ProductsDescription = () => {
     acc[product.category].push(product);
     return acc;
   }, {});
+  console.log(products);
 
-  return (
-    <ProductsTableFunctional
-      products={products}
-      grouped={grouped}
-    />
-  );
+  return <ProductsTableFunctional products={products} grouped={grouped} />;
 };
 
 export default ProductsDescription;

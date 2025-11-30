@@ -36,6 +36,14 @@ const App = () => (
           path="product-category/:category"
           element={<ProductCategoryPage />}
         />
+        <Route
+          path="dashboard"
+          element={
+            <PrivateRoute>
+              <ProductFormPage />
+            </PrivateRoute>
+          }
+        />
       </Route>
       <Route
         path="/dashboard"
