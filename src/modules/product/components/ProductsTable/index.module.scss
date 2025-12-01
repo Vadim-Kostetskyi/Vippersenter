@@ -4,7 +4,7 @@
   width: "100%";
   margin-top: 80px;
 
-  & td{
+  & td {
     text-align: center;
   }
 
@@ -19,12 +19,12 @@
   }
 }
 
-.category{
+.category {
   font-weight: bold;
-   background-color: "#eee"
+  background-color: "#eee";
 }
 
-.quantity{
+.quantity {
   width: 30px;
   text-align: center;
 }
@@ -50,7 +50,7 @@
 .attributes {
   text-align: center;
 
-  & > div{
+  & > div {
     display: flex;
     gap: 16px;
     justify-content: center;
@@ -74,12 +74,12 @@
   display: inline-flex;
   align-items: center;
 
-  & span{
+  & span {
     padding: 2px 5px;
     border: 1px solid $whiteColor;
   }
 
-  & input{
+  & input {
     margin-right: 5px;
   }
 
@@ -93,6 +93,19 @@
   }
 }
 
-.center{
-  text-align: center
+.center {
+  text-align: center;
+}
+
+.actions {
+  text-align: center;
+  padding: 10px;
+}
+
+.editBtn {
+  width: 30px;
+  & img {
+    width: 100%;
+  }
+  margin-bottom: 20px;
 }

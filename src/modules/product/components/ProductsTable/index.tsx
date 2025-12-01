@@ -39,6 +39,11 @@ interface ProductsTableProps {
     value: string
   ) => void;
   handleDelete: (id: string) => Promise<void>;
+
+  // NEW PRICE PROPS
+  prices: Record<string, number>;
+  handlePriceChange: (slug: string, price: string) => void;
+  handlePriceBlur: (slug: string, price: number) => void;
 }
 
 const ProductsTable: FC<ProductsTableProps> = ({
@@ -50,6 +55,10 @@ const ProductsTable: FC<ProductsTableProps> = ({
   handleQuantityBlur,
   handleAttributeChange,
   handleDelete,
+
+  prices,
+  handlePriceChange,
+  handlePriceBlur,
 }) => (
   <table border={1} cellPadding={8} className={styles.productsTable}>
     <thead>
@@ -59,6 +68,7 @@ const ProductsTable: FC<ProductsTableProps> = ({
         ))}
       </tr>
     </thead>
+
     <tbody>
       {Object.entries(grouped).map(([category, items]) => (
         <React.Fragment key={category}>
@@ -67,6 +77,7 @@ const ProductsTable: FC<ProductsTableProps> = ({
               {category}
             </td>
           </tr>
+
           {items.map((product) => {
             const attrValues = attributesTable(product);
 
@@ -81,13 +92,34 @@ const ProductsTable: FC<ProductsTableProps> = ({
             const quantityKey = `${product.slug}_${main}_${secondary ?? ""}_${
               tertiary ?? ""
             }`;
+
             const quantity =
               quantities[quantityKey]?.quantity ?? product.quantity;
 
             return (
               <tr key={product.slug}>
                 <td>{product.name}</td>
-                <td className={styles.center}>{product.price}</td>
+
+                {/* PRICE INPUT */}
+                <td className={styles.center}>
+                  <input
+                    type="number"
+                    min={0}
+                    value={prices[product.slug] ?? product.price}
+                    onChange={(e) =>
+                      handlePriceChange(product.slug, e.target.value)
+                    }
+                    onBlur={() =>
+                      handlePriceBlur(
+                        product.slug,
+                        prices[product.slug] ?? product.price
+                      )
+                    }
+                    className={styles.quantity}
+                  />
+                </td>
+
+                {/* QUANTITY */}
                 <td>
                   <input
                     type="number"
@@ -108,6 +140,8 @@ const ProductsTable: FC<ProductsTableProps> = ({
                     className={styles.quantity}
                   />
                 </td>
+
+                {/* ATTRIBUTES */}
                 <td className={styles.attributes}>
                   <div>
                     {attrValues.map(({ title, attribute, values }) => (
@@ -115,6 +149,7 @@ const ProductsTable: FC<ProductsTableProps> = ({
                         <p>
                           <b>{product.attributes?.[0]?.[attribute] || ""}</b>
                         </p>
+
                         {values.map((val) =>
                           val ? (
                             <div key={val} className={styles.radioWrapper}>
@@ -122,13 +157,13 @@ const ProductsTable: FC<ProductsTableProps> = ({
                                 <input
                                   type="radio"
                                   name={`${product.slug}_${title}`}
-                                  value={val || 0}
+                                  value={val}
                                   checked={selected[title] === val}
                                   onChange={() =>
                                     handleAttributeChange(
                                       product.slug,
                                       title,
-                                      val || ""
+                                      val
                                     )
                                   }
                                 />
@@ -141,10 +176,12 @@ const ProductsTable: FC<ProductsTableProps> = ({
                     ))}
                   </div>
                 </td>
+
                 <td>
                   <p>{product.description}</p>
                 </td>
-                <td className={styles.center}>
+
+                <td className={styles.actions}>
                   <button onClick={() => handleDelete(product.slug)}>
                     <Cross className={styles.trashIcon} />
                   </button>

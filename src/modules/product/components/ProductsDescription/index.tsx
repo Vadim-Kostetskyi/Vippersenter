@@ -13,7 +13,6 @@ const ProductsDescription = () => {
     acc[product.category].push(product);
     return acc;
   }, {});
-  console.log(products);
 
   return <ProductsTableFunctional products={products} grouped={grouped} />;
 };
