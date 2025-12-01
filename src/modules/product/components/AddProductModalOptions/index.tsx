@@ -174,8 +174,7 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
           .reduce((a, b) => a.concat(b), []),
       [[]] as string[][]
     );
-  }
-  
+  };
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -186,7 +185,7 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
     } else if (!selectedImage) {
       alert("Select an image");
       return;
-    }    
+    }
 
     const keys = attributeNames;
     const valuesArrays = keys.map((key) => attributeValues[key] || []);

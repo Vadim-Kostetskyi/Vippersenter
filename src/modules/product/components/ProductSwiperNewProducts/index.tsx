@@ -18,7 +18,7 @@ const ProductSwiperNewProducts = () => {
       <CoreSwiper navigation={true} slidesPerView={2} breakpoints={breakpoints}>
         {newProducts &&
           newProducts.map(({ name, image, price, slug }) => (
-            <SwiperSlide>
+            <SwiperSlide key={name}>
               <LangLink to={`/product/${slug}`} className={styles.itemsWrapper}>
                 <div>
                   <div className={styles.imageWrapper}>

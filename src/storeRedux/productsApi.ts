@@ -191,6 +191,23 @@ export const productsApi = createApi({
       ],
     }),
 
+    updateProductPrice: builder.mutation<
+      Product,
+      {
+        slug: string;
+        price: number;
+      }
+    >({
+      query: ({ slug, price }) => ({
+        url: `products/${slug}/price`,
+        method: "PATCH",
+        body: { price },
+      }),
+      invalidatesTags: (_result, _error, { slug }) => [
+        { type: "Product", id: slug },
+      ],
+    }),
+
     deleteProduct: builder.mutation<{ success: boolean; slug: string }, string>(
       {
         query: (slug) => ({
@@ -232,6 +249,7 @@ export const {
   useAddProductMutation,
   useAddProductWithImageMutation,
   useUpdateProductQuantityMutation,
+  useUpdateProductPriceMutation,
   useDeleteProductMutation,
   usePlaceOrderMutation,
 } = productsApi;

@@ -39,6 +39,11 @@ interface ProductsTableProps {
     value: string
   ) => void;
   handleDelete: (id: string) => Promise<void>;
+
+  // NEW PRICE PROPS
+  prices: Record<string, number>;
+  handlePriceChange: (slug: string, price: string) => void;
+  handlePriceBlur: (slug: string, price: number) => void;
 }
 
 const ProductsTable: FC<ProductsTableProps> = ({
@@ -49,103 +54,145 @@ const ProductsTable: FC<ProductsTableProps> = ({
   handleQuantityChange,
   handleQuantityBlur,
   handleAttributeChange,
-  handleDelete
-}) =>  (
-    <table border={1} cellPadding={8} className={styles.productsTable}>
-      <thead>
-        <tr>
-          {titles.map((title) => <th key={title}>{title}</th>)}
-        </tr>
-      </thead>
-      <tbody>
-        {Object.entries(grouped).map(([category, items]) => (
-          <React.Fragment key={category}>
-            <tr>
-              <td colSpan={6} className={styles.category}>
-                {category}
-              </td>
-            </tr>
-            {items.map((product) => {
-              const attrValues = attributesTable(product);
+  handleDelete,
 
-              const selected = selectedAttributes[product.slug] || {
-                main: "",
-                secondary: "",
-                tertiary: "",
-              };
+  prices,
+  handlePriceChange,
+  handlePriceBlur,
+}) => (
+  <table border={1} cellPadding={8} className={styles.productsTable}>
+    <thead>
+      <tr>
+        {titles.map((title) => (
+          <th key={title}>{title}</th>
+        ))}
+      </tr>
+    </thead>
 
-              const { main, secondary, tertiary } = selected;
+    <tbody>
+      {Object.entries(grouped).map(([category, items]) => (
+        <React.Fragment key={category}>
+          <tr>
+            <td colSpan={6} className={styles.category}>
+              {category}
+            </td>
+          </tr>
 
-              const quantityKey = `${product.slug}_${main}_${
-                secondary ?? ""
-              }_${tertiary ?? ""}`;
-              const quantity =
-                quantities[quantityKey]?.quantity ?? product.quantity;
+          {items.map((product) => {
+            const attrValues = attributesTable(product);
 
-              return (
-                <tr key={product.slug}>
-                  <td>{product.name}</td>
-                  <td className={styles.center}>{product.price}</td>
-                  <td>
-                    <input
-                      type="number"
-                      min={0}
-                      value={quantity}
-                      onChange={(e) =>
-                        handleQuantityChange(quantityKey, e.target.value)
-                      }
-                      onBlur={() =>
-                        handleQuantityBlur(product.slug, +quantity, main, secondary, tertiary)
-                      }
-                      className={styles.quantity}
-                    />
-                  </td>
-                  <td className={styles.attributes}>
-                    <div>
-                      {attrValues.map(({ title, attribute, values }) => (
-                        <div key={title}>
-                          <p>
-                            <b>{product.attributes?.[0]?.[attribute] || ""}</b>
-                          </p>
-                          {values.map((val) => (
+            const selected = selectedAttributes[product.slug] || {
+              main: "",
+              secondary: "",
+              tertiary: "",
+            };
+
+            const { main, secondary, tertiary } = selected;
+
+            const quantityKey = `${product.slug}_${main}_${secondary ?? ""}_${
+              tertiary ?? ""
+            }`;
+
+            const quantity =
+              quantities[quantityKey]?.quantity ?? product.quantity;
+
+            return (
+              <tr key={product.slug}>
+                <td>{product.name}</td>
+
+                {/* PRICE INPUT */}
+                <td className={styles.center}>
+                  <input
+                    type="number"
+                    min={0}
+                    value={prices[product.slug] ?? product.price}
+                    onChange={(e) =>
+                      handlePriceChange(product.slug, e.target.value)
+                    }
+                    onBlur={() =>
+                      handlePriceBlur(
+                        product.slug,
+                        prices[product.slug] ?? product.price
+                      )
+                    }
+                    className={styles.quantity}
+                  />
+                </td>
+
+                {/* QUANTITY */}
+                <td>
+                  <input
+                    type="number"
+                    min={0}
+                    value={quantity}
+                    onChange={(e) =>
+                      handleQuantityChange(quantityKey, e.target.value)
+                    }
+                    onBlur={() =>
+                      handleQuantityBlur(
+                        product.slug,
+                        +quantity,
+                        main,
+                        secondary,
+                        tertiary
+                      )
+                    }
+                    className={styles.quantity}
+                  />
+                </td>
+
+                {/* ATTRIBUTES */}
+                <td className={styles.attributes}>
+                  <div>
+                    {attrValues.map(({ title, attribute, values }) => (
+                      <div key={title}>
+                        <p>
+                          <b>{product.attributes?.[0]?.[attribute] || ""}</b>
+                        </p>
+
+                        {values.map((val) =>
+                          val ? (
                             <div key={val} className={styles.radioWrapper}>
                               <label className={styles.radioLabel}>
                                 <input
                                   type="radio"
                                   name={`${product.slug}_${title}`}
-                                  value={val || 0}
+                                  value={val}
                                   checked={selected[title] === val}
                                   onChange={() =>
                                     handleAttributeChange(
                                       product.slug,
                                       title,
-                                      val || ""
+                                      val
                                     )
                                   }
                                 />
                                 <span>{val}</span>
                               </label>
                             </div>
-                          ))}
-                        </div>
-                      ))}
-                    </div>
-                  </td>
-                  <td>
-                    <p>{product.description}</p>
-                  </td>
-                  <td className={styles.center}>
-                    <button onClick={() => handleDelete(product.slug)}>
-                      <Cross className={styles.trashIcon} />
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-          </React.Fragment>
-        ))}
-      </tbody>
-    </table>
-  );
+                          ) : null
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </td>
 
-export default ProductsTable
+                <td>
+                  <p>{product.description}</p>
+                </td>
+
+                <td className={styles.actions}>
+                  <button onClick={() => handleDelete(product.slug)}>
+                    <Cross className={styles.trashIcon} />
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
+        </React.Fragment>
+      ))}
+    </tbody>
+  </table>
+);
+
+export default ProductsTable;

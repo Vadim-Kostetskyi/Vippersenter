@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect, FC } from "react";
+import { useTranslation } from "react-i18next";
 import Arrow from "assets/svg/Arrow";
 import styles from "./index.module.scss";
 
@@ -16,6 +17,8 @@ const DropdownFilter: FC<DropdownFilterProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState("0px");
+
+  const { t } = useTranslation();
 
   const toggleDropdown = () => {
     if (window.innerWidth >= 960) {
@@ -39,7 +42,7 @@ const DropdownFilter: FC<DropdownFilterProps> = ({
   return (
     <div className={styles.dropdown}>
       <div className={styles.trigger} onClick={toggleDropdown}>
-        <h2>{title}</h2>
+        <h2>{t(`filter.${title}`)}</h2>
         <Arrow
           className={`${styles.arrowImg} ${isOpen ? styles.arrowImgOpen : ""}`}
         />
@@ -51,7 +54,7 @@ const DropdownFilter: FC<DropdownFilterProps> = ({
         style={{ maxHeight: height }}
       >
         {items.map((item) => (
-          <label>
+          <label key={item}>
             <input
               type="checkbox"
               onChange={(e) => onFilter(title, item, e.target.checked)}

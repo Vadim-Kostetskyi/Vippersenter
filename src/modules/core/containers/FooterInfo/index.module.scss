@@ -36,7 +36,19 @@
     }
   }
   li {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
     width: calc(50% - 15px);
+
+    & > span {
+      display: flex;
+      align-items: center;
+    }
+
+    & img {
+      margin-left: 10px;
+    }
 
     @include media(tabletLarge) {
       width: calc((100% - 50px) / 3);
@@ -74,13 +86,12 @@
 .title {
   font-size: 20px;
   font-weight: 500;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 
 .text {
   font-size: 14px;
   font-weight: 300;
-  margin-bottom: 15px;
 }
 
 .copyright {
