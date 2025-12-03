@@ -5,6 +5,7 @@ import { Product, AttributeValue } from "storeRedux/types";
 import { handleDeleteProduct } from "utils/product";
 import {
   useDeleteProductMutation,
+  useUpdateProductExtraPriceMutation,
   useUpdateProductPriceMutation,
   useUpdateProductQuantityMutation,
 } from "storeRedux/productsApi";
@@ -41,6 +42,7 @@ const ProductsTableFunctional: FC<ProductsTableFunctional> = ({
 
   const [deleteProduct] = useDeleteProductMutation();
   const [updateQuantity] = useUpdateProductQuantityMutation();
+  const [updateExtraPrice] = useUpdateProductExtraPriceMutation();
 
   const [updateProductPrice] = useUpdateProductPriceMutation();
 
@@ -131,6 +133,16 @@ const ProductsTableFunctional: FC<ProductsTableFunctional> = ({
     }
   };
 
+  const handleExtraPriceChange = (key: string, value: string) => {
+    setQuantities((prev) => ({
+      ...prev,
+      [key]: {
+        ...prev[key],
+        extraPrice: value,
+      },
+    }));
+  };
+
   const handleQuantityBlur = async (
     productSlug: string,
     quantity: number,
@@ -149,6 +161,29 @@ const ProductsTableFunctional: FC<ProductsTableFunctional> = ({
       if (value_tertiary) payload.value_tertiary = value_tertiary;
 
       await updateQuantity(payload).unwrap();
+    } catch {
+      alert(t("product.updateError") || "Error updating quantity");
+    }
+  };
+
+  const handleExtraPriceBlur = async (
+    productSlug: string,
+    extraPrice: number,
+    value_main: string,
+    value_secondary?: string,
+    value_tertiary?: string
+  ) => {
+    try {
+      const payload: any = {
+        slug: productSlug,
+        extraPrice,
+      };
+
+      if (value_main) payload.value_main = value_main;
+      if (value_secondary) payload.value_secondary = value_secondary;
+      if (value_tertiary) payload.value_tertiary = value_tertiary;
+
+      await updateExtraPrice(payload).unwrap();
     } catch {
       alert(t("product.updateError") || "Error updating quantity");
     }
@@ -205,6 +240,8 @@ const ProductsTableFunctional: FC<ProductsTableFunctional> = ({
       quantities={quantities}
       handleQuantityChange={handleQuantityChange}
       handleQuantityBlur={handleQuantityBlur}
+      handleExtraPriceChange={handleExtraPriceChange}
+      handleExtraPriceBlur={handleExtraPriceBlur}
       handleAttributeChange={handleAttributeChange}
       handleDelete={handleDelete}
       prices={prices}

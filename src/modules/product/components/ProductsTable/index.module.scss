@@ -24,9 +24,15 @@
   background-color: "#eee";
 }
 
-.quantity {
-  width: 30px;
+.quantity,
+.extraPrice {
+  width: 60px;
   text-align: center;
+  margin: 0 5px;
+}
+
+.extraPrice {
+  margin-top: 15px;
 }
 
 .attributeNameQuantity {

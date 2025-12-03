@@ -3,6 +3,7 @@ import { Product } from "storeRedux/types";
 import { attributesTable } from "./data";
 import Cross from "assets/svg/Cross";
 import styles from "./index.module.scss";
+import { isExtraPrice } from "utils/isExtraPrice";
 
 interface ProductsTableProps {
   titles: string[];
@@ -33,11 +34,22 @@ interface ProductsTableProps {
     value_secondary?: string,
     value_tertiary?: string
   ) => Promise<void>;
+
+  handleExtraPriceChange: (key: string, newQuantity: string) => void;
+  handleExtraPriceBlur: (
+    productSlug: string,
+    extraPrice: number,
+    value_main: string,
+    value_secondary?: string,
+    value_tertiary?: string
+  ) => Promise<void>;
+
   handleAttributeChange: (
     productSlug: string,
     attrType: "main" | "secondary" | "tertiary",
     value: string
   ) => void;
+
   handleDelete: (id: string) => Promise<void>;
 
   // NEW PRICE PROPS
@@ -53,6 +65,8 @@ const ProductsTable: FC<ProductsTableProps> = ({
   quantities,
   handleQuantityChange,
   handleQuantityBlur,
+  handleExtraPriceChange,
+  handleExtraPriceBlur,
   handleAttributeChange,
   handleDelete,
 
@@ -95,6 +109,7 @@ const ProductsTable: FC<ProductsTableProps> = ({
 
             const quantity =
               quantities[quantityKey]?.quantity ?? product.quantity;
+            const extraPrice = quantities[quantityKey]?.extraPrice;
 
             return (
               <tr key={product.slug}>
@@ -117,6 +132,27 @@ const ProductsTable: FC<ProductsTableProps> = ({
                     }
                     className={styles.quantity}
                   />
+
+                  {isExtraPrice(quantityKey) && (
+                    <input
+                      type="number"
+                      min={0}
+                      value={extraPrice}
+                      onChange={(e) =>
+                        handleExtraPriceChange(quantityKey, e.target.value)
+                      }
+                      onBlur={() =>
+                        handleExtraPriceBlur(
+                          product.slug,
+                          +extraPrice,
+                          main,
+                          secondary,
+                          tertiary
+                        )
+                      }
+                      className={styles.extraPrice}
+                    />
+                  )}
                 </td>
 
                 {/* QUANTITY */}

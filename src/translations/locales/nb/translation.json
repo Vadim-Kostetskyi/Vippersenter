@@ -35,8 +35,8 @@
     "quantity": "Antall",
     "characteristics": "Egenskaper",
     "confirmDelete": "Slett produkt",
-    "updateError": "Oppdateringsfeil",
-    "deleteError": "Slettingsfeil"
+    "updateError": "Oppdaterings feil",
+    "deleteError": "Slettings feil"
   },
 
   "form": {
