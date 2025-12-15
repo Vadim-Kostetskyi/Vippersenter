@@ -30,6 +30,7 @@ const ProductsTableFunctional: FC<ProductsTableFunctional> = ({
       } & AttributeValue
     >
   >({});
+  console.log(quantities);
 
   const [selectedAttributes, setSelectedAttributes] = useState<
     Record<string, { main: string; secondary: string; tertiary: string }>

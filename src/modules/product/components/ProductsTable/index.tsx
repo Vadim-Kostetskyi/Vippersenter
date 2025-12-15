@@ -107,14 +107,20 @@ const ProductsTable: FC<ProductsTableProps> = ({
               tertiary ?? ""
             }`;
 
+            const qFromState = quantities[quantityKey]?.quantity;
+
             const quantity =
-              quantities[quantityKey]?.quantity ?? product.quantity;
+              qFromState === undefined ||
+              qFromState === null ||
+              qFromState === 0
+                ? product.quantity
+                : qFromState;
+
             const extraPrice = quantities[quantityKey]?.extraPrice;
 
             return (
               <tr key={product.slug}>
                 <td>{product.name}</td>
-
                 {/* PRICE INPUT */}
                 <td className={styles.center}>
                   <input
@@ -154,16 +160,17 @@ const ProductsTable: FC<ProductsTableProps> = ({
                     />
                   )}
                 </td>
-
                 {/* QUANTITY */}
                 <td>
                   <input
                     type="number"
                     min={0}
                     value={quantity}
-                    onChange={(e) =>
-                      handleQuantityChange(quantityKey, e.target.value)
-                    }
+                    onChange={(e) => {
+                      console.log(e.target.value);
+
+                      return handleQuantityChange(quantityKey, e.target.value);
+                    }}
                     onBlur={() =>
                       handleQuantityBlur(
                         product.slug,
@@ -176,7 +183,6 @@ const ProductsTable: FC<ProductsTableProps> = ({
                     className={styles.quantity}
                   />
                 </td>
-
                 {/* ATTRIBUTES */}
                 <td className={styles.attributes}>
                   <div>
@@ -212,11 +218,9 @@ const ProductsTable: FC<ProductsTableProps> = ({
                     ))}
                   </div>
                 </td>
-
                 <td>
                   <p>{product.description}</p>
                 </td>
-
                 <td className={styles.actions}>
                   <button onClick={() => handleDelete(product.slug)}>
                     <Cross className={styles.trashIcon} />
