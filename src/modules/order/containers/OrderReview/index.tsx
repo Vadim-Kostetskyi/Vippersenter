@@ -26,29 +26,28 @@ const OrderReview: FC<OrderReviewProps> = ({ deliveryPrice }) => {
     window.dispatchEvent(new Event("cartUpdated"));
   };
 
-const removeCartItem = (slug: string, attributes?: Attributes[]) => {
-  const updatedCart = cartItems.filter((item) => {
-    if (item.slug !== slug) return true;
+  const removeCartItem = (slug: string, attributes?: Attributes[]) => {
+    const updatedCart = cartItems.filter((item) => {
+      if (item.slug !== slug) return true;
 
-    if (!item.attributes && !attributes) return false;
+      if (!item.attributes && !attributes) return false;
 
-    if (!item.attributes || !attributes) return true;
+      if (!item.attributes || !attributes) return true;
 
-    if (item.attributes.length !== attributes.length) return true;
+      if (item.attributes.length !== attributes.length) return true;
 
-    const isSame = item.attributes.every((attr) =>
-      attributes.some(
-        (a) => a.attributeName === attr.attributeName && a.value === attr.value
-      )
-    );
+      const isSame = item.attributes.every((attr) =>
+        attributes.some(
+          (a) => a.attribute === attr.attribute && a.value === attr.value
+        )
+      );
 
-    return !isSame;
-  });
+      return !isSame;
+    });
 
-  setCartItems(updatedCart);
-  window.dispatchEvent(new Event("cartUpdated"));
-};
-
+    setCartItems(updatedCart);
+    window.dispatchEvent(new Event("cartUpdated"));
+  };
 
   const prices = [
     {

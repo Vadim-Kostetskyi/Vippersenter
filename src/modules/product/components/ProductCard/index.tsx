@@ -13,18 +13,19 @@ import styles from "./index.module.scss";
 import { getAvailableAttributeValues } from "utils/getAvailableAttributeValuesProductCard";
 
 const ProductCard = () => {
-  const { productId } = useParams();
+  const { productSlug } = useParams();
   const {
     data: product,
     isLoading,
     isError,
-  } = useGetProductBySlugQuery(productId ?? "");
+  } = useGetProductBySlugQuery(productSlug ?? "");
   const [loaded, setLoaded] = useState(false);
   const [count, setCount] = useState(1);
   const [maxCount, setMaxCount] = useState(0);
   const [selectedAttributes, setSelectedAttributes] = useState<
     SelectedAttributes[]
   >([]);
+  console.log("maxCount", maxCount);
 
   const { t } = useTranslation();
 
@@ -125,7 +126,7 @@ const ProductCard = () => {
       const cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
       if (product.attributes.length === 0) {
-        const productInCart = cart.find((p: any) => p.slug === productId);
+        const productInCart = cart.find((p: any) => p.slug === productSlug);
         const maxAddable = Math.max(
           +product?.quantity - productInCart?.quantity,
           0
@@ -142,14 +143,15 @@ const ProductCard = () => {
 
       const productInCart = cart.find(
         (p: any) =>
-          p.slug === productId &&
-          p.attributes[0]?.attributeName === selectedAttributes[0]?.attribute &&
-          (p.attributes[1]?.attributeName === undefined ||
-            p.attributes[1]?.attributeName ===
-              selectedAttributes[1]?.attribute) &&
-          (p.attributes[2]?.attributeName === undefined ||
-            p.attributes[2]?.attributeName === selectedAttributes[2]?.attribute)
+          p.slug === productSlug &&
+          p.attributes[0]?.attribute === selectedAttributes[0]?.attribute &&
+          (p.attributes[1]?.attribute === undefined ||
+            p.attributes[1]?.attribute === selectedAttributes[1]?.attribute) &&
+          (p.attributes[2]?.attribute === undefined ||
+            p.attributes[2]?.attribute === selectedAttributes[2]?.attribute)
       );
+      console.log("productInCart", productInCart);
+      console.log(selectedAttributes);
 
       const alreadyInCart = productInCart?.quantity || 0;
       const maxAddable = Math.max(qty - alreadyInCart, 0);
@@ -157,6 +159,7 @@ const ProductCard = () => {
         +product.quantity - alreadyInCart,
         0
       );
+      console.log(alreadyInCart);
 
       if (variant) {
         setMaxCount(maxAddable);
@@ -171,7 +174,7 @@ const ProductCard = () => {
 
     window.addEventListener("cartUpdated", updateMaxCount);
     return () => window.removeEventListener("cartUpdated", updateMaxCount);
-  }, [selectedAttributes, product, productId, product?.attributes]);
+  }, [selectedAttributes, product, productSlug, product?.attributes]);
 
   if (isLoading) return <div>...</div>;
   if (isError || !product) return <div>Data loading error</div>;
@@ -188,8 +191,10 @@ const ProductCard = () => {
   const grouped = groupAttributes(attributes || []);
 
   const onAddToCart = () => {
+    // setMaxCount((prev) => {
+    //   return prev - count;
+    // });
     addProductToCart(slug, +fullPrice, count, selectedAttributes);
-    setMaxCount((prev) => prev - count);
     window.dispatchEvent(new Event("cartUpdated"));
   };
 

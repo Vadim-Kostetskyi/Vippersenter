@@ -41,6 +41,7 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
     attributes,
   } = product ?? {};
   const [count, setCount] = useState(assignedQuantity);
+  console.log(assignedAttributes);
 
   const findQuantity = (
     allAttributes: Attribute[],
@@ -48,14 +49,14 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
   ): number | null => {
     const found = allAttributes.find((attr) => {
       return searchAttributes.every((search) => {
-        if (search.name === attr.attribute_main) {
-          return search.attributeName === attr.value_main;
+        if (search.parameter === attr.attribute_main) {
+          return search.attribute === attr.value_main;
         }
-        if (search.name === attr.attribute_secondary) {
-          return search.attributeName === attr.value_secondary;
+        if (search.parameter === attr.attribute_secondary) {
+          return search.attribute === attr.value_secondary;
         }
-        if (search.name === attr.attribute_tertiary) {
-          return search.attributeName === attr.value_tertiary;
+        if (search.parameter === attr.attribute_tertiary) {
+          return search.attribute === attr.value_tertiary;
         }
         return false;
       });
@@ -114,9 +115,9 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
             <img src={TrashIcon} alt="delete item" />
           </button>
         </div>
-        {assignedAttributes?.map(({ name, attributeName }) => (
-          <div key={name} className={styles.attributes}>
-            <span>{name}:</span> <span>{attributeName}</span>
+        {assignedAttributes?.map(({ parameter, attribute }) => (
+          <div key={parameter} className={styles.attributes}>
+            <span>{parameter}:</span> <span>{attribute}</span>
           </div>
         ))}
         <div>

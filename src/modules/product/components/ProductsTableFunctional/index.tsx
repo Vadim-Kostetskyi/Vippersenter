@@ -35,9 +35,6 @@ const ProductsTableFunctional: FC<ProductsTableFunctional> = ({
     Record<string, { main: string; secondary: string; tertiary: string }>
   >({});
 
-  // ---------------------------
-  // ADD PRICE STATE
-  // ---------------------------
   const [prices, setPrices] = useState<Record<string, number>>({});
 
   const [deleteProduct] = useDeleteProductMutation();
@@ -52,7 +49,6 @@ const ProductsTableFunctional: FC<ProductsTableFunctional> = ({
 
   useEffect(() => {
     if (products) {
-      // --- Quantities ---
       setQuantities((prevQuantities) => {
         const newQuantities = { ...prevQuantities };
 
@@ -77,7 +73,6 @@ const ProductsTableFunctional: FC<ProductsTableFunctional> = ({
         return newQuantities;
       });
 
-      // --- Selected attributes ---
       setSelectedAttributes((prevSelectedAttrs) => {
         const newSelectedAttrs = { ...prevSelectedAttrs };
 
@@ -103,7 +98,6 @@ const ProductsTableFunctional: FC<ProductsTableFunctional> = ({
         return newSelectedAttrs;
       });
 
-      // --- Prices ---
       setPrices((prev) => {
         const updated = { ...prev };
         products.forEach((product) => {
@@ -115,10 +109,6 @@ const ProductsTableFunctional: FC<ProductsTableFunctional> = ({
       });
     }
   }, [products]);
-
-  // ---------------------------
-  // Quantity handlers
-  // ---------------------------
 
   const handleQuantityChange = (key: string, newQuantity: string) => {
     const num = parseInt(newQuantity);
@@ -188,10 +178,6 @@ const ProductsTableFunctional: FC<ProductsTableFunctional> = ({
       alert(t("product.updateError") || "Error updating quantity");
     }
   };
-
-  // ---------------------------
-  // PRICE HANDLERS
-  // ---------------------------
 
   const handlePriceChange = (slug: string, price: string) => {
     const value = Number(price);

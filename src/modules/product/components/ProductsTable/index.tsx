@@ -2,8 +2,8 @@ import React, { FC } from "react";
 import { Product } from "storeRedux/types";
 import { attributesTable } from "./data";
 import Cross from "assets/svg/Cross";
-import styles from "./index.module.scss";
 import { isExtraPrice } from "utils/isExtraPrice";
+import styles from "./index.module.scss";
 
 interface ProductsTableProps {
   titles: string[];
