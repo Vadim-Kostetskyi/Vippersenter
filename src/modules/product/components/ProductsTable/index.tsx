@@ -166,11 +166,9 @@ const ProductsTable: FC<ProductsTableProps> = ({
                     type="number"
                     min={0}
                     value={quantity}
-                    onChange={(e) => {
-                      console.log(e.target.value);
-
-                      return handleQuantityChange(quantityKey, e.target.value);
-                    }}
+                    onChange={(e) =>
+                      handleQuantityChange(quantityKey, e.target.value)
+                    }
                     onBlur={() =>
                       handleQuantityBlur(
                         product.slug,

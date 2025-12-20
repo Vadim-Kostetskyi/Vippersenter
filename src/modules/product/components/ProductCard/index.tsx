@@ -19,6 +19,8 @@ const ProductCard = () => {
     isLoading,
     isError,
   } = useGetProductBySlugQuery(productSlug ?? "");
+  console.log("productSlug", productSlug);
+
   const [loaded, setLoaded] = useState(false);
   const [count, setCount] = useState(1);
   const [maxCount, setMaxCount] = useState(0);
@@ -312,7 +314,7 @@ const ProductCard = () => {
 
         <h2 className={styles.description}>{t("form.description")}</h2>
         <div className={styles.descriptionText}>
-          {parseDescription(description)}
+          {parseDescription(description ?? "")}
         </div>
       </div>
     </div>
