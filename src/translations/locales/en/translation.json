@@ -106,6 +106,17 @@
     "contactDetails": "Our contact details"
   },
 
+  "payment": {
+    "payment": "Payment",
+    "cardPayment": "Pay with Card",
+    "amountPayable": "Total Amount",
+    "pay": "Pay Now",
+    "pleaseWait": "Processing...",
+    "success": "Payment successful ✅",
+    "error": "Error: {{message}}",
+    "createError": "Error creating payment"
+  },
+
   "catalog": "Catalog",
   "popularProducts": "Popular Products",
   "newProducts": "New Arrivals",

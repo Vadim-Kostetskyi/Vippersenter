@@ -1,55 +1,56 @@
 @use "styles/bootstrap" as *;
 
-.paymentForm {
+.formContainer {
   max-width: 400px;
-  margin: 20px auto;
-  padding: 20px;
+  margin: 50px auto;
+  padding: 30px;
   border-radius: 12px;
-  background: #f8f9fa;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  font-family: sans-serif;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  font-family: Arial, sans-serif;
 }
 
 .title {
-  margin-bottom: 20px;
   text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
 }
 
-.formGroup {
-  margin-bottom: 15px;
-
-  label {
-    display: block;
-    margin-bottom: 6px;
-    font-weight: bold;
-    font-size: 14px;
-  }
-
-  input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-  }
+.amount {
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: #555;
 }
 
-.formRow {
-  display: flex;
-  gap: 10px;
+.cardWrapper {
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
 }
 
-.btnPay {
+.payButton {
   width: 100%;
   padding: 12px;
-  background: #0070f3;
-  color: white;
+  background-color: #6772e5;
+  color: #fff;
   border: none;
   border-radius: 8px;
   font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
+  transition: background-color 0.3s;
 
   &:hover {
-    background: #0059c1;
+    background-color: #5469d4;
+  }
+
+  &:disabled {
+    background-color: #bbb;
+    cursor: not-allowed;
   }
 }

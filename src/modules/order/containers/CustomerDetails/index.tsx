@@ -9,10 +9,10 @@ import PostenDelivery from "../PostenDelivery";
 import styles from "./index.module.scss";
 
 interface CustomerDetailsProps {
-  setPrice: (price: number) => void;
+  setDeliveryPrice: (price: number) => void;
 }
 
-const CustomerDetails: FC<CustomerDetailsProps> = ({ setPrice }) => {
+const CustomerDetails: FC<CustomerDetailsProps> = ({ setDeliveryPrice }) => {
   const [delivery, setDelivery] = useState("postnord");
   const { t } = useTranslation();
 
@@ -58,9 +58,9 @@ const CustomerDetails: FC<CustomerDetailsProps> = ({ setPrice }) => {
         </div>
 
         {delivery === "postnord" ? (
-          <PostnordDelivery setPrice={setPrice} />
+          <PostnordDelivery setPrice={setDeliveryPrice} />
         ) : (
-          <PostenDelivery setPrice={setPrice} />
+          <PostenDelivery setPrice={setDeliveryPrice} />
         )}
         <label htmlFor="orderComments" className={styles.orderComments}>
           <span>{t("order.orderNotes")}</span>

@@ -1,31 +1,30 @@
 @use "styles/bootstrap" as *;
 
-.customerDetails{
+.customerDetails {
   padding: 20px;
   border: 1px solid $lightGrey;
   border-radius: 4px;
   background-color: $whiteColor;
 
-  & h3{
+  & h3 {
     font-size: 24px;
   }
 }
 
-.detailsBox{
+.detailsBox {
   padding: 20px 0;
-  & input{
+  & input {
     margin-bottom: 15px;
   }
 }
 
-.orderComments{
-
-  & span{
+.orderComments {
+  & span {
     font-weight: 700;
     font-size: 14px;
   }
 
-  & textarea{
+  & textarea {
     width: 100%;
     resize: none;
     padding: 5px 10px;
@@ -34,15 +33,15 @@
   }
 }
 
-.postBox{
+.postBox {
   display: flex;
   margin: auto;
   width: fit-content;
   margin-bottom: 15px;
   border: 1px solid $gainsboro;
   border-radius: 4px;
-  
-  & label:last-child{
+
+  & label:last-child {
     position: relative;
 
     &::after {
@@ -53,31 +52,31 @@
       height: calc(100% - 40px);
       border-left: 1px solid gainsboro;
     }
-    
-    & input{
+
+    & input {
       margin-right: 15px;
     }
   }
 }
 
-.post{
+.post {
   display: flex;
   align-items: center;
 
   padding: 15px;
   background-color: $whiteColor;
 
-  & input{
+  & input {
     margin-top: 15px;
   }
-  
+
   & span {
     display: flex;
     height: 60px;
   }
 
-  & img{
-  width: 200px;
-  object-fit: cover;
+  & img {
+    width: 200px;
+    object-fit: cover;
   }
 }

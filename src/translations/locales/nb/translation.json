@@ -106,6 +106,17 @@
     "contactDetails": "Våre kontaktopplysninger"
   },
 
+  "payment": {
+    "payment": "Betaling",
+    "cardPayment": "Betal med kort",
+    "amountPayable": "Totalt beløp",
+    "pay": "Betal nå",
+    "pleaseWait": "Behandler...",
+    "success": "Betaling vellykket ✅",
+    "error": "Feil: {{message}}",
+    "createError": "Feil ved oppretting av betaling"
+  },
+
   "catalog": "Katalog",
   "popularProducts": "Populære produkter",
   "newProducts": "Nyheter",

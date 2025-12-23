@@ -7,9 +7,13 @@ import OrderPrice from "modules/order/components/OrderPrice";
 
 interface OrderReviewProps {
   deliveryPrice: number;
+  setTotalPrice: (price: number) => void;
 }
 
-const OrderReview: FC<OrderReviewProps> = ({ deliveryPrice }) => {
+const OrderReview: FC<OrderReviewProps> = ({
+  deliveryPrice,
+  setTotalPrice,
+}) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   const { t } = useTranslation();
@@ -20,6 +24,10 @@ const OrderReview: FC<OrderReviewProps> = ({ deliveryPrice }) => {
   useEffect(() => {
     setCartItems(getCartItems());
   }, []);
+
+  useEffect(() => {
+    setTotalPrice(totalCartPrice + deliveryPrice);
+  }, [deliveryPrice, totalCartPrice]);
 
   const onSetProducts = (items: CartItem[]) => {
     setCartItems(items);

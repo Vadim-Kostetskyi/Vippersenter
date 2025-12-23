@@ -1,19 +1,16 @@
 @use "styles/bootstrap" as *;
 
-.orderReview{
+.orderReview {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 20px;
-  border: 1px solid $lightGrey;
-  border-radius: 4px;
-  background-color: $whiteColor;
 }
 
-.priceBox{
+.priceBox {
   padding: 30px 0;
 
-  & > div:not(:last-child){
+  & > div:not(:last-child) {
     margin-bottom: 10px;
   }
 }
