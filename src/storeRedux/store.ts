@@ -2,18 +2,21 @@ import { configureStore } from "@reduxjs/toolkit";
 import { productsApi } from "./productsApi";
 import { authApi } from "./authApi";
 import { ordersApi } from "./ordersApi";
+import { paymentApi } from "./paymentApi";
 
 export const store = configureStore({
   reducer: {
     [productsApi.reducerPath]: productsApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
     [ordersApi.reducerPath]: ordersApi.reducer,
+    [paymentApi.reducerPath]: paymentApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       productsApi.middleware,
       authApi.middleware,
-      ordersApi.middleware
+      ordersApi.middleware,
+      paymentApi.middleware
     ),
 });
 

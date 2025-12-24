@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { Outlet } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import AboutUsPage from "./AboutUsPage";
 import HomePage from "./HomePage";
 import LoginPage from "./LoginPage";
@@ -54,6 +55,12 @@ const App = () => (
         }
       />
     </Routes>
+
+    <ToastContainer
+      style={{ zIndex: 1000000 }}
+      position="top-right"
+      autoClose={5000}
+    />
   </>
 );
 

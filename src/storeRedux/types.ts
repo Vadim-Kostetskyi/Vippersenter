@@ -80,3 +80,11 @@ export interface SelectedAttributes {
   parameter: string;
   attribute: string;
 }
+
+export interface CreatePaymentIntentRequest {
+  amount: number;
+}
+
+export interface CreatePaymentIntentResponse {
+  clientSecret: string;
+}
