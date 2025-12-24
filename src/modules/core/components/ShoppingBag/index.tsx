@@ -12,7 +12,6 @@ const ShoppingBag = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  console.log(cartItems);
 
   const { t } = useTranslation();
   useEffect(() => {

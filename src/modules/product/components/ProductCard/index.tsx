@@ -19,7 +19,6 @@ const ProductCard = () => {
     isLoading,
     isError,
   } = useGetProductBySlugQuery(productSlug ?? "");
-  console.log("productSlug", productSlug);
 
   const [loaded, setLoaded] = useState(false);
   const [count, setCount] = useState(1);
@@ -27,7 +26,6 @@ const ProductCard = () => {
   const [selectedAttributes, setSelectedAttributes] = useState<
     SelectedAttributes[]
   >([]);
-  console.log("maxCount", maxCount);
 
   const { t } = useTranslation();
 
@@ -152,8 +150,6 @@ const ProductCard = () => {
           (p.attributes[2]?.attribute === undefined ||
             p.attributes[2]?.attribute === selectedAttributes[2]?.attribute)
       );
-      console.log("productInCart", productInCart);
-      console.log(selectedAttributes);
 
       const alreadyInCart = productInCart?.quantity || 0;
       const maxAddable = Math.max(qty - alreadyInCart, 0);
@@ -161,7 +157,6 @@ const ProductCard = () => {
         +product.quantity - alreadyInCart,
         0
       );
-      console.log(alreadyInCart);
 
       if (variant) {
         setMaxCount(maxAddable);

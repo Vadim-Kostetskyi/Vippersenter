@@ -41,7 +41,6 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
     attributes,
   } = product ?? {};
   const [count, setCount] = useState(assignedQuantity);
-  console.log(assignedAttributes);
 
   const findQuantity = (
     allAttributes: Attribute[],

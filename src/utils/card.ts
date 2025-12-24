@@ -26,7 +26,6 @@ export const addProductToCart = (
 ) => {
   const storedCart = localStorage.getItem("cart");
   const cart: CartItem[] = storedCart ? JSON.parse(storedCart) : [];
-  console.log(attributes);
 
   const existingItemIndex = cart.findIndex((item) => {
     if (item.slug !== slug) return false;
