@@ -191,6 +191,54 @@ export const productsApi = createApi({
       ],
     }),
 
+    updateProductPrice: builder.mutation<
+      Product,
+      {
+        slug: string;
+        price: number;
+      }
+    >({
+      query: ({ slug, price }) => ({
+        url: `products/${slug}/price`,
+        method: "PATCH",
+        body: { price },
+      }),
+      invalidatesTags: (_result, _error, { slug }) => [
+        { type: "Product", id: slug },
+      ],
+    }),
+
+    updateProductExtraPrice: builder.mutation<
+      Product,
+      {
+        slug: string;
+        extraPrice: number;
+        value_main: string;
+        value_secondary?: string;
+        value_tertiary?: string;
+      }
+    >({
+      query: ({
+        slug,
+        extraPrice,
+        value_main,
+        value_secondary,
+        value_tertiary,
+      }) => ({
+        url: `products/${slug}`,
+        method: "PATCH",
+        body: {
+          extraPrice,
+          value_main,
+          value_secondary,
+          value_tertiary,
+        },
+      }),
+      invalidatesTags: (_result, _error, { slug }) => [
+        { type: "Product", slug },
+      ],
+    }),
+
     deleteProduct: builder.mutation<{ success: boolean; slug: string }, string>(
       {
         query: (slug) => ({
@@ -232,6 +280,8 @@ export const {
   useAddProductMutation,
   useAddProductWithImageMutation,
   useUpdateProductQuantityMutation,
+  useUpdateProductPriceMutation,
+  useUpdateProductExtraPriceMutation,
   useDeleteProductMutation,
   usePlaceOrderMutation,
 } = productsApi;

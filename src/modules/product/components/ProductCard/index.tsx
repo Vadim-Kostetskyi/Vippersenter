@@ -6,73 +6,37 @@ import PlusSubtle from "assets/svg/PlusSubtle";
 import Minus from "assets/svg/Minus";
 import { addProductToCart } from "utils/card";
 import ProductAttributes from "../ProductAttributes";
-import styles from "./index.module.scss";
 import { parseDescription } from "utils/text";
-import { Attribute } from "storeRedux/types";
-
-interface Value {
-  name: string;
-  attributeName: string;
-}
-
-interface SelectedAttributes {
-  name: string;
-  attributeName: string;
-}
-
-const groupAttributes = (
-  attrs: {
-    attribute_main: string;
-    value_main: string;
-    attribute_secondary?: string;
-    value_secondary?: string;
-    attribute_tertiary?: string;
-    value_tertiary?: string;
-  }[]
-): { name: string; values: string[] }[] => {
-  const grouped: { name: string; values: string[] }[] = [];
-
-  attrs.forEach((attr) => {
-    const entries = [
-      { name: attr.attribute_main, value: attr.value_main },
-      { name: attr.attribute_secondary, value: attr.value_secondary },
-      { name: attr.attribute_tertiary, value: attr.value_tertiary },
-    ];
-
-    entries.forEach(({ name, value }) => {
-      if (!name || !value) return;
-
-      const existing = grouped.find((item) => item.name === name);
-      if (existing) {
-        if (!existing.values.includes(value)) {
-          existing.values.push(value);
-        }
-      } else {
-        grouped.push({ name, values: [value] });
-      }
-    });
-  });
-
-  return grouped;
-};
+import { Attribute, SelectedAttributes } from "storeRedux/types";
+import { groupAttributes } from "utils/groupAttributes";
+import styles from "./index.module.scss";
+import { getAvailableAttributeValues } from "utils/getAvailableAttributeValuesProductCard";
 
 const ProductCard = () => {
-  const { productId } = useParams();
+  const { productSlug } = useParams();
   const {
     data: product,
     isLoading,
     isError,
-  } = useGetProductBySlugQuery(productId ?? "");
+  } = useGetProductBySlugQuery(productSlug ?? "");
+  console.log("productSlug", productSlug);
+
   const [loaded, setLoaded] = useState(false);
   const [count, setCount] = useState(1);
   const [maxCount, setMaxCount] = useState(0);
-  const [selectedAttributes, setSelectedAttributes] = useState<Value[]>([]);
+  const [selectedAttributes, setSelectedAttributes] = useState<
+    SelectedAttributes[]
+  >([]);
+  console.log("maxCount", maxCount);
 
   const { t } = useTranslation();
 
   const selected = useMemo(() => {
     return Object.fromEntries(
-      selectedAttributes.map(({ name, attributeName }) => [name, attributeName])
+      selectedAttributes.map(({ parameter, attribute }) => [
+        parameter,
+        attribute,
+      ])
     );
   }, [selectedAttributes]);
 
@@ -82,7 +46,7 @@ const ProductCard = () => {
 
   const getSelectedVariantData = (
     attributes: Attribute[],
-    selectedAttributes: Value[]
+    selectedAttributes: SelectedAttributes[]
   ): Attribute | null => {
     if (selectedAttributes.length === 0) return null;
 
@@ -110,17 +74,29 @@ const ProductCard = () => {
   useEffect(() => {
     if (product?.attributes && product.attributes.length > 0) {
       const grouped: Record<string, Set<string>> = {};
-      const selected: Value[] = [];
+      const selected: SelectedAttributes[] = [];
 
       product.attributes.forEach((attr) => {
         const entries = [
-          { name: attr.attribute_main, value: attr.value_main },
-          { name: attr.attribute_secondary, value: attr.value_secondary },
-          { name: attr.attribute_tertiary, value: attr.value_tertiary },
+          {
+            name: attr.attribute_main,
+            value: attr.value_main,
+            qty: parseInt(attr.quantity || "0"),
+          },
+          {
+            name: attr.attribute_secondary,
+            value: attr.value_secondary,
+            qty: parseInt(attr.quantity || "0"),
+          },
+          {
+            name: attr.attribute_tertiary,
+            value: attr.value_tertiary,
+            qty: parseInt(attr.quantity || "0"),
+          },
         ];
 
-        entries.forEach(({ name, value }) => {
-          if (name && value) {
+        entries.forEach(({ name, value, qty }) => {
+          if (name && value && qty > 0) {
             if (!grouped[name]) {
               grouped[name] = new Set();
             }
@@ -131,11 +107,11 @@ const ProductCard = () => {
 
       for (const name in grouped) {
         const values = Array.from(grouped[name]);
-
         if (values.length > 0) {
-          selected.push({ name, attributeName: values[0] });
+          selected.push({ parameter: name, attribute: values[0] });
         }
       }
+
       setSelectedAttributes(selected);
     }
   }, [product]);
@@ -145,63 +121,62 @@ const ProductCard = () => {
     [product?.attributes, selectedAttributes]
   );
 
-useEffect(() => {
-  const updateMaxCount = () => {
-    if (!product?.attributes) return;
+  useEffect(() => {
+    const updateMaxCount = () => {
+      if (!product?.attributes) return;
 
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+      const cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
-    if (product.attributes.length === 0) {
-      const productInCart = cart.find((p: any) => p.slug === productId);
-      const maxAddable = Math.max(
-        +product?.quantity - productInCart?.quantity,
+      if (product.attributes.length === 0) {
+        const productInCart = cart.find((p: any) => p.slug === productSlug);
+        const maxAddable = Math.max(
+          +product?.quantity - productInCart?.quantity,
+          0
+        );
+        setMaxCount(productInCart ? maxAddable : +product?.quantity);
+        return;
+      }
+
+      const variant = getSelectedVariantData(
+        product.attributes,
+        selectedAttributes
+      );
+      const qty = parseInt(variant?.quantity || "0");
+
+      const productInCart = cart.find(
+        (p: any) =>
+          p.slug === productSlug &&
+          p.attributes[0]?.attribute === selectedAttributes[0]?.attribute &&
+          (p.attributes[1]?.attribute === undefined ||
+            p.attributes[1]?.attribute === selectedAttributes[1]?.attribute) &&
+          (p.attributes[2]?.attribute === undefined ||
+            p.attributes[2]?.attribute === selectedAttributes[2]?.attribute)
+      );
+      console.log("productInCart", productInCart);
+      console.log(selectedAttributes);
+
+      const alreadyInCart = productInCart?.quantity || 0;
+      const maxAddable = Math.max(qty - alreadyInCart, 0);
+      const alreadyInCartMaxAddable = Math.max(
+        +product.quantity - alreadyInCart,
         0
       );
-      setMaxCount(productInCart ? maxAddable : +product?.quantity);
-      return;
-    }
+      console.log(alreadyInCart);
 
-    const variant = getSelectedVariantData(
-      product.attributes,
-      selectedAttributes
-    );
-    const qty = parseInt(variant?.quantity || "0");
+      if (variant) {
+        setMaxCount(maxAddable);
+      } else if (alreadyInCart) {
+        setMaxCount(alreadyInCartMaxAddable);
+      } else {
+        setMaxCount(+product.quantity);
+      }
+    };
 
-    const productInCart = cart.find(
-      (p: any) =>
-        p.slug === productId &&
-        p.attributes[0]?.attributeName ===
-          selectedAttributes[0]?.attributeName &&
-        (p.attributes[1]?.attributeName === undefined ||
-          p.attributes[1]?.attributeName ===
-            selectedAttributes[1]?.attributeName) &&
-        (p.attributes[2]?.attributeName === undefined ||
-          p.attributes[2]?.attributeName ===
-            selectedAttributes[2]?.attributeName)
-    );
+    updateMaxCount(); // перший запуск
 
-    const alreadyInCart = productInCart?.quantity || 0;
-    const maxAddable = Math.max(qty - alreadyInCart, 0);
-    const alreadyInCartMaxAddable = Math.max(
-      +product.quantity - alreadyInCart,
-      0
-    );
-
-    if (variant) {
-      setMaxCount(maxAddable);
-    } else if (alreadyInCart) {
-      setMaxCount(alreadyInCartMaxAddable);
-    } else {
-      setMaxCount(+product.quantity);
-    }
-  };
-
-  updateMaxCount(); // перший запуск
-
-  window.addEventListener("cartUpdated", updateMaxCount);
-  return () => window.removeEventListener("cartUpdated", updateMaxCount);
-}, [selectedAttributes, product, productId, product?.attributes]);
-
+    window.addEventListener("cartUpdated", updateMaxCount);
+    return () => window.removeEventListener("cartUpdated", updateMaxCount);
+  }, [selectedAttributes, product, productSlug, product?.attributes]);
 
   if (isLoading) return <div>...</div>;
   if (isError || !product) return <div>Data loading error</div>;
@@ -218,18 +193,20 @@ useEffect(() => {
   const grouped = groupAttributes(attributes || []);
 
   const onAddToCart = () => {
+    // setMaxCount((prev) => {
+    //   return prev - count;
+    // });
     addProductToCart(slug, +fullPrice, count, selectedAttributes);
-    setMaxCount((prev) => prev - count);
     window.dispatchEvent(new Event("cartUpdated"));
   };
 
   const handleSelectAttribute = (name: string, value: string) => {
-    const valueAsValues: Value = {
-      name,
-      attributeName: value,
+    const valueAsValues: SelectedAttributes = {
+      parameter: name,
+      attribute: value,
     };
     setSelectedAttributes((prev) => {
-      const existsIndex = prev.findIndex((attr) => attr.name === name);
+      const existsIndex = prev.findIndex((attr) => attr.parameter === name);
 
       if (existsIndex !== -1) {
         const updated = [...prev];
@@ -241,64 +218,14 @@ useEffect(() => {
     });
   };
 
-  const getAvailableAttributeValues = (
-    attributes: Attribute[],
-    selected: SelectedAttributes[]
-  ): {
-    mainValues: Set<string>;
-    secondaryValues: Set<string>;
-    tertiaryValues: Set<string>;
-  } => {
-    const mainValues = new Set<string>();
-    const secondaryValues = new Set<string>();
-    const tertiaryValues = new Set<string>();
-
-    attributes.forEach((attr) => {
-      const qty = parseInt(attr.quantity || "0");
-      if (qty <= 0) return;
-
-      const isCompatible = (checkAttrName: string) => {
-        return selected.every(({ name, attributeName }) => {
-          if (name === checkAttrName) return true;
-          if (name === attr.attribute_main)
-            return attr.value_main === attributeName;
-          if (name === attr.attribute_secondary)
-            return attr.value_secondary === attributeName;
-          if (name === attr.attribute_tertiary)
-            return attr.value_tertiary === attributeName;
-          return true;
-        });
-      };
-
-      if (isCompatible(t("filter.bend")) && attr.attribute_main) {
-        mainValues.add(attr.value_main);
-      }
-      if (
-        isCompatible(t("filter.thickness")) &&
-        attr.attribute_secondary &&
-        attr.value_secondary
-      ) {
-        secondaryValues.add(attr.value_secondary);
-      }
-      if (
-        isCompatible(t("filter.length")) &&
-        attr.attribute_tertiary &&
-        attr.value_tertiary
-      ) {
-        tertiaryValues.add(attr.value_tertiary);
-      }
-      if (isCompatible(t("filter.volume")) && attr.attribute_main) {
-        mainValues.add(attr.value_main);
-      }
-    });
-
-    return { mainValues, secondaryValues, tertiaryValues };
-  };
-
   const availableValues = getAvailableAttributeValues(
     product.attributes ?? [],
     selectedAttributes
   );
+
+  const availableValuesArray = Object.values(availableValues).flatMap((set) => [
+    ...set,
+  ]);
 
   const inStock = variant ? variant?.quantity : product.quantity;
 
@@ -323,32 +250,19 @@ useEffect(() => {
         )}
         {quantity ? (
           <>
-            {grouped.map(({ name, values }) => {
-              let available: Set<string> = new Set();
-
-              if (name === t("filter.bend"))
-                available = availableValues.mainValues;
-              else if (name === t("filter.thickness"))
-                available = availableValues.secondaryValues;
-              else if (name === t("filter.length"))
-                available = availableValues.tertiaryValues;
-              else if (name === t("filter.volume"))
-                available = availableValues.mainValues;
-
-              return (
-                <ProductAttributes
-                  key={name}
-                  title={name}
-                  values={values}
-                  selectedValue={
-                    selectedAttributes.find((attr) => attr.name === name)
-                      ?.attributeName
-                  }
-                  onSelect={handleSelectAttribute}
-                  availableValues={available}
-                />
-              );
-            })}
+            {grouped.map(({ name, values }) => (
+              <ProductAttributes
+                key={name}
+                title={name}
+                values={values}
+                selectedValue={
+                  selectedAttributes.find((attr) => attr.parameter === name)
+                    ?.attribute
+                }
+                onSelect={handleSelectAttribute}
+                availableValues={availableValuesArray}
+              />
+            ))}
 
             <p className={styles.quantity}>{t("product.quantity")}</p>
 
@@ -400,7 +314,7 @@ useEffect(() => {
 
         <h2 className={styles.description}>{t("form.description")}</h2>
         <div className={styles.descriptionText}>
-          {parseDescription(description)}
+          {parseDescription(description ?? "")}
         </div>
       </div>
     </div>

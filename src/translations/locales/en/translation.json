@@ -1,7 +1,7 @@
 {
   "categories": {
     "falseEyelashes": "False Eyelashes",
-    "glueForEyelashes": "Eyelash Glue",
+    "glueForEyelashes": "Glue For Eyelashes",
     "remover": "Remover",
     "preparations": "Preparations"
   },
@@ -59,10 +59,10 @@
     "lines": "Lines",
     "lines20": "20 lines",
     "lines28": "28 lines",
-    "bend": "Bend",
-    "length": "Length",
-    "thickness": "Thickness",
-    "volume": "Volume",
+    "Bend": "Bend",
+    "Length": "Length",
+    "Thickness": "Thickness",
+    "Volume": "Volume",
     "thereAreNoProducts": "Unfortunately, no such products :("
   },
 
@@ -96,6 +96,25 @@
     "shippingCost": "Shipping cost",
     "enterBranchNumber": "Enter branch number",
     "incorrectBranchNumber": "Incorrect branch number"
+  },
+
+  "aboutUs": {
+    "text1": "Vippersenter ",
+    "text2": "is a place where eyelashes become art.",
+    "text3": "We work with joy and love for what we do, because for us beauty is, above all, inspiration.",
+    "text4": "Every client is special to us, and we want you to always feel safe and unique.",
+    "contactDetails": "Our contact details"
+  },
+
+  "payment": {
+    "payment": "Payment",
+    "cardPayment": "Pay with Card",
+    "amountPayable": "Total Amount",
+    "pay": "Pay Now",
+    "pleaseWait": "Processing...",
+    "success": "Payment successful ✅",
+    "error": "Error: {{message}}",
+    "createError": "Error creating payment"
   },
 
   "catalog": "Catalog",

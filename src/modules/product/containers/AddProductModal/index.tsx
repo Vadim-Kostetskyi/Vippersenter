@@ -23,7 +23,7 @@ const AddProductModal: FC<AddProductModalProps> = ({ onModalClose }) => {
     setImagePreview(URL.createObjectURL(img));
   };
 
-  const onSetTitle = (item: string) => {
+  const onSetCategory = (item: string) => {
     setSelectedCategory(item);
   };
 
@@ -36,7 +36,7 @@ const AddProductModal: FC<AddProductModalProps> = ({ onModalClose }) => {
         <Dropdown
           title={selectedCategory}
           list={list}
-          onSetTitle={onSetTitle}
+          onSetCategory={onSetCategory}
         />
         <UploadImage
           className={styles.imageContainer}

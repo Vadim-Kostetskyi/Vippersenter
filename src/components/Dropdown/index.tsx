@@ -4,14 +4,14 @@ import styles from "./index.module.scss";
 interface DropdownProps {
   title: string;
   list: any[];
-  onSetTitle: (item: string) => void;
+  onSetCategory: (item: string) => void;
   className?: string;
 }
 
 const Dropdown: FC<DropdownProps> = ({
   title,
   list,
-  onSetTitle,
+  onSetCategory,
   className,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,7 +21,7 @@ const Dropdown: FC<DropdownProps> = ({
   };
 
   const onSendInfo = (item: string) => {
-    onSetTitle(item);
+    onSetCategory(item);
     handleOpen();
   };
 
@@ -35,9 +35,9 @@ const Dropdown: FC<DropdownProps> = ({
       </button>
       {isOpen && (
         <div className={styles.list}>
-          {list.map(({ key, label }) => (
-            <button key={key} onClick={() => onSendInfo(label)}>
-              {label}
+          {list.map(({ key, labelEng }) => (
+            <button key={key} onClick={() => onSendInfo(labelEng)}>
+              {labelEng}
             </button>
           ))}
         </div>

@@ -12,6 +12,7 @@ const ShoppingBag = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  console.log(cartItems);
 
   const { t } = useTranslation();
   useEffect(() => {
@@ -56,8 +57,7 @@ const ShoppingBag = () => {
       const isSame = item.attributes.every((attr) =>
         attributes.some(
           (a) =>
-            a.attributeName === attr.name &&
-            a.attributeName === attr.attributeName
+            a.attribute === attr.parameter && a.attribute === attr.attribute
         )
       );
 

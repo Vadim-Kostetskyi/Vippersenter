@@ -3,18 +3,18 @@ import { useTranslation } from "react-i18next";
 import InputField from "components/InputField";
 import PostnordDelivery from "../PostnordDelivery";
 import { inputs } from "./data";
-import postnordLogo from 'assets/image/post/postnordLogo.webp'
+import postnordLogo from "assets/image/post/postnordLogo.webp";
 import postenLogo from "assets/image/post/postenLogo.png";
-import styles from "./index.module.scss";
 import PostenDelivery from "../PostenDelivery";
+import styles from "./index.module.scss";
 
 interface CustomerDetailsProps {
-  setPrice: (price: number) => void;
+  setDeliveryPrice: (price: number) => void;
 }
 
-const CustomerDetails: FC<CustomerDetailsProps> = ({ setPrice }) => {
+const CustomerDetails: FC<CustomerDetailsProps> = ({ setDeliveryPrice }) => {
   const [delivery, setDelivery] = useState("postnord");
-  const { t } = useTranslation();  
+  const { t } = useTranslation();
 
   return (
     <div className={styles.customerDetails}>
@@ -58,9 +58,9 @@ const CustomerDetails: FC<CustomerDetailsProps> = ({ setPrice }) => {
         </div>
 
         {delivery === "postnord" ? (
-          <PostnordDelivery setPrice={setPrice} />
+          <PostnordDelivery setPrice={setDeliveryPrice} />
         ) : (
-          <PostenDelivery />
+          <PostenDelivery setPrice={setDeliveryPrice} />
         )}
         <label htmlFor="orderComments" className={styles.orderComments}>
           <span>{t("order.orderNotes")}</span>

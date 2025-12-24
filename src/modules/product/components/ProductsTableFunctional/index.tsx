@@ -3,15 +3,22 @@ import { useTranslation } from "react-i18next";
 import ProductsTable from "../ProductsTable";
 import { Product, AttributeValue } from "storeRedux/types";
 import { handleDeleteProduct } from "utils/product";
-import { useDeleteProductMutation, useUpdateProductQuantityMutation } from "storeRedux/productsApi";
-
+import {
+  useDeleteProductMutation,
+  useUpdateProductExtraPriceMutation,
+  useUpdateProductPriceMutation,
+  useUpdateProductQuantityMutation,
+} from "storeRedux/productsApi";
 
 interface ProductsTableFunctional {
   products: Product[];
   grouped: Record<string, Product[]>;
 }
 
-const ProductsTableFunctional: FC<ProductsTableFunctional> = ({ products, grouped }) => {
+const ProductsTableFunctional: FC<ProductsTableFunctional> = ({
+  products,
+  grouped,
+}) => {
   const { t } = useTranslation();
 
   const [quantities, setQuantities] = useState<
@@ -23,13 +30,23 @@ const ProductsTableFunctional: FC<ProductsTableFunctional> = ({ products, groupe
       } & AttributeValue
     >
   >({});
+  console.log(quantities);
 
   const [selectedAttributes, setSelectedAttributes] = useState<
     Record<string, { main: string; secondary: string; tertiary: string }>
   >({});
 
+  const [prices, setPrices] = useState<Record<string, number>>({});
+
   const [deleteProduct] = useDeleteProductMutation();
   const [updateQuantity] = useUpdateProductQuantityMutation();
+  const [updateExtraPrice] = useUpdateProductExtraPriceMutation();
+
+  const [updateProductPrice] = useUpdateProductPriceMutation();
+
+  const handlePriceBlur = async (slug: string, price: number) => {
+    await updateProductPrice({ slug, price }).unwrap();
+  };
 
   useEffect(() => {
     if (products) {
@@ -81,6 +98,16 @@ const ProductsTableFunctional: FC<ProductsTableFunctional> = ({ products, groupe
 
         return newSelectedAttrs;
       });
+
+      setPrices((prev) => {
+        const updated = { ...prev };
+        products.forEach((product) => {
+          if (!(product.slug in updated)) {
+            updated[product.slug] = Number(product.price) || 0;
+          }
+        });
+        return updated;
+      });
     }
   }, [products]);
 
@@ -97,6 +124,16 @@ const ProductsTableFunctional: FC<ProductsTableFunctional> = ({ products, groupe
     }
   };
 
+  const handleExtraPriceChange = (key: string, value: string) => {
+    setQuantities((prev) => ({
+      ...prev,
+      [key]: {
+        ...prev[key],
+        extraPrice: value,
+      },
+    }));
+  };
+
   const handleQuantityBlur = async (
     productSlug: string,
     quantity: number,
@@ -110,19 +147,46 @@ const ProductsTableFunctional: FC<ProductsTableFunctional> = ({ products, groupe
         quantity,
       };
 
-      if (value_main) {
-        payload.value_main = value_main;
-      }
-      if (value_secondary) {
-        payload.value_secondary = value_secondary;
-      }
-      if (value_tertiary) {
-        payload.value_tertiary = value_tertiary;
-      }
+      if (value_main) payload.value_main = value_main;
+      if (value_secondary) payload.value_secondary = value_secondary;
+      if (value_tertiary) payload.value_tertiary = value_tertiary;
 
       await updateQuantity(payload).unwrap();
     } catch {
       alert(t("product.updateError") || "Error updating quantity");
+    }
+  };
+
+  const handleExtraPriceBlur = async (
+    productSlug: string,
+    extraPrice: number,
+    value_main: string,
+    value_secondary?: string,
+    value_tertiary?: string
+  ) => {
+    try {
+      const payload: any = {
+        slug: productSlug,
+        extraPrice,
+      };
+
+      if (value_main) payload.value_main = value_main;
+      if (value_secondary) payload.value_secondary = value_secondary;
+      if (value_tertiary) payload.value_tertiary = value_tertiary;
+
+      await updateExtraPrice(payload).unwrap();
+    } catch {
+      alert(t("product.updateError") || "Error updating quantity");
+    }
+  };
+
+  const handlePriceChange = (slug: string, price: string) => {
+    const value = Number(price);
+    if (!isNaN(value) && value >= 0) {
+      setPrices((prev) => ({
+        ...prev,
+        [slug]: value,
+      }));
     }
   };
 
@@ -154,6 +218,7 @@ const ProductsTableFunctional: FC<ProductsTableFunctional> = ({ products, groupe
     t("form.description"),
     t("actions"),
   ];
+
   return (
     <ProductsTable
       titles={titles}
@@ -162,10 +227,15 @@ const ProductsTableFunctional: FC<ProductsTableFunctional> = ({ products, groupe
       quantities={quantities}
       handleQuantityChange={handleQuantityChange}
       handleQuantityBlur={handleQuantityBlur}
+      handleExtraPriceChange={handleExtraPriceChange}
+      handleExtraPriceBlur={handleExtraPriceBlur}
       handleAttributeChange={handleAttributeChange}
       handleDelete={handleDelete}
+      prices={prices}
+      handlePriceChange={handlePriceChange}
+      handlePriceBlur={handlePriceBlur}
     />
   );
 };
 
-export default ProductsTableFunctional
+export default ProductsTableFunctional;

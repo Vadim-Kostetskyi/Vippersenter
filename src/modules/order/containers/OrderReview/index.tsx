@@ -7,9 +7,13 @@ import OrderPrice from "modules/order/components/OrderPrice";
 
 interface OrderReviewProps {
   deliveryPrice: number;
+  setTotalPrice: (price: number) => void;
 }
 
-const OrderReview: FC<OrderReviewProps> = ({ deliveryPrice }) => {
+const OrderReview: FC<OrderReviewProps> = ({
+  deliveryPrice,
+  setTotalPrice,
+}) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   const { t } = useTranslation();
@@ -21,34 +25,37 @@ const OrderReview: FC<OrderReviewProps> = ({ deliveryPrice }) => {
     setCartItems(getCartItems());
   }, []);
 
+  useEffect(() => {
+    setTotalPrice(totalCartPrice + deliveryPrice);
+  }, [deliveryPrice, totalCartPrice]);
+
   const onSetProducts = (items: CartItem[]) => {
     setCartItems(items);
     window.dispatchEvent(new Event("cartUpdated"));
   };
 
-const removeCartItem = (slug: string, attributes?: Attributes[]) => {
-  const updatedCart = cartItems.filter((item) => {
-    if (item.slug !== slug) return true;
+  const removeCartItem = (slug: string, attributes?: Attributes[]) => {
+    const updatedCart = cartItems.filter((item) => {
+      if (item.slug !== slug) return true;
 
-    if (!item.attributes && !attributes) return false;
+      if (!item.attributes && !attributes) return false;
 
-    if (!item.attributes || !attributes) return true;
+      if (!item.attributes || !attributes) return true;
 
-    if (item.attributes.length !== attributes.length) return true;
+      if (item.attributes.length !== attributes.length) return true;
 
-    const isSame = item.attributes.every((attr) =>
-      attributes.some(
-        (a) => a.attributeName === attr.attributeName && a.value === attr.value
-      )
-    );
+      const isSame = item.attributes.every((attr) =>
+        attributes.some(
+          (a) => a.attribute === attr.attribute && a.value === attr.value
+        )
+      );
 
-    return !isSame;
-  });
+      return !isSame;
+    });
 
-  setCartItems(updatedCart);
-  window.dispatchEvent(new Event("cartUpdated"));
-};
-
+    setCartItems(updatedCart);
+    window.dispatchEvent(new Event("cartUpdated"));
+  };
 
   const prices = [
     {

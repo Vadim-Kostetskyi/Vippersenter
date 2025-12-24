@@ -35,8 +35,8 @@
     "quantity": "Antall",
     "characteristics": "Egenskaper",
     "confirmDelete": "Slett produkt",
-    "updateError": "Oppdateringsfeil",
-    "deleteError": "Slettingsfeil"
+    "updateError": "Oppdaterings feil",
+    "deleteError": "Slettings feil"
   },
 
   "form": {
@@ -59,10 +59,10 @@
     "lines": "linjer",
     "lines20": "20 linjer",
     "lines28": "28 linjer",
-    "bend": "Bøy",
-    "length": "Lengde",
-    "thickness": "Tykkelse",
-    "volume": "Volum",
+    "Bend": "Bøy",
+    "Length": "Lengde",
+    "Thickness": "Tykkelse",
+    "Volume": "Volum",
     "thereAreNoProducts": "Dessverre finnes det ingen slike produkter :("
   },
 
@@ -96,6 +96,25 @@
     "shippingCost": "Fraktkostnad",
     "enterBranchNumber": "Skriv inn filialnummer",
     "incorrectBranchNumber": "Ugyldig filialnummer"
+  },
+
+  "aboutUs": {
+    "text1": "Vippersenter ",
+    "text2": "er et sted hvor øyevipper blir til kunst.",
+    "text3": "Vi jobber med glede og kjærlighet til det vi gjør, for for oss er skjønnhet først og fremst inspirasjon.",
+    "text4": "Hver kunde er spesiell for oss, og vi ønsker at du alltid skal føle deg trygg og unik.",
+    "contactDetails": "Våre kontaktopplysninger"
+  },
+
+  "payment": {
+    "payment": "Betaling",
+    "cardPayment": "Betal med kort",
+    "amountPayable": "Totalt beløp",
+    "pay": "Betal nå",
+    "pleaseWait": "Behandler...",
+    "success": "Betaling vellykket ✅",
+    "error": "Feil: {{message}}",
+    "createError": "Feil ved oppretting av betaling"
   },
 
   "catalog": "Katalog",

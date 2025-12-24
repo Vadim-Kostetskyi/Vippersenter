@@ -4,7 +4,7 @@
   width: "100%";
   margin-top: 80px;
 
-  & td{
+  & td {
     text-align: center;
   }
 
@@ -19,14 +19,20 @@
   }
 }
 
-.category{
+.category {
   font-weight: bold;
-   background-color: "#eee"
+  background-color: "#eee";
 }
 
-.quantity{
-  width: 30px;
+.quantity,
+.extraPrice {
+  width: 60px;
   text-align: center;
+  margin: 0 5px;
+}
+
+.extraPrice {
+  margin-top: 15px;
 }
 
 .attributeNameQuantity {
@@ -50,7 +56,7 @@
 .attributes {
   text-align: center;
 
-  & > div{
+  & > div {
     display: flex;
     gap: 16px;
     justify-content: center;
@@ -74,12 +80,12 @@
   display: inline-flex;
   align-items: center;
 
-  & span{
+  & span {
     padding: 2px 5px;
     border: 1px solid $whiteColor;
   }
 
-  & input{
+  & input {
     margin-right: 5px;
   }
 
@@ -93,6 +99,19 @@
   }
 }
 
-.center{
-  text-align: center
+.center {
+  text-align: center;
+}
+
+.actions {
+  text-align: center;
+  padding: 10px;
+}
+
+.editBtn {
+  width: 30px;
+  & img {
+    width: 100%;
+  }
+  margin-bottom: 20px;
 }

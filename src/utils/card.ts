@@ -1,6 +1,6 @@
 export interface Attributes {
-  name: string;
-  attributeName: string;
+  parameter: string;
+  attribute: string;
   attribute_main?: string;
   value_main?: string;
   attribute_secondary?: string;
@@ -26,6 +26,7 @@ export const addProductToCart = (
 ) => {
   const storedCart = localStorage.getItem("cart");
   const cart: CartItem[] = storedCart ? JSON.parse(storedCart) : [];
+  console.log(attributes);
 
   const existingItemIndex = cart.findIndex((item) => {
     if (item.slug !== slug) return false;
@@ -35,9 +36,7 @@ export const addProductToCart = (
 
     return item.attributes.every((attr) =>
       attributes.some(
-        (a) =>
-          a.name === attr.name &&
-          a.attributeName === attr.attributeName
+        (a) => a.parameter === attr.parameter && a.attribute === attr.attribute
       )
     );
   });
@@ -56,22 +55,18 @@ export const getCartItems = (): CartItem[] => {
   return storedCart ? JSON.parse(storedCart) : [];
 };
 
-const areAttributesEqual = (
-  a?: Attributes[],
-  b?: Attributes[]
-): boolean => {
+const areAttributesEqual = (a?: Attributes[], b?: Attributes[]): boolean => {
   if (!a && !b) return true;
   if (!a || !b) return false;
   if (a.length !== b.length) return false;
 
-  const sortedA = [...a].sort((x, y) => x.name.localeCompare(y.name));
-  const sortedB = [...b].sort((x, y) => x.name.localeCompare(y.name));
+  const sortedA = [...a].sort((x, y) => x.parameter.localeCompare(y.parameter));
+  const sortedB = [...b].sort((x, y) => x.parameter.localeCompare(y.parameter));
 
   return sortedA.every((attr, index) => {
     const bAttr = sortedB[index];
     return (
-      attr.name === bAttr.name &&
-      attr.attributeName === bAttr.attributeName 
+      attr.parameter === bAttr.parameter && attr.attribute === bAttr.attribute
     );
   });
 };
@@ -95,10 +90,7 @@ export const updateCartItemQuantity = (
   localStorage.setItem("cart", JSON.stringify(updatedCart));
 };
 
-export const removeCartItem = (
-  slug: string,
-  attributes?: Attributes[]
-) => {
+export const removeCartItem = (slug: string, attributes?: Attributes[]) => {
   const storedCart = localStorage.getItem("cart");
   const cart: CartItem[] = storedCart ? JSON.parse(storedCart) : [];
 

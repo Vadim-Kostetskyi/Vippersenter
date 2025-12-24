@@ -10,7 +10,9 @@ export const ordersApi = createApi({
       // Для Postnord endpoint не додаємо Authorization
       if (
         endpoint !== "getPostnordServicePoints" &&
-        endpoint !== "calculateDelivery"
+        endpoint !== "calculateDelivery" &&
+        endpoint !== "getPickupPoints" &&
+        endpoint !== "getShippingPrice"
       ) {
         const token = import.meta.env.VITE_API_KEY;
         if (token) {
@@ -33,6 +35,19 @@ export const ordersApi = createApi({
       }
     ),
 
+    getPickupPoints: builder.query<any[], string>({
+      query: (postalCode) =>
+        `order/posten/post-offices.php?postalCode=${postalCode}`,
+    }),
+
+    getShippingPrice: builder.query<
+      any,
+      { postalCode: string; pickupId: string }
+    >({
+      query: ({ postalCode, pickupId }) =>
+        `order/posten/get-shipping.php?postalCode=${postalCode}&pickupPointId=${pickupId}`,
+    }),
+
     // Створити замовлення (з Authorization)
     placeOrder: builder.mutation<{ success: boolean }, PlaceOrderRequest>({
       query: (orderData) => ({
@@ -45,5 +60,10 @@ export const ordersApi = createApi({
   tagTypes: ["Order"],
 });
 
-export const { useGetPostnordServicePointsQuery, useCalculateDeliveryQuery, usePlaceOrderMutation } =
-  ordersApi;
+export const {
+  useGetPostnordServicePointsQuery,
+  useCalculateDeliveryQuery,
+  usePlaceOrderMutation,
+  useGetPickupPointsQuery,
+  useLazyGetShippingPriceQuery,
+} = ordersApi;
