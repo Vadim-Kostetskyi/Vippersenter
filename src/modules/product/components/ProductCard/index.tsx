@@ -75,7 +75,7 @@ const ProductCard = () => {
     const buildGrouped = (onlyInStock: boolean) => {
       const grouped: Record<string, Set<string>> = {};
 
-      product.attributes.forEach((attr) => {
+      product.attributes?.forEach((attr) => {
         const qty = Number(attr.quantity ?? 0);
 
         const entries = [
