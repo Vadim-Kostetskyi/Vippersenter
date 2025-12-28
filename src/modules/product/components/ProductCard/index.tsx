@@ -70,48 +70,53 @@ const ProductCard = () => {
   };
 
   useEffect(() => {
-    if (product?.attributes && product.attributes.length > 0) {
+    if (!product?.attributes || product.attributes.length === 0) return;
+
+    const buildGrouped = (onlyInStock: boolean) => {
       const grouped: Record<string, Set<string>> = {};
-      const selected: SelectedAttributes[] = [];
 
       product.attributes.forEach((attr) => {
+        const qty = Number(attr.quantity ?? 0);
+
         const entries = [
-          {
-            name: attr.attribute_main,
-            value: attr.value_main,
-            qty: parseInt(attr.quantity || "0"),
-          },
-          {
-            name: attr.attribute_secondary,
-            value: attr.value_secondary,
-            qty: parseInt(attr.quantity || "0"),
-          },
-          {
-            name: attr.attribute_tertiary,
-            value: attr.value_tertiary,
-            qty: parseInt(attr.quantity || "0"),
-          },
+          { name: attr.attribute_main, value: attr.value_main },
+          { name: attr.attribute_secondary, value: attr.value_secondary },
+          { name: attr.attribute_tertiary, value: attr.value_tertiary },
         ];
 
-        entries.forEach(({ name, value, qty }) => {
-          if (name && value && qty > 0) {
-            if (!grouped[name]) {
-              grouped[name] = new Set();
-            }
-            grouped[name].add(value);
-          }
+        entries.forEach(({ name, value }) => {
+          if (!name || !value) return;
+
+          // якщо onlyInStock=true — додаємо лише варіанти з qty > 0
+          if (onlyInStock && qty <= 0) return;
+
+          if (!grouped[name]) grouped[name] = new Set();
+          grouped[name].add(value);
         });
       });
 
-      for (const name in grouped) {
-        const values = Array.from(grouped[name]);
-        if (values.length > 0) {
-          selected.push({ parameter: name, attribute: values[0] });
-        }
-      }
+      return grouped;
+    };
 
-      setSelectedAttributes(selected);
+    // 1) пробуємо з in-stock
+    let grouped = buildGrouped(true);
+
+    // 2) якщо нічого не зібралося — fallback на всі значення
+    const hasAnyValues = Object.values(grouped).some((set) => set.size > 0);
+    if (!hasAnyValues) {
+      grouped = buildGrouped(false);
     }
+
+    const selected: SelectedAttributes[] = [];
+
+    for (const name in grouped) {
+      const values = Array.from(grouped[name]);
+      if (values.length > 0) {
+        selected.push({ parameter: name, attribute: values[0] });
+      }
+    }
+
+    setSelectedAttributes(selected);
   }, [product]);
 
   const variant = useMemo(
@@ -176,8 +181,7 @@ const ProductCard = () => {
   if (isLoading) return <div>...</div>;
   if (isError || !product) return <div>Data loading error</div>;
 
-  const { slug, name, image, price, quantity, description, attributes } =
-    product;
+  const { slug, name, image, price, description, attributes } = product;
 
   const extraPrice = variant ? parseFloat(variant.extraPrice) || 0 : 0;
   const fullPrice = Number(price) + extraPrice;
@@ -188,9 +192,6 @@ const ProductCard = () => {
   const grouped = groupAttributes(attributes || []);
 
   const onAddToCart = () => {
-    // setMaxCount((prev) => {
-    //   return prev - count;
-    // });
     addProductToCart(slug, +fullPrice, count, selectedAttributes);
     window.dispatchEvent(new Event("cartUpdated"));
   };
