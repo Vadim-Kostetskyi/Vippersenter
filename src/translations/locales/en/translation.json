@@ -109,7 +109,7 @@
   "payment": {
     "payment": "Payment",
     "cardPayment": "Pay with Card",
-    "amountPayable": "Total Amount",
+    "amountPayable": "Amount payable",
     "pay": "Pay Now",
     "pleaseWait": "Processing...",
     "success": "Payment successful ✅",

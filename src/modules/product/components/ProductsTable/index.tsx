@@ -26,6 +26,7 @@ interface ProductsTableProps {
       extraPrice: string;
     }
   >;
+
   handleQuantityChange: (key: string, newQuantity: string) => void;
   handleQuantityBlur: (
     productSlug: string,
@@ -52,7 +53,6 @@ interface ProductsTableProps {
 
   handleDelete: (id: string) => Promise<void>;
 
-  // NEW PRICE PROPS
   prices: Record<string, number>;
   handlePriceChange: (slug: string, price: string) => void;
   handlePriceBlur: (slug: string, price: number) => void;
@@ -69,7 +69,6 @@ const ProductsTable: FC<ProductsTableProps> = ({
   handleExtraPriceBlur,
   handleAttributeChange,
   handleDelete,
-
   prices,
   handlePriceChange,
   handlePriceBlur,
@@ -95,7 +94,7 @@ const ProductsTable: FC<ProductsTableProps> = ({
           {items.map((product) => {
             const attrValues = attributesTable(product);
 
-            const selected = selectedAttributes[product.slug] || {
+            const selected = selectedAttributes[product.slug] ?? {
               main: "",
               secondary: "",
               tertiary: "",
@@ -103,24 +102,26 @@ const ProductsTable: FC<ProductsTableProps> = ({
 
             const { main, secondary, tertiary } = selected;
 
-            const quantityKey = `${product.slug}_${main}_${secondary ?? ""}_${
-              tertiary ?? ""
-            }`;
+            // Detect if product actually has selectable attributes
+            const hasAttributes = attrValues.some((a) =>
+              a.values.some((v) => Boolean(v))
+            );
 
-            const qFromState = quantities[quantityKey]?.quantity;
+            // Key: if no attributes -> use just slug, else use slug + selected attrs
+            const key = hasAttributes
+              ? `${product.slug}_${main}_${secondary ?? ""}_${tertiary ?? ""}`
+              : product.slug;
 
-            const quantity =
-              qFromState === undefined ||
-              qFromState === null ||
-              qFromState === 0
-                ? product.quantity
-                : qFromState;
+            // IMPORTANT: allow 0 (do NOT treat 0 as "empty")
+            const qFromState = quantities[key]?.quantity;
+            const quantity = qFromState ?? product.quantity;
 
-            const extraPrice = quantities[quantityKey]?.extraPrice;
+            const extraPrice = quantities[key]?.extraPrice;
 
             return (
               <tr key={product.slug}>
                 <td>{product.name}</td>
+
                 {/* PRICE INPUT */}
                 <td className={styles.center}>
                   <input
@@ -139,18 +140,18 @@ const ProductsTable: FC<ProductsTableProps> = ({
                     className={styles.quantity}
                   />
 
-                  {isExtraPrice(quantityKey) && (
+                  {isExtraPrice(key) && (
                     <input
                       type="number"
                       min={0}
                       value={extraPrice}
                       onChange={(e) =>
-                        handleExtraPriceChange(quantityKey, e.target.value)
+                        handleExtraPriceChange(key, e.target.value)
                       }
                       onBlur={() =>
                         handleExtraPriceBlur(
                           product.slug,
-                          +extraPrice,
+                          Number(extraPrice),
                           main,
                           secondary,
                           tertiary
@@ -160,19 +161,18 @@ const ProductsTable: FC<ProductsTableProps> = ({
                     />
                   )}
                 </td>
+
                 {/* QUANTITY */}
                 <td>
                   <input
                     type="number"
                     min={0}
                     value={quantity}
-                    onChange={(e) =>
-                      handleQuantityChange(quantityKey, e.target.value)
-                    }
+                    onChange={(e) => handleQuantityChange(key, e.target.value)}
                     onBlur={() =>
                       handleQuantityBlur(
                         product.slug,
-                        +quantity,
+                        Number(quantity),
                         main,
                         secondary,
                         tertiary
@@ -181,6 +181,7 @@ const ProductsTable: FC<ProductsTableProps> = ({
                     className={styles.quantity}
                   />
                 </td>
+
                 {/* ATTRIBUTES */}
                 <td className={styles.attributes}>
                   <div>
@@ -216,9 +217,11 @@ const ProductsTable: FC<ProductsTableProps> = ({
                     ))}
                   </div>
                 </td>
+
                 <td>
                   <p>{product.description}</p>
                 </td>
+
                 <td className={styles.actions}>
                   <button onClick={() => handleDelete(product.slug)}>
                     <Cross className={styles.trashIcon} />

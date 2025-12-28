@@ -109,7 +109,7 @@
   "payment": {
     "payment": "Betaling",
     "cardPayment": "Betal med kort",
-    "amountPayable": "Totalt beløp",
+    "amountPayable": "Beløp til betaling",
     "pay": "Betal nå",
     "pleaseWait": "Behandler...",
     "success": "Betaling vellykket ✅",

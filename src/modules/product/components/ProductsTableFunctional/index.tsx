@@ -111,8 +111,9 @@ const ProductsTableFunctional: FC<ProductsTableFunctional> = ({
   }, [products]);
 
   const handleQuantityChange = (key: string, newQuantity: string) => {
-    const num = parseInt(newQuantity);
-    if (!isNaN(num) && num >= 0) {
+    const num = newQuantity === "" ? 0 : Number(newQuantity);
+
+    if (Number.isFinite(num) && num >= 0) {
       setQuantities((prev) => ({
         ...prev,
         [key]: {
