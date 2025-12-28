@@ -3,7 +3,8 @@
 .form {
   color: $whiteColor;
   margin-top: 20px;
-  & input {
+  & input,
+  & select {
     padding: 5px;
     margin-bottom: 5px;
   }

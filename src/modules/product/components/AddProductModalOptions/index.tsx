@@ -5,6 +5,7 @@ import {
   useAddProductMutation,
   useUploadImageMutation,
 } from "storeRedux/productsApi";
+import { AttributeList } from "utils/constants";
 import styles from "./index.module.scss";
 
 interface Variant {
@@ -276,11 +277,26 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
 
       {attributeNames.map((attr, i) => (
         <div key={i}>
-          <input
+          {/* <input
             value={attr}
             onChange={(e) => updateAttributeName(i, e.target.value)}
             placeholder="Назва параметра"
-          />
+          /> */}
+          <select
+            value={attr}
+            onChange={(e) => updateAttributeName(i, e.target.value)}
+          >
+            <option value="" disabled>
+              Оберіть параметр
+            </option>
+
+            {AttributeList.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+
           <button type="button" onClick={() => removeAttributeName(i)}>
             ❌
           </button>

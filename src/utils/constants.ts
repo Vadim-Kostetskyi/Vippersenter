@@ -9,3 +9,5 @@ export const breakpoints = {
     slidesPerView: 4,
   },
 };
+
+export const AttributeList = ["Bend", "Length", "Thickness", "Volume"];

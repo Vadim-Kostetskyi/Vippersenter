@@ -243,69 +243,69 @@ const ProductCard = () => {
         ) : (
           <p className={styles.outStock}>Out of stock</p>
         )}
-        {quantity ? (
-          <>
-            {grouped.map(({ name, values }) => (
-              <ProductAttributes
-                key={name}
-                title={name}
-                values={values}
-                selectedValue={
-                  selectedAttributes.find((attr) => attr.parameter === name)
-                    ?.attribute
-                }
-                onSelect={handleSelectAttribute}
-                availableValues={availableValuesArray}
-              />
-            ))}
+        {/* {quantity ? (
+          <> */}
+        {grouped.map(({ name, values }) => (
+          <ProductAttributes
+            key={name}
+            title={name}
+            values={values}
+            selectedValue={
+              selectedAttributes.find((attr) => attr.parameter === name)
+                ?.attribute
+            }
+            onSelect={handleSelectAttribute}
+            availableValues={availableValuesArray}
+          />
+        ))}
 
-            <p className={styles.quantity}>{t("product.quantity")}</p>
+        <p className={styles.quantity}>{t("product.quantity")}</p>
 
-            <div className={styles.quantityBox}>
-              <button
-                className={count === 1 ? styles.disable : ""}
-                onClick={handleDecrement}
-              >
-                <Minus />
-              </button>
-              <input
-                type="number"
-                value={count > maxCount ? maxCount : count}
-                min={1}
-                max={maxCount}
-                onChange={(e) => {
-                  const val = Number(e.target.value);
-                  if (val >= 1 && val <= maxCount) {
-                    setCount(val);
-                  } else if (val > maxCount) {
-                    setCount(maxCount);
-                  }
-                }}
-              />
+        <div className={styles.quantityBox}>
+          <button
+            className={count === 1 ? styles.disable : ""}
+            onClick={handleDecrement}
+          >
+            <Minus />
+          </button>
+          <input
+            type="number"
+            value={count > maxCount ? maxCount : count}
+            min={1}
+            max={maxCount}
+            onChange={(e) => {
+              const val = Number(e.target.value);
+              if (val >= 1 && val <= maxCount) {
+                setCount(val);
+              } else if (val > maxCount) {
+                setCount(maxCount);
+              }
+            }}
+          />
 
-              <button
-                className={maxCount <= count ? styles.disable : ""}
-                onClick={handleIncrement}
-                disabled={count >= maxCount}
-              >
-                <PlusSubtle />
-              </button>
-            </div>
-            <button
-              className={maxCount < count ? styles.disable : ""}
-              style={{
-                padding: 15,
-                backgroundColor: "black",
-                color: "white",
-                marginBottom: 15,
-              }}
-              onClick={onAddToCart}
-              disabled={maxCount < count}
-            >
-              {t("form.addToCard")}
-            </button>
-          </>
-        ) : null}
+          <button
+            className={maxCount <= count ? styles.disable : ""}
+            onClick={handleIncrement}
+            disabled={count >= maxCount}
+          >
+            <PlusSubtle />
+          </button>
+        </div>
+        <button
+          className={maxCount < count ? styles.disable : ""}
+          style={{
+            padding: 15,
+            backgroundColor: "black",
+            color: "white",
+            marginBottom: 15,
+          }}
+          onClick={onAddToCart}
+          disabled={maxCount < count}
+        >
+          {t("form.addToCard")}
+        </button>
+        {/* </>
+        ) : null} */}
 
         <h2 className={styles.description}>{t("form.description")}</h2>
         <div className={styles.descriptionText}>
