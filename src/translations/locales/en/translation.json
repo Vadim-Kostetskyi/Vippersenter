@@ -91,11 +91,12 @@
     "orderNotes": "Order notes",
     "notesAboutOrder": "Notes about your order, e.g. special notes about delivery",
     "selectBranch": "Select branch",
-    "total": "Total",
+    "total": "Amount payable",
     "productPrice": "Product price",
     "shippingCost": "Shipping cost",
     "enterBranchNumber": "Enter branch number",
-    "incorrectBranchNumber": "Incorrect branch number"
+    "incorrectBranchNumber": "Incorrect branch number",
+    "deliveryPrice": "According to the carrier's tariff"
   },
 
   "aboutUs": {

@@ -91,11 +91,12 @@
     "orderNotes": "Ordrenotater",
     "notesAboutOrder": "Notater om bestillingen din, for eksempel spesielle merknader om levering",
     "selectBranch": "Velg filial",
-    "total": "Totalt",
+    "total": "Til betaling",
     "productPrice": "Produktpris",
     "shippingCost": "Fraktkostnad",
     "enterBranchNumber": "Skriv inn filialnummer",
-    "incorrectBranchNumber": "Ugyldig filialnummer"
+    "incorrectBranchNumber": "Ugyldig filialnummer",
+    "deliveryPrice": "I henhold til transportørens takst"
   },
 
   "aboutUs": {

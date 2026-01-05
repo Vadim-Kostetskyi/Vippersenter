@@ -27,7 +27,9 @@ const ProductCard = () => {
     SelectedAttributes[]
   >([]);
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  console.log(i18n.language);
+  const lang = i18n.language === "en" ? "en" : "no";
 
   const selected = useMemo(() => {
     return Object.fromEntries(
@@ -244,8 +246,7 @@ const ProductCard = () => {
         ) : (
           <p className={styles.outStock}>Out of stock</p>
         )}
-        {/* {quantity ? (
-          <> */}
+
         {grouped.map(({ name, values }) => (
           <ProductAttributes
             key={name}
@@ -305,12 +306,10 @@ const ProductCard = () => {
         >
           {t("form.addToCard")}
         </button>
-        {/* </>
-        ) : null} */}
 
         <h2 className={styles.description}>{t("form.description")}</h2>
         <div className={styles.descriptionText}>
-          {parseDescription(description ?? "")}
+          {parseDescription(description ?? "", lang)}
         </div>
       </div>
     </div>

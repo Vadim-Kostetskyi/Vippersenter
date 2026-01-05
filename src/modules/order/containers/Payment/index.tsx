@@ -4,6 +4,7 @@ import { PaymentCard } from "components/PaymentCard";
 import vippsImg from "assets/image/vipps.png";
 import cardImg from "assets/image/card.png";
 import styles from "./index.module.scss";
+import VippsPay from "../VippsPayButton";
 
 interface PaymentProps {
   totalPrice: number;
@@ -47,7 +48,14 @@ const Payment: FC<PaymentProps> = ({ totalPrice }) => {
       {paymentMethod === "banc_card" ? (
         <PaymentCard totalPrice={totalPrice} />
       ) : (
-        <>vipps</>
+        // <VippsPay
+        // amountNok={499}
+        // description="Оплата замовлення #123"
+        // endpoint="/api/vipps/create-payment"
+        // orderId="123"
+        // customer={{ email: "test@mail.com" }}
+        // />
+        "vipps"
       )}
     </section>
   );

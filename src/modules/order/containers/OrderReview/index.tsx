@@ -11,7 +11,7 @@ interface OrderReviewProps {
 }
 
 const OrderReview: FC<OrderReviewProps> = ({
-  deliveryPrice,
+  // deliveryPrice,
   setTotalPrice,
 }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -26,8 +26,9 @@ const OrderReview: FC<OrderReviewProps> = ({
   }, []);
 
   useEffect(() => {
-    setTotalPrice(totalCartPrice + deliveryPrice);
-  }, [deliveryPrice, totalCartPrice]);
+    // setTotalPrice(totalCartPrice + deliveryPrice);
+    setTotalPrice(totalCartPrice);
+  }, [totalCartPrice]);
 
   const onSetProducts = (items: CartItem[]) => {
     setCartItems(items);
@@ -65,12 +66,12 @@ const OrderReview: FC<OrderReviewProps> = ({
     },
     {
       title: t("order.shippingCost"),
-      price: deliveryPrice,
+      price: t("order.deliveryPrice"),
       currency: t("currency"),
     },
     {
       title: t("order.total"),
-      price: totalCartPrice + deliveryPrice,
+      price: totalCartPrice,
       currency: t("currency"),
     },
   ];

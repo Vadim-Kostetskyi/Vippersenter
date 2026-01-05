@@ -2,23 +2,60 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_URL } from "./routes";
 import { PlaceOrderRequest, ServicePoint } from "./types";
 
+/** VIPPS types */
+type VippsCreatePaymentRequest = {
+  orderId: string; // ваш order id
+  amountNok: number; // в NOK (або зроби amountOre: number)
+  description: string;
+  returnUrl: string; // куди повернути після оплати
+  callbackUrl?: string; // якщо хочеш передавати з фронта (частіше це в бек-налаштуваннях)
+  customer?: { email?: string; phone?: string };
+  metadata?: Record<string, string>;
+};
+
+type VippsCreatePaymentResponse = {
+  redirectUrl: string;
+  reference: string; // payment reference у vipps (зручно зберігати)
+};
+
+type VippsPaymentStatusResponse = {
+  reference: string;
+  state:
+    | "CREATED"
+    | "AUTHORIZED"
+    | "CAPTURED"
+    | "CANCELLED"
+    | "FAILED"
+    | string;
+  orderId?: string;
+  amountNok?: number;
+};
+
 export const ordersApi = createApi({
   reducerPath: "ordersApi",
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
     prepareHeaders: (headers, { endpoint }) => {
-      // Для Postnord endpoint не додаємо Authorization
-      if (
-        endpoint !== "getPostnordServicePoints" &&
-        endpoint !== "calculateDelivery" &&
-        endpoint !== "getPickupPoints" &&
-        endpoint !== "getShippingPrice"
-      ) {
+      /**
+       * Для цих endpoint не додаємо Authorization
+       * (залишив вашу логіку + додав Vipps, якщо ваші vipps php не вимагають Bearer)
+       */
+      const noAuthEndpoints = new Set([
+        "getPostnordServicePoints",
+        "calculateDelivery",
+        "getPickupPoints",
+        "getShippingPrice",
+        "createVippsPayment",
+        "getVippsPaymentStatus",
+      ]);
+
+      if (!noAuthEndpoints.has(endpoint)) {
         const token = import.meta.env.VITE_API_KEY;
         if (token) {
           headers.set("Authorization", `Bearer ${token}`);
         }
       }
+
       return headers;
     },
   }),
@@ -56,6 +93,28 @@ export const ordersApi = createApi({
         body: orderData,
       }),
     }),
+
+    /** ================= VIPPS ================= */
+
+    // 1) Створити платіж Vipps і отримати redirectUrl
+    createVippsPayment: builder.mutation<
+      VippsCreatePaymentResponse,
+      VippsCreatePaymentRequest
+    >({
+      query: (payload) => ({
+        url: "order/vipps/create-payment.php",
+        method: "POST",
+        body: payload,
+      }),
+    }),
+
+    // 2) Перевірити статус платежу (після returnUrl або polling)
+    getVippsPaymentStatus: builder.query<VippsPaymentStatusResponse, string>({
+      query: (reference) =>
+        `order/vipps/get-payment.php?reference=${encodeURIComponent(
+          reference
+        )}`,
+    }),
   }),
   tagTypes: ["Order"],
 });
@@ -66,4 +125,9 @@ export const {
   usePlaceOrderMutation,
   useGetPickupPointsQuery,
   useLazyGetShippingPriceQuery,
+
+  // VIPPS hooks
+  useCreateVippsPaymentMutation,
+  useLazyGetVippsPaymentStatusQuery,
+  useGetVippsPaymentStatusQuery,
 } = ordersApi;
