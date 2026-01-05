@@ -5,7 +5,7 @@ import InputField from "components/InputField";
 import DropdownOrder from "modules/order/components/DropdownOrder";
 import { inputsPostnord } from "utils/post";
 import {
-  useCalculateDeliveryQuery,
+  // useCalculateDeliveryQuery,
   useGetPostnordServicePointsQuery,
 } from "storeRedux/ordersApi";
 import Loader from "components/Loader";
@@ -13,9 +13,13 @@ import styles from "./index.module.scss";
 
 interface PostnordDeliveryProps {
   setPrice: (price: number) => void;
+  setAddress: (address: string) => void;
 }
 
-const PostnordDelivery: FC<PostnordDeliveryProps> = ({ setPrice }) => {
+const PostnordDelivery: FC<PostnordDeliveryProps> = ({
+  setPrice,
+  setAddress,
+}) => {
   const [postalCode, setPostalCode] = useState("");
   const [points, setPoints] = useState<any[]>([]);
   const [selectedPoint, setSelectedPoint] = useState<any>(null);
@@ -26,9 +30,9 @@ const PostnordDelivery: FC<PostnordDeliveryProps> = ({ setPrice }) => {
     postalCode.length === 4 ? String(postalCode) : skipToken
   );
 
-  const { data: deliveryData } = useCalculateDeliveryQuery(
-    selectedPoint?.postalCode || skipToken
-  );
+  // const { data: deliveryData } = useCalculateDeliveryQuery(
+  //   selectedPoint?.postalCode || skipToken
+  // );
 
   useEffect(() => setPrice(0), []);
 
@@ -40,21 +44,22 @@ const PostnordDelivery: FC<PostnordDeliveryProps> = ({ setPrice }) => {
     }
   }, [data]);
 
-  useEffect(() => {
-    if (deliveryData) {
-      if (deliveryData.error) {
-        setPrice(0);
-        alert(deliveryData.error);
-      } else {
-        setPrice(deliveryData.price);
-      }
-    }
-  }, [deliveryData]);
+  // useEffect(() => {
+  //   if (deliveryData) {
+  //     if (deliveryData.error) {
+  //       setPrice(0);
+  //       alert(deliveryData.error);
+  //     } else {
+  //       setPrice(deliveryData.price);
+  //     }
+  //   }
+  // }, [deliveryData]);
 
   const handleSelect = (pointId: string) => {
     const point = points.find((p) => p.id === pointId);
     if (!point) return;
     setSelectedPoint(point);
+    setAddress(point);
   };
 
   return (

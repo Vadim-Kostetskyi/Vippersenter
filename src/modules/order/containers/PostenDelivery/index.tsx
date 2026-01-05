@@ -6,16 +6,17 @@ import DropdownOrder from "modules/order/components/DropdownOrder";
 import Loader from "components/Loader";
 import {
   useGetPickupPointsQuery,
-  useLazyGetShippingPriceQuery,
+  // useLazyGetShippingPriceQuery,
 } from "storeRedux/ordersApi";
-import { postenDeliveryPrice } from "utils/postenDeliveryPrice";
+// import { postenDeliveryPrice } from "utils/postenDeliveryPrice";
 import styles from "./index.module.scss";
 
 interface PostenDeliveryProps {
   setPrice: (price: number) => void;
+  setAddress: (address: string) => void;
 }
 
-const PostenDelivery: FC<PostenDeliveryProps> = ({ setPrice }) => {
+const PostenDelivery: FC<PostenDeliveryProps> = ({ setPrice, setAddress }) => {
   const [postalCode, setPostalCode] = useState("");
   const [selectedPickup, setSelectedPickup] = useState<any>(null);
 
@@ -30,27 +31,37 @@ const PostenDelivery: FC<PostenDeliveryProps> = ({ setPrice }) => {
   );
   // console.log(selectedPickup.visitingPostalCode);
 
-  const [fetchShipping, { data: shippingData }] =
-    useLazyGetShippingPriceQuery();
+  // const [fetchShipping, { data: shippingData }] =
+  //   useLazyGetShippingPriceQuery();
 
   useEffect(() => setPrice(0), []);
 
-  useEffect(() => {
-    if (shippingData) {
-      const deliveryPrice = postenDeliveryPrice(shippingData)[0].amountWithVAT;
-      setPrice(+deliveryPrice);
-    }
-  }, [shippingData]);
+  // useEffect(() => {
+  //   if (shippingData) {
+  //     const deliveryPrice = postenDeliveryPrice(shippingData)[0].amountWithVAT;
+  //     setPrice(+deliveryPrice);
+  //   }
+  // }, [shippingData]);
 
   const handleSelect = (id: string) => {
     const point = pickupPoints.find((p: any) => p.id === id);
     if (!point) return;
 
+    const address: any = {
+      name: point.name,
+      address: point.address,
+      postalCode: point.postalCode,
+      city: point.city,
+    };
+    console.log(point);
+
     setSelectedPickup(point);
-    fetchShipping({
-      postalCode: selectedPickup.visitingPostalCode,
-      pickupId: id,
-    });
+    setAddress(address);
+
+    // fetchShipping({
+    //   postalCode: selectedPickup.visitingPostalCode,
+    //   pickupId: id,
+    // });
   };
 
   return (

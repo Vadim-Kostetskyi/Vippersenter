@@ -3,16 +3,22 @@ import { useTranslation } from "react-i18next";
 import { PaymentCard } from "components/PaymentCard";
 import vippsImg from "assets/image/vipps.png";
 import cardImg from "assets/image/card.png";
+import { OrderFormData } from "../CheckoutInfo";
 import styles from "./index.module.scss";
 // import VippsPay from "../VippsPayButton";
 
 interface PaymentProps {
   totalPrice: number;
+  deliveryDetails: {
+    formData: OrderFormData | null;
+    totalPrice: number;
+  };
 }
 
-const Payment: FC<PaymentProps> = ({ totalPrice }) => {
+const Payment: FC<PaymentProps> = ({ totalPrice, deliveryDetails }) => {
   const [paymentMethod, setPaymentMethod] = useState("banc_card");
   const { t } = useTranslation();
+  console.log(deliveryDetails);
 
   return (
     <section className={styles.payment}>
