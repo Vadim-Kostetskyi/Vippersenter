@@ -6,10 +6,15 @@ import styles from "./index.module.scss";
 
 const CheckoutInfo = () => {
   const [deliveryPrice, setDeliveryPrice] = useState(0);
+  const [isDelivery, setIsdelivery] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
 
   const onSetDeliveryPrice = (price: number) => {
     setDeliveryPrice(price);
+  };
+
+  const onSetIsDelivery = (type: boolean) => {
+    setIsdelivery(type);
   };
 
   const onSetTotalPrice = (price: number) => {
@@ -18,11 +23,15 @@ const CheckoutInfo = () => {
 
   return (
     <div className={styles.checkoutInfo}>
-      <CustomerDetails setDeliveryPrice={onSetDeliveryPrice} />
+      <CustomerDetails
+        setDeliveryPrice={onSetDeliveryPrice}
+        setIsSetDelivery={onSetIsDelivery}
+      />
       <div>
         <OrderReview
           deliveryPrice={deliveryPrice}
           setTotalPrice={onSetTotalPrice}
+          isDelivery={isDelivery}
         />
         <Payment totalPrice={totalPrice} />
       </div>

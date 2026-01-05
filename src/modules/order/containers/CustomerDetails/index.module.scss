@@ -33,6 +33,25 @@
   }
 }
 
+.deliveryType {
+  & span {
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  & select {
+    font-size: inherit;
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+  }
+}
+
+.pickupAddress {
+  margin-bottom: 15px;
+}
+
 .postBox {
   display: flex;
   margin: auto;

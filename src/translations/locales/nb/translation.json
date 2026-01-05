@@ -96,7 +96,13 @@
     "shippingCost": "Fraktkostnad",
     "enterBranchNumber": "Skriv inn filialnummer",
     "incorrectBranchNumber": "Ugyldig filialnummer",
-    "deliveryPrice": "I henhold til transportørens takst"
+    "deliveryPrice": "I henhold til transportørens takst",
+    "delivery": "Levering",
+    "deliveryByPost": "Post",
+    "pickup": "Henting",
+    "pickupAddressTitle": "Henteadresse",
+    "pickupAddressInfo": "Vennligst hent bestillingen i åpningstiden etter bekreftelse.",
+    "free": "Gratis"
   },
 
   "aboutUs": {

@@ -19,22 +19,20 @@ const InputField: FC<InputFieldProps> = ({
   onChange,
   value,
   onKeyDown,
-}) => {
-  return (
-    <label className={styles.inputField}>
-      {title}
-      {require && <span className={styles.require}> *</span>}
-      <input
-        type={type || "text"}
-        className={styles.input}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        onKeyDown={onKeyDown}
-        required={require}
-      />
-    </label>
-  );
-};
+}) => (
+  <label className={styles.inputField}>
+    {title}
+    {require && <span className={styles.require}> *</span>}
+    <input
+      type={type || "text"}
+      className={styles.input}
+      placeholder={placeholder}
+      value={value}
+      onChange={onChange}
+      onKeyDown={onKeyDown}
+      required={require}
+    />
+  </label>
+);
 
-export default InputField
+export default InputField;

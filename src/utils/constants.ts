@@ -11,3 +11,5 @@ export const breakpoints = {
 };
 
 export const AttributeList = ["Bend", "Length", "Thickness", "Volume"];
+
+export const address = "Øvregaten 25, 5003 Bergen “Nails for You”";

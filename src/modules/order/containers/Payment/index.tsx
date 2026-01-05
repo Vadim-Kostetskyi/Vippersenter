@@ -4,7 +4,7 @@ import { PaymentCard } from "components/PaymentCard";
 import vippsImg from "assets/image/vipps.png";
 import cardImg from "assets/image/card.png";
 import styles from "./index.module.scss";
-import VippsPay from "../VippsPayButton";
+// import VippsPay from "../VippsPayButton";
 
 interface PaymentProps {
   totalPrice: number;

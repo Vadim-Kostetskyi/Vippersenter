@@ -96,7 +96,13 @@
     "shippingCost": "Shipping cost",
     "enterBranchNumber": "Enter branch number",
     "incorrectBranchNumber": "Incorrect branch number",
-    "deliveryPrice": "According to the carrier's tariff"
+    "deliveryPrice": "According to the carrier's tariff",
+    "delivery": "Delivery",
+    "deliveryByPost": "Postal delivery",
+    "pickup": "Pickup",
+    "pickupAddressTitle": "Pickup address",
+    "pickupAddressInfo": "Please collect your order during opening hours after confirmation.",
+    "free": "Free of charge"
   },
 
   "aboutUs": {

@@ -8,11 +8,13 @@ import OrderPrice from "modules/order/components/OrderPrice";
 interface OrderReviewProps {
   deliveryPrice: number;
   setTotalPrice: (price: number) => void;
+  isDelivery: boolean;
 }
 
 const OrderReview: FC<OrderReviewProps> = ({
   // deliveryPrice,
   setTotalPrice,
+  isDelivery,
 }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
@@ -66,7 +68,7 @@ const OrderReview: FC<OrderReviewProps> = ({
     },
     {
       title: t("order.shippingCost"),
-      price: t("order.deliveryPrice"),
+      price: isDelivery ? t("order.deliveryPrice") : t("order.free"),
       currency: t("currency"),
     },
     {
