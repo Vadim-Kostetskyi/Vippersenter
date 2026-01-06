@@ -78,7 +78,7 @@
   "order": {
     "placingOrder": "Legge inn bestilling",
     "name": "Fornavn",
-    "lasName": "Etternavn",
+    "lastName": "Etternavn",
     "phone": "Telefon",
     "email": "E-post",
     "country/Region": "Land / Region",
@@ -121,7 +121,9 @@
     "pleaseWait": "Behandler...",
     "success": "Betaling vellykket ✅",
     "error": "Feil: {{message}}",
-    "createError": "Feil ved oppretting av betaling"
+    "createError": "Feil ved oppretting av betaling",
+    "fillError": "Vennligst fyll ut alle feltene",
+    "deliveryError": "Velg leveringsmåte og postkontor"
   },
 
   "catalog": "Katalog",

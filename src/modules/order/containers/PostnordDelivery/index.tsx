@@ -34,7 +34,9 @@ const PostnordDelivery: FC<PostnordDeliveryProps> = ({
   //   selectedPoint?.postalCode || skipToken
   // );
 
-  useEffect(() => setPrice(0), []);
+  useEffect(() => {
+    setPrice(0), setAddress("");
+  }, []);
 
   useEffect(() => {
     if (data) {

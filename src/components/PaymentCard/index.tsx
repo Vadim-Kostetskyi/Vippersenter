@@ -15,9 +15,15 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 interface CheckoutProps {
   totalPrice: number;
+  inputError: () => boolean;
 }
 
-const CheckoutForm: FC<{ amount: number }> = ({ amount }) => {
+interface CheckoutFormProps {
+  amount: number;
+  inputError: () => boolean;
+}
+
+const CheckoutForm: FC<CheckoutFormProps> = ({ amount, inputError }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [createPaymentIntent, { isLoading }] =
@@ -27,6 +33,9 @@ const CheckoutForm: FC<{ amount: number }> = ({ amount }) => {
 
   const handlePay = async () => {
     if (!stripe || !elements) return;
+
+    const hasError = inputError();
+    if (hasError) return;
 
     try {
       const { clientSecret } = await createPaymentIntent({ amount }).unwrap();
@@ -67,8 +76,8 @@ const CheckoutForm: FC<{ amount: number }> = ({ amount }) => {
   );
 };
 
-export const PaymentCard: FC<CheckoutProps> = ({ totalPrice }) => (
+export const PaymentCard: FC<CheckoutProps> = ({ totalPrice, inputError }) => (
   <Elements stripe={stripePromise}>
-    <CheckoutForm amount={totalPrice} />
+    <CheckoutForm amount={totalPrice} inputError={inputError} />
   </Elements>
 );

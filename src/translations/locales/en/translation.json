@@ -78,7 +78,7 @@
   "order": {
     "placingOrder": "Placing an order",
     "name": "First Name",
-    "lasName": "Last Name",
+    "lastName": "Last Name",
     "phone": "Phone",
     "email": "Email",
     "country/Region": "Country / Region",
@@ -99,7 +99,7 @@
     "deliveryPrice": "According to the carrier's tariff",
     "delivery": "Delivery",
     "deliveryByPost": "Postal delivery",
-    "pickup": "Pickup",
+    "pickup": "Fence",
     "pickupAddressTitle": "Pickup address",
     "pickupAddressInfo": "Please collect your order during opening hours after confirmation.",
     "free": "Free of charge"
@@ -121,7 +121,9 @@
     "pleaseWait": "Processing...",
     "success": "Payment successful ✅",
     "error": "Error: {{message}}",
-    "createError": "Error creating payment"
+    "createError": "Error creating payment",
+    "fillError": "Please fill in all fields",
+    "deliveryError": "Select the delivery method and post office"
   },
 
   "catalog": "Catalog",

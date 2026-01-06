@@ -4,7 +4,7 @@ export const inputs = [
     placeholder: "",
   },
   {
-    title: "lasName",
+    title: "lastName",
     placeholder: "",
   },
   {

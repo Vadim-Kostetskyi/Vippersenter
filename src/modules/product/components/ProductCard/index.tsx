@@ -28,7 +28,7 @@ const ProductCard = () => {
   >([]);
 
   const { t, i18n } = useTranslation();
-  console.log(i18n.language);
+  // console.log(i18n.language);
   const lang = i18n.language === "en" ? "en" : "no";
 
   const selected = useMemo(() => {

@@ -5,6 +5,7 @@ import vippsImg from "assets/image/vipps.png";
 import cardImg from "assets/image/card.png";
 import { OrderFormData } from "../CheckoutInfo";
 import styles from "./index.module.scss";
+import { toast } from "react-toastify";
 // import VippsPay from "../VippsPayButton";
 
 interface PaymentProps {
@@ -18,7 +19,45 @@ interface PaymentProps {
 const Payment: FC<PaymentProps> = ({ totalPrice, deliveryDetails }) => {
   const [paymentMethod, setPaymentMethod] = useState("banc_card");
   const { t } = useTranslation();
-  console.log(deliveryDetails);
+
+  let customerInfo = null;
+  if (deliveryDetails.formData) {
+    customerInfo = deliveryDetails.formData;
+  }
+  if (!customerInfo) return;
+
+  const {
+    name,
+    lastName,
+    phone,
+    email,
+    town,
+    deliveryType,
+    setDeliveryAddress,
+  } = customerInfo;
+
+  const emptyInputCheck = (): boolean => {
+    const hasError =
+      name.trim().length === 0 ||
+      lastName.trim().length === 0 ||
+      phone.trim().length === 0 ||
+      email.trim().length === 0 ||
+      town.trim().length === 0;
+
+    if (hasError) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      toast.error(t("payment.fillError"));
+      return true;
+    }
+
+    if (deliveryType === "post" && setDeliveryAddress.length === 0) {
+      window.scrollTo({ top: 200, behavior: "smooth" });
+      toast.error(t("payment.deliveryError"));
+      return true;
+    }
+
+    return false;
+  };
 
   return (
     <section className={styles.payment}>
@@ -52,7 +91,7 @@ const Payment: FC<PaymentProps> = ({ totalPrice, deliveryDetails }) => {
       </div>
 
       {paymentMethod === "banc_card" ? (
-        <PaymentCard totalPrice={totalPrice} />
+        <PaymentCard totalPrice={totalPrice} inputError={emptyInputCheck} />
       ) : (
         // <VippsPay
         // amountNok={499}
@@ -63,6 +102,7 @@ const Payment: FC<PaymentProps> = ({ totalPrice, deliveryDetails }) => {
         // />
         "vipps"
       )}
+      {/* <button onClick={emptyInputCheck}>emptyInputCheck</button> */}
     </section>
   );
 };

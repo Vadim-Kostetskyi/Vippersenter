@@ -47,6 +47,7 @@ const CustomerDetails: FC<CustomerDetailsProps> = ({
       setFormData((prev) => ({
         ...prev,
         carrier: "",
+        setDeliveryAddress: "",
       }));
     } else {
       setIsSetDelivery(true);
@@ -79,12 +80,13 @@ const CustomerDetails: FC<CustomerDetailsProps> = ({
     // - поля з inputs: formData[title]
     // - deliveryType, carrier, orderComments
     // - плюс адрес самовывоза (если pickup)
-    const payload = {
-      ...formData,
-      pickupAddress: formData.deliveryType === "pickup" ? address : null,
-    };
 
-    console.log("ORDER FORM DATA:", payload);
+    // const payload = {
+    //   ...formData,
+    //   pickupAddress: formData.deliveryType === "pickup" ? address : null,
+    // };
+
+    // console.log("ORDER FORM DATA:", payload);
   };
 
   const onSetDeliveryAddress = (address: string) => {

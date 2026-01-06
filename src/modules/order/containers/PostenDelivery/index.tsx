@@ -34,7 +34,9 @@ const PostenDelivery: FC<PostenDeliveryProps> = ({ setPrice, setAddress }) => {
   // const [fetchShipping, { data: shippingData }] =
   //   useLazyGetShippingPriceQuery();
 
-  useEffect(() => setPrice(0), []);
+  useEffect(() => {
+    setPrice(0), setAddress("");
+  }, []);
 
   // useEffect(() => {
   //   if (shippingData) {
@@ -53,8 +55,6 @@ const PostenDelivery: FC<PostenDeliveryProps> = ({ setPrice, setAddress }) => {
       postalCode: point.postalCode,
       city: point.city,
     };
-    console.log(point);
-
     setSelectedPickup(point);
     setAddress(address);
 
