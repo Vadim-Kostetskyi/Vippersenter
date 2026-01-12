@@ -406,7 +406,7 @@ const AddProductModalOptions: FC<AddProductModalOptionsProps> = ({
         Популярне
       </label>
 
-      <button type="submit">Зберегти</button>
+      <button type="submit">{t("save")}</button>
     </form>
   );
 };

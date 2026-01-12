@@ -36,7 +36,8 @@
     "characteristics": "Egenskaper",
     "confirmDelete": "Slett produkt",
     "updateError": "Oppdaterings feil",
-    "deleteError": "Slettings feil"
+    "deleteError": "Slettings feil",
+    "editDescription": "Rediger beskrivelse"
   },
 
   "form": {
@@ -125,6 +126,9 @@
     "fillError": "Vennligst fyll ut alle feltene",
     "deliveryError": "Velg leveringsmåte og postkontor"
   },
+
+  "save": "Bevare",
+  "cancel": "Avbryte",
 
   "catalog": "Katalog",
   "popularProducts": "Populære produkter",

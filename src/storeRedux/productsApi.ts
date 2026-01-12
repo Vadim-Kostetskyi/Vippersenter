@@ -265,6 +265,34 @@ export const productsApi = createApi({
         body: orderData,
       }),
     }),
+
+    updateProductFlags: builder.mutation<
+      Product,
+      { slug: string; newProduct?: 0 | 1; popularProduct?: 0 | 1 }
+    >({
+      query: ({ slug, ...flags }) => ({
+        url: `products/${slug}/flags`,
+        method: "PATCH",
+        body: flags,
+      }),
+      invalidatesTags: (_result, _error, { slug }) => [
+        { type: "Product", id: slug },
+      ],
+    }),
+
+    updateProductDescription: builder.mutation<
+      Product,
+      { slug: string; description: string }
+    >({
+      query: ({ slug, description }) => ({
+        url: `products/${slug}/description`,
+        method: "PATCH",
+        body: { description },
+      }),
+      invalidatesTags: (_result, _error, { slug }) => [
+        { type: "Product", id: slug },
+      ],
+    }),
   }),
   tagTypes: ["Product"],
 });
@@ -284,4 +312,6 @@ export const {
   useUpdateProductExtraPriceMutation,
   useDeleteProductMutation,
   usePlaceOrderMutation,
+  useUpdateProductFlagsMutation,
+  useUpdateProductDescriptionMutation,
 } = productsApi;

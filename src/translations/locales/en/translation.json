@@ -36,7 +36,8 @@
     "characteristics": "Characteristics",
     "confirmDelete": "Delete product",
     "updateError": "Update error",
-    "deleteError": "Delete error"
+    "deleteError": "Delete error",
+    "editDescription": "Edit description"
   },
 
   "form": {
@@ -125,6 +126,9 @@
     "fillError": "Please fill in all fields",
     "deliveryError": "Select the delivery method and post office"
   },
+
+  "save": "Save",
+  "cancel": "Cancel",
 
   "catalog": "Catalog",
   "popularProducts": "Popular Products",

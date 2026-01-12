@@ -67,9 +67,14 @@
     & span {
       align-items: center;
     }
+    & img {
+      width: 35px;
+      margin-right: 15px;
+    }
   }
 
-  & label:nth-child(2), & label:last-child {
+  & label:nth-child(2),
+  & label:last-child {
     position: relative;
 
     &::before {

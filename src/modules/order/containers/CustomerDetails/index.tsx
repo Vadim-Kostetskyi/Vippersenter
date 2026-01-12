@@ -8,6 +8,7 @@ import postnordLogo from "assets/image/post/postnordLogo.webp";
 import postenLogo from "assets/image/post/postenLogo.png";
 import { address } from "utils/constants";
 import { Carrier, OrderFormData } from "../CheckoutInfo";
+import boxImage from "assets/image/Box.png";
 import styles from "./index.module.scss";
 
 interface CustomerDetailsProps {
@@ -146,21 +147,7 @@ const CustomerDetails: FC<CustomerDetailsProps> = ({
                   checked={formData.carrier === "selfDelivery"}
                   onChange={() => updateCarrier("selfDelivery")}
                 />
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M21 16V8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8" />
-                  <polyline points="3 6 12 13 21 6" />
-                  <line x1="12" y1="22" x2="12" y2="13" />
-                </svg>
+                <img src={boxImage} alt="" />
                 <span>{t("order.pickup")}</span>
               </label>
 

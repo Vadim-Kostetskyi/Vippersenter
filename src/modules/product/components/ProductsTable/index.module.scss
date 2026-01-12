@@ -115,3 +115,94 @@
   }
   margin-bottom: 20px;
 }
+
+/* Модалка */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); // затемнений фон
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.modalTextarea {
+  width: 100%;
+  min-height: 650px;
+  padding: 8px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  resize: vertical;
+}
+
+.modalButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.saveButton {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.saveButton:hover {
+  background-color: #45a049;
+}
+
+.cancelButton {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.cancelButton:hover {
+  background-color: #da190b;
+}
+
+/* Кнопка редагування опису у таблиці */
+.editDescriptionButton {
+  padding: 4px 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border: 1px solid #007bff;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  transition: 0.2s;
+}
+
+.editDescriptionButton:hover {
+  background-color: #0069d9;
+}
