@@ -5,7 +5,7 @@ import Payment from "../Payment";
 import styles from "./index.module.scss";
 
 export type DeliveryType = "post" | "pickup";
-export type Carrier = "postnord" | "posten" | "";
+export type Carrier = "postnord" | "posten" | "selfDelivery" | "";
 
 export type OrderFormData = {
   deliveryType: DeliveryType;

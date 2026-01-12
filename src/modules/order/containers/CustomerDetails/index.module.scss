@@ -60,10 +60,19 @@
   border: 1px solid $gainsboro;
   border-radius: 4px;
 
-  & label:last-child {
+  & label:first-child {
+    & input {
+      margin-right: 15px;
+    }
+    & span {
+      align-items: center;
+    }
+  }
+
+  & label:nth-child(2), & label:last-child {
     position: relative;
 
-    &::after {
+    &::before {
       content: "";
       position: absolute;
       bottom: 20;
@@ -71,7 +80,9 @@
       height: calc(100% - 40px);
       border-left: 1px solid gainsboro;
     }
+  }
 
+  & label:last-child {
     & input {
       margin-right: 15px;
     }

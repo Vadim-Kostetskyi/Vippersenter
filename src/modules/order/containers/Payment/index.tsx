@@ -76,7 +76,7 @@ const Payment: FC<PaymentProps> = ({ totalPrice, deliveryDetails }) => {
           </span>
         </label>
 
-        <label className={styles.post}>
+        {/* <label className={styles.post}>
           <input
             type="radio"
             name="paymentMethod"
@@ -84,24 +84,24 @@ const Payment: FC<PaymentProps> = ({ totalPrice, deliveryDetails }) => {
             checked={paymentMethod === "vipps"}
             onChange={(e) => setPaymentMethod(e.target.value)}
           />
-          <span>
+          <span>Levering
             <img src={vippsImg} alt="vipps" />
           </span>
-        </label>
+        </label> */}
       </div>
 
-      {paymentMethod === "banc_card" ? (
-        <PaymentCard totalPrice={totalPrice} inputError={emptyInputCheck} />
-      ) : (
-        <VippsPay
-        // amountNok={499}
+      {/* {paymentMethod === "banc_card" ? ( */}
+      <PaymentCard totalPrice={totalPrice} inputError={emptyInputCheck} />
+      {/* ) : ( */}
+      {/* <VippsPay */}
+      {/* // amountNok={499}
         // description="Оплата замовлення #123"
         // endpoint="/api/vipps/create-payment"
         // orderId="123"
         // customer={{ email: "test@mail.com" }}
-        />
-        // "vipps"
-      )}
+        /> */}
+      {/* // "vipps" */}
+      {/* )} */}
       {/* <button onClick={emptyInputCheck}>emptyInputCheck</button> */}
     </section>
   );

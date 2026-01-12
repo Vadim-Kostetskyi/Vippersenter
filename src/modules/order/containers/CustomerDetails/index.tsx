@@ -7,7 +7,7 @@ import { inputs } from "./data";
 import postnordLogo from "assets/image/post/postnordLogo.webp";
 import postenLogo from "assets/image/post/postenLogo.png";
 import { address } from "utils/constants";
-import { Carrier, DeliveryType, OrderFormData } from "../CheckoutInfo";
+import { Carrier, OrderFormData } from "../CheckoutInfo";
 import styles from "./index.module.scss";
 
 interface CustomerDetailsProps {
@@ -66,9 +66,9 @@ const CustomerDetails: FC<CustomerDetailsProps> = ({
     setFormData((prev) => ({ ...prev, [key]: value }));
   };
 
-  const updateDeliveryType = (value: DeliveryType) => {
-    setFormData((prev) => ({ ...prev, deliveryType: value }));
-  };
+  // const updateDeliveryType = (value: DeliveryType) => {
+  //   setFormData((prev) => ({ ...prev, deliveryType: value }));
+  // };
 
   const updateCarrier = (value: Carrier) => {
     setFormData((prev) => ({ ...prev, carrier: value }));
@@ -115,7 +115,7 @@ const CustomerDetails: FC<CustomerDetailsProps> = ({
 
           <label className={styles.deliveryType}>
             <span>{t("order.delivery")}</span>
-            <select
+            {/* <select
               value={formData.deliveryType}
               onChange={(e) =>
                 updateDeliveryType(e.target.value as DeliveryType)
@@ -123,7 +123,7 @@ const CustomerDetails: FC<CustomerDetailsProps> = ({
             >
               <option value="post">{t("order.deliveryByPost")}</option>
               <option value="pickup">{t("order.pickup")}</option>
-            </select>
+            </select> */}
           </label>
 
           {formData.deliveryType === "pickup" && (
@@ -135,49 +135,97 @@ const CustomerDetails: FC<CustomerDetailsProps> = ({
           )}
 
           {/* Почта */}
-          {formData.deliveryType === "post" && (
-            <>
-              <div className={styles.postBox}>
-                <label className={styles.post}>
-                  <input
-                    type="radio"
-                    name="delivery"
-                    value="postnord"
-                    checked={formData.carrier === "postnord"}
-                    onChange={() => updateCarrier("postnord")}
-                  />
-                  <span>
-                    <img src={postnordLogo} alt="PostNord" />
-                  </span>
-                </label>
+          {/* {formData.deliveryType === "post" && ( */}
+          <>
+            <div className={styles.postBox}>
+              <label className={styles.post}>
+                <input
+                  type="radio"
+                  name="delivery"
+                  value="selfDelivery"
+                  checked={formData.carrier === "selfDelivery"}
+                  onChange={() => updateCarrier("selfDelivery")}
+                />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M21 16V8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8" />
+                  <polyline points="3 6 12 13 21 6" />
+                  <line x1="12" y1="22" x2="12" y2="13" />
+                </svg>
+                <span>{t("order.pickup")}</span>
+              </label>
 
-                <label className={styles.post}>
-                  <input
-                    type="radio"
-                    name="delivery"
-                    value="posten"
-                    checked={formData.carrier === "posten"}
-                    onChange={() => updateCarrier("posten")}
-                  />
-                  <span>
-                    <img src={postenLogo} alt="Posten" />
-                  </span>
-                </label>
+              <label className={styles.post}>
+                <input
+                  type="radio"
+                  name="delivery"
+                  value="postnord"
+                  checked={formData.carrier === "postnord"}
+                  onChange={() => updateCarrier("postnord")}
+                />
+                <span>
+                  <img src={postnordLogo} alt="PostNord" />
+                </span>
+              </label>
+
+              <label className={styles.post}>
+                <input
+                  type="radio"
+                  name="delivery"
+                  value="posten"
+                  checked={formData.carrier === "posten"}
+                  onChange={() => updateCarrier("posten")}
+                />
+                <span>
+                  <img src={postenLogo} alt="Posten" />
+                </span>
+              </label>
+            </div>
+
+            {/* {formData.carrier === "postnord" ? (
+              <PostnordDelivery
+                setPrice={setDeliveryPrice}
+                setAddress={onSetDeliveryAddress}
+              />
+            ) : (
+              <PostenDelivery
+                setPrice={setDeliveryPrice}
+                setAddress={onSetDeliveryAddress}
+              />
+            )} */}
+
+            {formData.carrier === "selfDelivery" && (
+              <div className={styles.pickupAddress}>
+                <strong>{t("order.pickupAddressTitle")}</strong>
+                <p>{address}</p>
+                <p>{t("order.pickupAddressInfo")}</p>
               </div>
+            )}
 
-              {formData.carrier === "postnord" ? (
-                <PostnordDelivery
-                  setPrice={setDeliveryPrice}
-                  setAddress={onSetDeliveryAddress}
-                />
-              ) : (
-                <PostenDelivery
-                  setPrice={setDeliveryPrice}
-                  setAddress={onSetDeliveryAddress}
-                />
-              )}
-            </>
-          )}
+            {formData.carrier === "postnord" && (
+              <PostnordDelivery
+                setPrice={setDeliveryPrice}
+                setAddress={onSetDeliveryAddress}
+              />
+            )}
+
+            {formData.carrier === "posten" && (
+              <PostenDelivery
+                setPrice={setDeliveryPrice}
+                setAddress={onSetDeliveryAddress}
+              />
+            )}
+          </>
+          {/* )} */}
 
           <label htmlFor="orderComments" className={styles.orderComments}>
             <span>{t("order.orderNotes")}</span>
