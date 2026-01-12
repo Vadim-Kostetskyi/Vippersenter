@@ -1,35 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_URL } from "./routes";
-import { PlaceOrderRequest, ServicePoint } from "./types";
-
-/** VIPPS types */
-type VippsCreatePaymentRequest = {
-  orderId: string; // ваш order id
-  amountNok: number; // в NOK (або зроби amountOre: number)
-  description: string;
-  returnUrl: string; // куди повернути після оплати
-  callbackUrl?: string; // якщо хочеш передавати з фронта (частіше це в бек-налаштуваннях)
-  customer?: { email?: string; phone?: string };
-  metadata?: Record<string, string>;
-};
-
-type VippsCreatePaymentResponse = {
-  redirectUrl: string;
-  reference: string; // payment reference у vipps (зручно зберігати)
-};
-
-type VippsPaymentStatusResponse = {
-  reference: string;
-  state:
-    | "CREATED"
-    | "AUTHORIZED"
-    | "CAPTURED"
-    | "CANCELLED"
-    | "FAILED"
-    | string;
-  orderId?: string;
-  amountNok?: number;
-};
+import {
+  CreateVippsPaymentRequest,
+  CreateVippsPaymentResponse,
+  PlaceOrderRequest,
+  ServicePoint,
+  VippsPaymentStatusResponse,
+} from "./types";
 
 export const ordersApi = createApi({
   reducerPath: "ordersApi",
@@ -94,24 +71,28 @@ export const ordersApi = createApi({
       }),
     }),
 
-    /** ================= VIPPS ================= */
+    /** ---------- VIPPS (ePayment) ---------- */
 
-    // 1) Створити платіж Vipps і отримати redirectUrl
+    // 1) Створити Vipps платіж і отримати redirectUrl
     createVippsPayment: builder.mutation<
-      VippsCreatePaymentResponse,
-      VippsCreatePaymentRequest
+      CreateVippsPaymentResponse,
+      CreateVippsPaymentRequest
     >({
-      query: (payload) => ({
-        url: "order/vipps/create-payment.php",
+      query: ({ amount, ...rest }) => ({
+        url: "payment/vipps/create-payment.php",
         method: "POST",
-        body: payload,
+        body: {
+          ...rest,
+          amountOre: Math.round(amount * 100), // Vipps у мінорних одиницях (øre)
+          currency: "NOK",
+        },
       }),
     }),
 
-    // 2) Перевірити статус платежу (після returnUrl або polling)
+    // 2) Перевірити статус платежу (після returnUrl або для polling)
     getVippsPaymentStatus: builder.query<VippsPaymentStatusResponse, string>({
       query: (reference) =>
-        `order/vipps/get-payment.php?reference=${encodeURIComponent(
+        `payment/vipps/get-payment.php?reference=${encodeURIComponent(
           reference
         )}`,
     }),
