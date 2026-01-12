@@ -2,10 +2,10 @@ import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { PaymentCard } from "components/PaymentCard";
-import vippsImg from "assets/image/vipps.png";
+// import vippsImg from "assets/image/vipps.png";
 import cardImg from "assets/image/card.png";
 import { OrderFormData } from "../CheckoutInfo";
-import VippsPay from "../VippsPayButton";
+// import VippsPay from "../VippsPayButton";
 import styles from "./index.module.scss";
 
 interface PaymentProps {
@@ -35,6 +35,7 @@ const Payment: FC<PaymentProps> = ({ totalPrice, deliveryDetails }) => {
     deliveryType,
     setDeliveryAddress,
   } = customerInfo;
+  console.log(customerInfo);
 
   const emptyInputCheck = (): boolean => {
     const hasError =

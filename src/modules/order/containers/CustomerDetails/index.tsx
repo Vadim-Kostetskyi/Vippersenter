@@ -21,7 +21,7 @@ type InputType = "text" | "email" | "tel" | "number" | string;
 
 const CustomerDetails: FC<CustomerDetailsProps> = ({
   setDeliveryPrice,
-  setIsSetDelivery,
+  // setIsSetDelivery,
   onChangeForm,
 }) => {
   const { t } = useTranslation();
@@ -41,23 +41,23 @@ const CustomerDetails: FC<CustomerDetailsProps> = ({
     orderComments: "",
   });
 
-  useEffect(() => {
-    if (formData.deliveryType === "pickup") {
-      setIsSetDelivery(false);
-      setDeliveryPrice(0);
-      setFormData((prev) => ({
-        ...prev,
-        carrier: "",
-        setDeliveryAddress: "",
-      }));
-    } else {
-      setIsSetDelivery(true);
-      setFormData((prev) => ({
-        ...prev,
-        carrier: "postnord",
-      }));
-    }
-  }, [formData.deliveryType]);
+  // useEffect(() => {
+  //   if (formData.deliveryType === "pickup") {
+  //     setIsSetDelivery(false);
+  //     setDeliveryPrice(0);
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       carrier: "",
+  //       setDeliveryAddress: "",
+  //     }));
+  //   } else {
+  //     setIsSetDelivery(true);
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       carrier: "postnord",
+  //     }));
+  //   }
+  // }, [formData.deliveryType]);
 
   useEffect(() => {
     onChangeForm?.(formData);
@@ -67,13 +67,26 @@ const CustomerDetails: FC<CustomerDetailsProps> = ({
     setFormData((prev) => ({ ...prev, [key]: value }));
   };
 
+  const updateCarrier = (value: Carrier) => {
+    if (value === "selfDelivery") {
+      setFormData((prev) => ({
+        ...prev,
+        carrier: value,
+        deliveryType: "pickup",
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        deliveryType: "post",
+        carrier: value,
+      }));
+    }
+  };
+
   // const updateDeliveryType = (value: DeliveryType) => {
   //   setFormData((prev) => ({ ...prev, deliveryType: value }));
+  //   updateCarrier("selfDelivery");
   // };
-
-  const updateCarrier = (value: Carrier) => {
-    setFormData((prev) => ({ ...prev, carrier: value }));
-  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -127,13 +140,13 @@ const CustomerDetails: FC<CustomerDetailsProps> = ({
             </select> */}
           </label>
 
-          {formData.deliveryType === "pickup" && (
+          {/* {formData.deliveryType === "pickup" && (
             <div className={styles.pickupAddress}>
               <strong>{t("order.pickupAddressTitle")}</strong>
               <p>{address}</p>
               <p>{t("order.pickupAddressInfo")}</p>
             </div>
-          )}
+          )} */}
 
           {/* Почта */}
           {/* {formData.deliveryType === "post" && ( */}
