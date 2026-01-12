@@ -1,12 +1,12 @@
 import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 import { PaymentCard } from "components/PaymentCard";
 import vippsImg from "assets/image/vipps.png";
 import cardImg from "assets/image/card.png";
 import { OrderFormData } from "../CheckoutInfo";
+import VippsPay from "../VippsPayButton";
 import styles from "./index.module.scss";
-import { toast } from "react-toastify";
-// import VippsPay from "../VippsPayButton";
 
 interface PaymentProps {
   totalPrice: number;
@@ -93,14 +93,14 @@ const Payment: FC<PaymentProps> = ({ totalPrice, deliveryDetails }) => {
       {paymentMethod === "banc_card" ? (
         <PaymentCard totalPrice={totalPrice} inputError={emptyInputCheck} />
       ) : (
-        // <VippsPay
+        <VippsPay
         // amountNok={499}
         // description="Оплата замовлення #123"
         // endpoint="/api/vipps/create-payment"
         // orderId="123"
         // customer={{ email: "test@mail.com" }}
-        // />
-        "vipps"
+        />
+        // "vipps"
       )}
       {/* <button onClick={emptyInputCheck}>emptyInputCheck</button> */}
     </section>

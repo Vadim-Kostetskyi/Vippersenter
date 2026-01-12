@@ -88,3 +88,33 @@ export interface CreatePaymentIntentRequest {
 export interface CreatePaymentIntentResponse {
   clientSecret: string;
 }
+
+/** ===== VIPPS TYPES ===== */
+
+export type CreateVippsPaymentRequest = {
+  orderId: string;
+  amount: number; // в NOK (наприклад 499)
+  description: string;
+  returnUrl: string;
+  customer?: {
+    email?: string;
+    phone?: string;
+  };
+  metadata?: Record<string, string>;
+};
+
+export type CreateVippsPaymentResponse = {
+  redirectUrl: string;
+  reference: string;
+};
+
+export type VippsPaymentStatusResponse = {
+  reference: string;
+  state:
+    | "CREATED"
+    | "AUTHORIZED"
+    | "CAPTURED"
+    | "CANCELLED"
+    | "FAILED"
+    | string;
+};
