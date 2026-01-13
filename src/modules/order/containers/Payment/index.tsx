@@ -6,19 +6,20 @@ import { PaymentCard } from "components/PaymentCard";
 import cardImg from "assets/image/card.png";
 import { OrderFormData } from "../CheckoutInfo";
 // import VippsPay from "../VippsPayButton";
+import { getCartItems } from "utils/card";
 import styles from "./index.module.scss";
 
 interface PaymentProps {
-  totalPrice: number;
   deliveryDetails: {
     formData: OrderFormData | null;
     totalPrice: number;
   };
 }
 
-const Payment: FC<PaymentProps> = ({ totalPrice, deliveryDetails }) => {
+const Payment: FC<PaymentProps> = ({ deliveryDetails }) => {
   const [paymentMethod, setPaymentMethod] = useState("banc_card");
   const { t } = useTranslation();
+  console.log(deliveryDetails);
 
   let customerInfo = null;
   if (deliveryDetails.formData) {
@@ -35,7 +36,9 @@ const Payment: FC<PaymentProps> = ({ totalPrice, deliveryDetails }) => {
     deliveryType,
     setDeliveryAddress,
   } = customerInfo;
-  console.log(customerInfo);
+
+  const totalPrice = deliveryDetails.totalPrice;
+  console.log(deliveryDetails);
 
   const emptyInputCheck = (): boolean => {
     const hasError =
@@ -59,6 +62,10 @@ const Payment: FC<PaymentProps> = ({ totalPrice, deliveryDetails }) => {
 
     return false;
   };
+
+  const orderPayload = { deliveryDetails, goods: getCartItems() };
+  const orderPayload2 = {};///////////////////////////////////fgfhgfgh
+  console.log(orderPayload);
 
   return (
     <section className={styles.payment}>

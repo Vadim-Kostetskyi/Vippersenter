@@ -118,3 +118,19 @@ export type VippsPaymentStatusResponse = {
     | "FAILED"
     | string;
 };
+
+export type OrderPayload = {
+  paymentIntentId: string;
+  amount: number;
+  currency: string;
+  customer: {
+    name: string;
+    lastName: string;
+    phone: string;
+    email: string;
+    town: string;
+    address?: string;
+  };
+  deliveryType: "post" | "pickup";
+  items: Product[];
+};

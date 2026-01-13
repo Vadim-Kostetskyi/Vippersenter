@@ -101,3 +101,8 @@ export const removeCartItem = (slug: string, attributes?: Attributes[]) => {
   localStorage.setItem("cart", JSON.stringify(updatedCart));
   window.dispatchEvent(new Event("cartUpdated"));
 };
+
+export const clearCart = () => {
+  localStorage.removeItem("cart");
+  window.dispatchEvent(new Event("cartUpdated"));
+};

@@ -103,7 +103,11 @@
     "pickup": "Hent selv",
     "pickupAddressTitle": "Henteadresse",
     "pickupAddressInfo": "Vennligst hent bestillingen i åpningstiden etter bekreftelse.",
-    "free": "Gratis"
+    "free": "Gratis",
+    "thankForPurchase": "Takk for kjøpet!",
+    "orderHasBeenPaid": "Bestillingen din er betalt.",
+    "startedProcessingIt": "Vi har allerede begynt å behandle det.",
+    "toMainPage": "Gå til hovedside"
   },
 
   "aboutUs": {

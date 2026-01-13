@@ -103,7 +103,11 @@
     "pickup": "Pickup",
     "pickupAddressTitle": "Pickup address",
     "pickupAddressInfo": "Please collect your order during opening hours after confirmation.",
-    "free": "Free of charge"
+    "free": "Free of charge",
+    "thankForPurchase": "Thank you for your purchase!",
+    "orderHasBeenPaid": "Your order has been successfully paid for.",
+    "startedProcessingIt": "We have already started processing it.",
+    "toMainPage": "Go to main page"
   },
 
   "aboutUs": {

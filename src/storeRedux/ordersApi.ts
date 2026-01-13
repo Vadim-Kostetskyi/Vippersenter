@@ -3,6 +3,7 @@ import { BASE_URL } from "./routes";
 import {
   CreateVippsPaymentRequest,
   CreateVippsPaymentResponse,
+  OrderPayload,
   PlaceOrderRequest,
   ServicePoint,
   VippsPaymentStatusResponse,
@@ -96,6 +97,14 @@ export const ordersApi = createApi({
           reference
         )}`,
     }),
+
+    createOrder: builder.mutation<void, OrderPayload>({
+      query: (body) => ({
+        url: "order/orders/index.php",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
   tagTypes: ["Order"],
 });
@@ -106,6 +115,7 @@ export const {
   usePlaceOrderMutation,
   useGetPickupPointsQuery,
   useLazyGetShippingPriceQuery,
+  useCreateOrderMutation,
 
   // VIPPS hooks
   useCreateVippsPaymentMutation,

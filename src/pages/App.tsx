@@ -11,6 +11,7 @@ import ProductFormPage from "./ProductFormPage";
 import PrivateRoute from "storeRedux/PrivateRoute";
 import ProductCategoryPage from "./ProductCategoryPage";
 import ProductCategoriesPage from "./ProductCategoriesPage";
+import SuccessPage from "./SuccessPage";
 
 const App = () => (
   <>
@@ -26,6 +27,16 @@ const App = () => (
         path="/product-category/:category"
         element={<ProductCategoryPage />}
       />
+      <Route
+        path="/dashboard"
+        element={
+          <PrivateRoute>
+            <ProductFormPage />
+          </PrivateRoute>
+        }
+      />
+      <Route path="/order-success" element={<SuccessPage />} />
+
       <Route path="/en" element={<Outlet />}>
         <Route index element={<HomePage />} />
         <Route path="login" element={<LoginPage />} />
@@ -45,15 +56,8 @@ const App = () => (
             </PrivateRoute>
           }
         />
+        <Route path="order-success" element={<SuccessPage />} />
       </Route>
-      <Route
-        path="/dashboard"
-        element={
-          <PrivateRoute>
-            <ProductFormPage />
-          </PrivateRoute>
-        }
-      />
     </Routes>
 
     <ToastContainer
