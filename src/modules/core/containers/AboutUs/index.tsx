@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import image from "assets/image/applies-eyelashes.jpeg";
+import image from "assets/image/logo_small.jpg";
 import { data } from "../FooterInfo/data";
 import styles from "./index.module.scss";
 
