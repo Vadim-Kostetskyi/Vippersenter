@@ -23,7 +23,6 @@ const CheckoutInfo = () => {
   const onSetIsDelivery = (type: boolean) => setIsdelivery(type);
   const onSetTotalPrice = (price: number) => setTotalPrice(price);
 
-  // головне: приймаємо дані з CustomerDetails
   const onChangeForm = (data: OrderFormData) => {
     setFormData(data);
   };
@@ -50,7 +49,7 @@ const CheckoutInfo = () => {
 
         <Payment totalPrice={totalPrice} deliveryDetails={orderDetails} />
 
-        {/* Для перевірки (можеш прибрати) */}
+        {/* Для перевірки */}
         {/* <pre>{JSON.stringify(formData, null, 2)}</pre> */}
       </div>
     </div>

@@ -3,7 +3,7 @@
 .categories {
   margin-bottom: 100px;
 
-  @include media(tabletLarge) {
+  @include media(tabletLargeMin) {
     display: flex;
     flex-wrap: wrap;
     gap: 15px;

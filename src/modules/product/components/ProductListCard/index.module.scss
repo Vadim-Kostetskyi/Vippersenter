@@ -20,7 +20,7 @@
     }
   }
 
-  @include media(tabletLarge) {
+  @include media(tabletLargeMin) {
     width: calc((90% - 5px) / 3);
   }
 }

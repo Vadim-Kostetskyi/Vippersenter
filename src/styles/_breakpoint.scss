@@ -3,6 +3,7 @@ $mobile: 480px;
 $tabletMin: 481px;
 $tabletMedium: 640px;
 $tabletLargeMin: 641px;
+$tabletLarge: 680px;
 $tablet: 960px;
 $laptopMin: 961px;
 $laptopMedium: 1200px;
@@ -13,7 +14,7 @@ $desktop: 1440px;
 $max-content-width: 1440px;
 
 @mixin media($breakpoint) {
-    @if $breakpoint ==preMobile {
+  @if $breakpoint ==preMobile {
     @media only screen and (min-width: $preMobile) {
       @content;
     }
@@ -31,8 +32,14 @@ $max-content-width: 1440px;
     }
   }
 
-  @if $breakpoint ==tabletLarge {
+  @if $breakpoint ==tabletLargeMin {
     @media only screen and (min-width: $tabletLargeMin) {
+      @content;
+    }
+  }
+
+  @if $breakpoint ==tabletLarge {
+    @media only screen and (max-width: $tabletLarge) {
       @content;
     }
   }
@@ -61,7 +68,7 @@ $max-content-width: 1440px;
     }
   }
 
-    @if $breakpoint ==desktopSmall {
+  @if $breakpoint ==desktopSmall {
     @media only screen and (min-width: $desktopSmall) {
       @content;
     }

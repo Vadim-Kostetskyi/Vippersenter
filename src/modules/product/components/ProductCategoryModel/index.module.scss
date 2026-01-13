@@ -17,8 +17,8 @@
     z-index: 0;
   }
 
-  & > div{
-      &::after {
+  & > div {
+    &::after {
       content: "";
       position: absolute;
       top: 0;
@@ -43,11 +43,11 @@
     z-index: 100;
   }
 
-  @include media(tabletLarge){
+  @include media(tabletLargeMin) {
     height: 280px;
   }
-  
-  @include media(laptopUp){
+
+  @include media(laptopUp) {
     margin-top: 76px;
   }
 }
