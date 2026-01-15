@@ -9,34 +9,22 @@ import {
 import { loadStripe } from "@stripe/stripe-js";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
-import { CartItem, clearCart } from "utils/card";
+import { clearCart } from "utils/card";
 import { useCreatePaymentIntentByCreditCardMutation } from "storeRedux/paymentApi";
 import { useCreateOrderMutation } from "storeRedux/ordersApi";
-import { OrderFormData } from "modules/order/containers/CheckoutInfo";
+import { OrderPayload } from "storeRedux/types";
 import styles from "./index.module.scss";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 interface CheckoutProps {
   inputError: () => boolean;
-  orderPayload: {
-    deliveryDetails: {
-      formData: OrderFormData | null;
-      totalPrice: number;
-    };
-    goods: CartItem[];
-  };
+  orderPayload: OrderPayload;
 }
 
 interface CheckoutFormProps {
   inputError: () => boolean;
-  orderPayload: {
-    deliveryDetails: {
-      formData: OrderFormData | null;
-      totalPrice: number;
-    };
-    goods: CartItem[];
-  };
+  orderPayload: OrderPayload;
 }
 
 const CheckoutForm: FC<CheckoutFormProps> = ({ inputError, orderPayload }) => {
@@ -51,7 +39,7 @@ const CheckoutForm: FC<CheckoutFormProps> = ({ inputError, orderPayload }) => {
 
   const navigate = useNavigate();
 
-  const amount = orderPayload.deliveryDetails.totalPrice;
+  const amount = orderPayload.amount;
 
   const handlePay = async () => {
     if (!stripe || !elements) return;

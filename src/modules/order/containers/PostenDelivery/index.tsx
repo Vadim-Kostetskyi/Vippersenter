@@ -81,7 +81,7 @@ const PostenDelivery: FC<PostenDeliveryProps> = ({ setPrice, setAddress }) => {
             .filter((p: any) => p && p.id)
             .map((p: any) => ({
               id: p.id,
-              title: `${p.name || ""} - ${p.city || ""} (${
+              title: `${p.name || ""} - ${p.address || ""}, ${p.city || ""} (${
                 p.postalCode || ""
               })`,
             }))}

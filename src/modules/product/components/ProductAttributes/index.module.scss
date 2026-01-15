@@ -16,6 +16,7 @@
   padding: 10px 20px;
   border: 1px solid $darkCharcoal;
   border-radius: 4px;
+  color: $backdropColor;
   transition: all 0.2s linear;
 
   &:hover,
@@ -30,11 +31,10 @@
   background-color: $darkCharcoal;
 }
 
-.disabled{
+.disabled {
   // cursor: no-drop;
   border-color: $blackLightTransparent;
-    color: $grayMedium;
-
+  color: $grayMedium;
 
   &:hover,
   &:focus {

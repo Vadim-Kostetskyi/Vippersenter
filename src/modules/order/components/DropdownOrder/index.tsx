@@ -43,7 +43,7 @@ const DropdownOrder: FC<DropdownProps> = ({
 
       return (
         <option key={p.id} value={p.id}>
-          {p.name} — {p.address || ""}, {p.city}
+          {p.name} — {p.address || ""}, {p.city} ({p.postalCode})
         </option>
       );
     })}

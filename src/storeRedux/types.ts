@@ -1,3 +1,5 @@
+import { CartItem } from "utils/card";
+
 export type AttributeValue = {
   value_main: string;
   value_secondary?: string;
@@ -120,7 +122,7 @@ export type VippsPaymentStatusResponse = {
 };
 
 export type OrderPayload = {
-  paymentIntentId: string;
+  paymentIntentId: number;
   amount: number;
   currency: string;
   customer: {
@@ -129,8 +131,9 @@ export type OrderPayload = {
     phone: string;
     email: string;
     town: string;
-    address?: string;
   };
+  orderComments: string;
+  deliveryAddress: string;
   deliveryType: "post" | "pickup";
-  items: Product[];
+  items: CartItem[];
 };

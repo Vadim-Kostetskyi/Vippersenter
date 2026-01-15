@@ -47,7 +47,7 @@ const CheckoutInfo = () => {
           isDelivery={isDelivery}
         />
 
-        <Payment totalPrice={totalPrice} deliveryDetails={orderDetails} />
+        <Payment deliveryDetails={orderDetails} />
 
         {/* Для перевірки */}
         {/* <pre>{JSON.stringify(formData, null, 2)}</pre> */}

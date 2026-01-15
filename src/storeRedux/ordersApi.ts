@@ -100,7 +100,7 @@ export const ordersApi = createApi({
 
     createOrder: builder.mutation<void, OrderPayload>({
       query: (body) => ({
-        url: "order/orders/index.php",
+        url: "order/orders/create-order.php",
         method: "POST",
         body,
       }),

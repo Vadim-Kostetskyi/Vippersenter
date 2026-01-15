@@ -8,6 +8,7 @@ import { OrderFormData } from "../CheckoutInfo";
 // import VippsPay from "../VippsPayButton";
 import { getCartItems } from "utils/card";
 import styles from "./index.module.scss";
+import { OrderPayload } from "storeRedux/types";
 
 interface PaymentProps {
   deliveryDetails: {
@@ -19,7 +20,6 @@ interface PaymentProps {
 const Payment: FC<PaymentProps> = ({ deliveryDetails }) => {
   const [paymentMethod, setPaymentMethod] = useState("banc_card");
   const { t } = useTranslation();
-  console.log(deliveryDetails);
 
   let customerInfo = null;
   if (deliveryDetails.formData) {
@@ -34,11 +34,12 @@ const Payment: FC<PaymentProps> = ({ deliveryDetails }) => {
     email,
     town,
     deliveryType,
+    orderComments,
     setDeliveryAddress,
   } = customerInfo;
 
   const totalPrice = deliveryDetails.totalPrice;
-  console.log(deliveryDetails);
+  const cartItems = getCartItems();
 
   const emptyInputCheck = (): boolean => {
     const hasError =
@@ -63,9 +64,24 @@ const Payment: FC<PaymentProps> = ({ deliveryDetails }) => {
     return false;
   };
 
-  const orderPayload = { deliveryDetails, goods: getCartItems() };
-  const orderPayload2 = {};///////////////////////////////////fgfhgfgh
-  console.log(orderPayload);
+  const orderPayload: OrderPayload = {
+    paymentIntentId: Number(
+      `${Date.now()}${Math.floor(Math.random() * 900 + 100)}`
+    ),
+    amount: totalPrice,
+    currency: t("currency"),
+    customer: {
+      name,
+      lastName,
+      phone,
+      email,
+      town,
+    },
+    orderComments,
+    deliveryType,
+    deliveryAddress: setDeliveryAddress,
+    items: cartItems,
+  };
 
   return (
     <section className={styles.payment}>
@@ -99,7 +115,7 @@ const Payment: FC<PaymentProps> = ({ deliveryDetails }) => {
       </div>
 
       {/* {paymentMethod === "banc_card" ? ( */}
-      <PaymentCard totalPrice={totalPrice} inputError={emptyInputCheck} />
+      <PaymentCard orderPayload={orderPayload} inputError={emptyInputCheck} />
       {/* ) : ( */}
       {/* <VippsPay */}
       {/* // amountNok={499}
