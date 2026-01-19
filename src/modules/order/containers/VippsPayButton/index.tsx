@@ -1,62 +1,56 @@
 import { FC, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { useCreateVippsPaymentMutation } from "storeRedux/ordersApi";
+import vipsImage from "assets/image/vippsIcon.png";
+import styles from "./index.module.scss";
 
 interface VippsPaymentButtonProps {
   orderId: string;
-  amount: number; // NOK
+  amount: number; // у NOK
+  methodType?: "WALLET" | "CARD";
+  returnUrl?: string;
 }
 
 const VippsPaymentButton: FC<VippsPaymentButtonProps> = ({
   orderId,
   amount,
+  methodType = "WALLET", // за замовчуванням Vipps Wallet
+  returnUrl = "/order-success",
 }) => {
   const [createVippsPayment, { isLoading }] = useCreateVippsPaymentMutation();
+
+  const { t } = useTranslation();
 
   const handlePay = useCallback(async () => {
     try {
       const { redirectUrl } = await createVippsPayment({
         orderId,
         amount,
-        returnUrl: "/",
+        returnUrl,
+        methodType,
       }).unwrap();
 
       if (!redirectUrl) throw new Error("Vipps redirectUrl missing");
+      localStorage.setItem("paymentSuccess", "true");
 
-      // Редірект на Vipps: сам вибирає телефон/картку
+      // Редірект на сторінку Vipps або Card
       window.location.href = redirectUrl;
     } catch (err) {
       console.error("Vipps payment error:", err);
-      alert("Не вдалося ініціювати платіж Vipps");
+      alert(t("payment.createError"));
     }
-  }, [createVippsPayment, orderId, amount]);
+  }, [createVippsPayment, orderId, amount, returnUrl, methodType]);
 
   return (
-    <button onClick={handlePay} disabled={isLoading} style={styles.button}>
-      <img src="/vipps.svg" alt="Vipps" style={styles.icon} />
-      {isLoading ? "Перехід до оплати…" : "Оплатити Vipps / карткою"}
+    <button onClick={handlePay} disabled={isLoading} className={styles.button}>
+      <img src={vipsImage} alt="Vipps" className={styles.icon} />
+      {isLoading
+        ? t("payment.pleaseWait")
+        : methodType === "CARD"
+          ? t("payment.cardPayment")
+          : `${t("payment.payWithVipps")} / MobilePay`}
     </button>
   );
 };
 
 export default VippsPaymentButton;
-
-const styles: Record<string, React.CSSProperties> = {
-  button: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 10,
-    padding: "12px 18px",
-    backgroundColor: "#ff5b24",
-    color: "#fff",
-    border: "none",
-    borderRadius: 6,
-    fontSize: 16,
-    fontWeight: 600,
-    cursor: "pointer",
-    transition: "opacity 0.2s",
-  },
-  icon: {
-    height: 22,
-  },
-};

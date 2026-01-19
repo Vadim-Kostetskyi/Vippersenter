@@ -128,7 +128,8 @@
     "error": "Feil: {{message}}",
     "createError": "Feil ved oppretting av betaling",
     "fillError": "Vennligst fyll ut alle feltene",
-    "deliveryError": "Velg leveringsmåte og postkontor"
+    "deliveryError": "Velg leveringsmåte og postkontor",
+    "payWithVipps": "Betal med Vipps"
   },
 
   "save": "Bevare",

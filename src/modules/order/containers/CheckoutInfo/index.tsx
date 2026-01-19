@@ -15,7 +15,7 @@ export type OrderFormData = {
 
 const CheckoutInfo = () => {
   const [deliveryPrice, setDeliveryPrice] = useState(0);
-  const [isDelivery, setIsdelivery] = useState(false);
+  const [isDelivery, setIsdelivery] = useState(true);
   const [totalPrice, setTotalPrice] = useState(0);
   const [formData, setFormData] = useState<OrderFormData | null>(null);
 

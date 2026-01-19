@@ -128,7 +128,8 @@
     "error": "Error: {{message}}",
     "createError": "Error creating payment",
     "fillError": "Please fill in all fields",
-    "deliveryError": "Select the delivery method and post office"
+    "deliveryError": "Select the delivery method and post office",
+    "payWithVipps": "Pay with Vipps"
   },
 
   "save": "Save",

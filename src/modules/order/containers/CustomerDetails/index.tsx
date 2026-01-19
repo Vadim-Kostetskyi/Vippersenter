@@ -21,7 +21,7 @@ type InputType = "text" | "email" | "tel" | "number" | string;
 
 const CustomerDetails: FC<CustomerDetailsProps> = ({
   setDeliveryPrice,
-  // setIsSetDelivery,
+  setIsSetDelivery,
   onChangeForm,
 }) => {
   const { t } = useTranslation();
@@ -74,12 +74,14 @@ const CustomerDetails: FC<CustomerDetailsProps> = ({
         carrier: value,
         deliveryType: "pickup",
       }));
+      setIsSetDelivery(false);
     } else {
       setFormData((prev) => ({
         ...prev,
         deliveryType: "post",
         carrier: value,
       }));
+      setIsSetDelivery(true);
     }
   };
 
@@ -160,7 +162,7 @@ const CustomerDetails: FC<CustomerDetailsProps> = ({
                   checked={formData.carrier === "selfDelivery"}
                   onChange={() => updateCarrier("selfDelivery")}
                 />
-                <img src={boxImage} alt="" />
+                <img src={boxImage} alt="pickup" />
                 <span>{t("order.pickup")}</span>
               </label>
 

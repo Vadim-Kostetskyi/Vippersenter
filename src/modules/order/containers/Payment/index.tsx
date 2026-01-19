@@ -1,9 +1,9 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 // import { PaymentCard } from "components/PaymentCard";
 // import vippsImg from "assets/image/vipps.png";
-import cardImg from "assets/image/card.png";
+// import cardImg from "assets/image/card.png";
 import { OrderFormData } from "../CheckoutInfo";
 import VippsPay from "../VippsPayButton";
 import { getCartItems } from "utils/card";
@@ -18,7 +18,7 @@ interface PaymentProps {
 }
 
 const Payment: FC<PaymentProps> = ({ deliveryDetails }) => {
-  const [paymentMethod, setPaymentMethod] = useState("banc_card");
+  // const [paymentMethod, setPaymentMethod] = useState("banc_card");
   const { t } = useTranslation();
 
   let customerInfo = null;
@@ -41,32 +41,32 @@ const Payment: FC<PaymentProps> = ({ deliveryDetails }) => {
   const totalPrice = deliveryDetails.totalPrice;
   const cartItems = getCartItems();
 
-  const emptyInputCheck = (): boolean => {
-    const hasError =
-      name.trim().length === 0 ||
-      lastName.trim().length === 0 ||
-      phone.trim().length === 0 ||
-      email.trim().length === 0 ||
-      town.trim().length === 0;
+  // const emptyInputCheck = (): boolean => {
+  //   const hasError =
+  //     name.trim().length === 0 ||
+  //     lastName.trim().length === 0 ||
+  //     phone.trim().length === 0 ||
+  //     email.trim().length === 0 ||
+  //     town.trim().length === 0;
 
-    if (hasError) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      toast.error(t("payment.fillError"));
-      return true;
-    }
+  //   if (hasError) {
+  //     window.scrollTo({ top: 0, behavior: "smooth" });
+  //     toast.error(t("payment.fillError"));
+  //     return true;
+  //   }
 
-    if (deliveryType === "post" && setDeliveryAddress.length === 0) {
-      window.scrollTo({ top: 200, behavior: "smooth" });
-      toast.error(t("payment.deliveryError"));
-      return true;
-    }
+  //   if (deliveryType === "post" && setDeliveryAddress.length === 0) {
+  //     window.scrollTo({ top: 200, behavior: "smooth" });
+  //     toast.error(t("payment.deliveryError"));
+  //     return true;
+  //   }
 
-    return false;
-  };
+  //   return false;
+  // };
 
   const orderPayload: OrderPayload = {
     paymentIntentId: Number(
-      `${Date.now()}${Math.floor(Math.random() * 900 + 100)}`
+      `${Date.now()}${Math.floor(Math.random() * 900 + 100)}`,
     ),
     amount: totalPrice,
     currency: t("currency"),
@@ -117,14 +117,16 @@ const Payment: FC<PaymentProps> = ({ deliveryDetails }) => {
       {/* <PaymentCard orderPayload={orderPayload} inputError={emptyInputCheck} /> */}
       {/* ) : ( */}
       <VippsPay
-        amount={5}
-        orderId={'3'}
-        // amountNok={499}
-        // description="Оплата замовлення #123"
-        // endpoint="/api/vipps/create-payment"
-        // orderId="123"
-        // customer={{ email: "test@mail.com" }}
+        amount={orderPayload.amount}
+        orderId={orderPayload.paymentIntentId.toString()}
       />
+      {/* впвпа
+      <VippsPay
+        amount={orderPayload.amount}
+        orderId={orderPayload.paymentIntentId.toString()}
+        methodType="WALLET" // або "CARD"
+        returnUrl="/order-success"
+      /> */}
       {/* // "vipps" */}
       {/* )} */}
       {/* <button onClick={emptyInputCheck}>emptyInputCheck</button> */}

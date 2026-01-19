@@ -17,6 +17,7 @@ const OrderReview: FC<OrderReviewProps> = ({
   isDelivery,
 }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  console.log(isDelivery);
 
   const { t } = useTranslation();
 
@@ -49,8 +50,8 @@ const OrderReview: FC<OrderReviewProps> = ({
 
       const isSame = item.attributes.every((attr) =>
         attributes.some(
-          (a) => a.attribute === attr.attribute && a.value === attr.value
-        )
+          (a) => a.attribute === attr.attribute && a.value === attr.value,
+        ),
       );
 
       return !isSame;

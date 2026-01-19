@@ -97,6 +97,7 @@ export type CreateVippsPaymentRequest = {
   orderId: string;
   amount: number; // в NOK (наприклад 499)
   returnUrl: string;
+  methodType?: "WALLET" | "CARD";
   customer?: {
     email?: string;
     phone?: string;
