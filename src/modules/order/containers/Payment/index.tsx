@@ -1,11 +1,11 @@
 import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
-import { PaymentCard } from "components/PaymentCard";
+// import { PaymentCard } from "components/PaymentCard";
 // import vippsImg from "assets/image/vipps.png";
 import cardImg from "assets/image/card.png";
 import { OrderFormData } from "../CheckoutInfo";
-// import VippsPay from "../VippsPayButton";
+import VippsPay from "../VippsPayButton";
 import { getCartItems } from "utils/card";
 import styles from "./index.module.scss";
 import { OrderPayload } from "storeRedux/types";
@@ -87,7 +87,7 @@ const Payment: FC<PaymentProps> = ({ deliveryDetails }) => {
     <section className={styles.payment}>
       <h3>{t("payment.payment")}</h3>
       <div className={styles.paymentMethodBox}>
-        <label className={styles.post}>
+        {/* <label className={styles.post}>
           <input
             type="radio"
             name="paymentMethod"
@@ -98,7 +98,7 @@ const Payment: FC<PaymentProps> = ({ deliveryDetails }) => {
           <span>
             <img src={cardImg} alt="banc_card" />
           </span>
-        </label>
+        </label> */}
 
         {/* <label className={styles.post}>
           <input
@@ -113,17 +113,18 @@ const Payment: FC<PaymentProps> = ({ deliveryDetails }) => {
           </span>
         </label> */}
       </div>
-
       {/* {paymentMethod === "banc_card" ? ( */}
-      <PaymentCard orderPayload={orderPayload} inputError={emptyInputCheck} />
+      {/* <PaymentCard orderPayload={orderPayload} inputError={emptyInputCheck} /> */}
       {/* ) : ( */}
-      {/* <VippsPay */}
-      {/* // amountNok={499}
+      <VippsPay
+        amount={5}
+        orderId={'3'}
+        // amountNok={499}
         // description="Оплата замовлення #123"
         // endpoint="/api/vipps/create-payment"
         // orderId="123"
         // customer={{ email: "test@mail.com" }}
-        /> */}
+      />
       {/* // "vipps" */}
       {/* )} */}
       {/* <button onClick={emptyInputCheck}>emptyInputCheck</button> */}

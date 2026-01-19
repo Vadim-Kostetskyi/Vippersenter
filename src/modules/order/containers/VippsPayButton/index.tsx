@@ -1,74 +1,62 @@
-import React, { useCallback } from "react";
+import { FC, useCallback } from "react";
 import { useCreateVippsPaymentMutation } from "storeRedux/ordersApi";
 
-const VippsButton: React.FC = () => {
-  const [createVippsPayment, { isLoading, error }] =
-    useCreateVippsPaymentMutation();
+interface VippsPaymentButtonProps {
+  orderId: string;
+  amount: number; // NOK
+}
 
-  const onPay = useCallback(async () => {
+const VippsPaymentButton: FC<VippsPaymentButtonProps> = ({
+  orderId,
+  amount,
+}) => {
+  const [createVippsPayment, { isLoading }] = useCreateVippsPaymentMutation();
+
+  const handlePay = useCallback(async () => {
     try {
-      const res = await createVippsPayment({
-        orderId: "123",
-        amount: 499, // NOK
-        description: "Order #123",
-        returnUrl: `${window.location.origin}/payment-success`,
-        metadata: { source: "web" },
+      const { redirectUrl } = await createVippsPayment({
+        orderId,
+        amount,
+        returnUrl: "/",
       }).unwrap();
 
-      window.location.assign(res.redirectUrl);
-    } catch {
-      // unwrap() прокине помилку в RTK Query
+      if (!redirectUrl) throw new Error("Vipps redirectUrl missing");
+
+      // Редірект на Vipps: сам вибирає телефон/картку
+      window.location.href = redirectUrl;
+    } catch (err) {
+      console.error("Vipps payment error:", err);
+      alert("Не вдалося ініціювати платіж Vipps");
     }
-  }, [createVippsPayment]);
+  }, [createVippsPayment, orderId, amount]);
 
   return (
-    <div className="flex flex-col items-center gap-2">
-      <button
-        onClick={onPay}
-        disabled={isLoading}
-        className={`px-6 py-3 rounded-lg font-semibold text-white transition-colors duration-200
-          ${
-            isLoading
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-green-600 hover:bg-green-700"
-          }`}
-      >
-        {isLoading ? (
-          <span className="flex items-center gap-2">
-            <svg
-              className="animate-spin h-5 w-5 text-white"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              ></circle>
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4l-3 3 3 3H4z"
-              ></path>
-            </svg>
-            Переходимо до Vipps...
-          </span>
-        ) : (
-          "Оплатити Vipps"
-        )}
-      </button>
-
-      {error && (
-        <div className="text-red-600 bg-red-100 px-4 py-2 rounded-md text-center">
-          Помилка створення платежу. Спробуйте ще раз.
-        </div>
-      )}
-    </div>
+    <button onClick={handlePay} disabled={isLoading} style={styles.button}>
+      <img src="/vipps.svg" alt="Vipps" style={styles.icon} />
+      {isLoading ? "Перехід до оплати…" : "Оплатити Vipps / карткою"}
+    </button>
   );
 };
 
-export default VippsButton;
+export default VippsPaymentButton;
+
+const styles: Record<string, React.CSSProperties> = {
+  button: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 10,
+    padding: "12px 18px",
+    backgroundColor: "#ff5b24",
+    color: "#fff",
+    border: "none",
+    borderRadius: 6,
+    fontSize: 16,
+    fontWeight: 600,
+    cursor: "pointer",
+    transition: "opacity 0.2s",
+  },
+  icon: {
+    height: 22,
+  },
+};

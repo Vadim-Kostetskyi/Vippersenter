@@ -96,7 +96,6 @@ export interface CreatePaymentIntentResponse {
 export type CreateVippsPaymentRequest = {
   orderId: string;
   amount: number; // в NOK (наприклад 499)
-  description: string;
   returnUrl: string;
   customer?: {
     email?: string;
