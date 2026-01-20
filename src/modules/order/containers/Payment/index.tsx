@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-// import { toast } from "react-toastify";
+import { toast } from "react-toastify";
 // import { PaymentCard } from "components/PaymentCard";
 // import vippsImg from "assets/image/vipps.png";
 // import cardImg from "assets/image/card.png";
@@ -41,28 +41,28 @@ const Payment: FC<PaymentProps> = ({ deliveryDetails }) => {
   const totalPrice = deliveryDetails.totalPrice;
   const cartItems = getCartItems();
 
-  // const emptyInputCheck = (): boolean => {
-  //   const hasError =
-  //     name.trim().length === 0 ||
-  //     lastName.trim().length === 0 ||
-  //     phone.trim().length === 0 ||
-  //     email.trim().length === 0 ||
-  //     town.trim().length === 0;
+  const emptyInputCheck = (): boolean => {
+    const hasError =
+      name.trim().length === 0 ||
+      lastName.trim().length === 0 ||
+      phone.trim().length === 0 ||
+      email.trim().length === 0 ||
+      town.trim().length === 0;
 
-  //   if (hasError) {
-  //     window.scrollTo({ top: 0, behavior: "smooth" });
-  //     toast.error(t("payment.fillError"));
-  //     return true;
-  //   }
+    if (hasError) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      toast.error(t("payment.fillError"));
+      return true;
+    }
 
-  //   if (deliveryType === "post" && setDeliveryAddress.length === 0) {
-  //     window.scrollTo({ top: 200, behavior: "smooth" });
-  //     toast.error(t("payment.deliveryError"));
-  //     return true;
-  //   }
+    if (deliveryType === "post" && setDeliveryAddress.length === 0) {
+      window.scrollTo({ top: 200, behavior: "smooth" });
+      toast.error(t("payment.deliveryError"));
+      return true;
+    }
 
-  //   return false;
-  // };
+    return false;
+  };
 
   const orderPayload: OrderPayload = {
     paymentIntentId: Number(
@@ -116,17 +116,12 @@ const Payment: FC<PaymentProps> = ({ deliveryDetails }) => {
       {/* {paymentMethod === "banc_card" ? ( */}
       {/* <PaymentCard orderPayload={orderPayload} inputError={emptyInputCheck} /> */}
       {/* ) : ( */}
+      <VippsPay orderPayload={orderPayload} inputError={emptyInputCheck} />
       <VippsPay
-        amount={orderPayload.amount}
-        orderId={orderPayload.paymentIntentId.toString()}
+        methodType="CARD"
+        orderPayload={orderPayload}
+        inputError={emptyInputCheck}
       />
-      {/* впвпа
-      <VippsPay
-        amount={orderPayload.amount}
-        orderId={orderPayload.paymentIntentId.toString()}
-        methodType="WALLET" // або "CARD"
-        returnUrl="/order-success"
-      /> */}
       {/* // "vipps" */}
       {/* )} */}
       {/* <button onClick={emptyInputCheck}>emptyInputCheck</button> */}

@@ -1,29 +1,35 @@
 import { FC, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useCreateVippsPaymentMutation } from "storeRedux/ordersApi";
+import { useCreateVippsPaymentMutation } from "storeRedux/paymentApi";
+import { OrderPayload } from "storeRedux/types";
 import vipsImage from "assets/image/vippsIcon.png";
 import styles from "./index.module.scss";
 
 interface VippsPaymentButtonProps {
-  orderId: string;
-  amount: number; // у NOK
   methodType?: "WALLET" | "CARD";
   returnUrl?: string;
+  orderPayload: OrderPayload;
+  inputError: () => boolean;
 }
 
 const VippsPaymentButton: FC<VippsPaymentButtonProps> = ({
-  orderId,
-  amount,
   methodType = "WALLET", // за замовчуванням Vipps Wallet
-  returnUrl = "/order-success",
+  returnUrl = "https://vippersenter.no/order-success",
+  orderPayload,
+  inputError,
 }) => {
   const [createVippsPayment, { isLoading }] = useCreateVippsPaymentMutation();
 
   const { t } = useTranslation();
 
+  const orderId = orderPayload.paymentIntentId.toString();
+  const amount = orderPayload.amount;
+
   const handlePay = useCallback(async () => {
+    const hasError = inputError();
+    if (hasError) return;
     try {
-      const { redirectUrl } = await createVippsPayment({
+      const { redirectUrl, reference } = await createVippsPayment({
         orderId,
         amount,
         returnUrl,
@@ -32,9 +38,10 @@ const VippsPaymentButton: FC<VippsPaymentButtonProps> = ({
 
       if (!redirectUrl) throw new Error("Vipps redirectUrl missing");
       localStorage.setItem("paymentSuccess", "true");
+      localStorage.setItem("orderPayload", JSON.stringify(orderPayload));
 
       // Редірект на сторінку Vipps або Card
-      window.location.href = redirectUrl;
+      window.location.href = `${redirectUrl}&returnReference=${encodeURIComponent(reference)}`;
     } catch (err) {
       console.error("Vipps payment error:", err);
       alert(t("payment.createError"));
@@ -42,7 +49,11 @@ const VippsPaymentButton: FC<VippsPaymentButtonProps> = ({
   }, [createVippsPayment, orderId, amount, returnUrl, methodType]);
 
   return (
-    <button onClick={handlePay} disabled={isLoading} className={styles.button}>
+    <button
+      className={methodType === "CARD" ? styles.buttonCard : styles.button}
+      onClick={handlePay}
+      disabled={isLoading}
+    >
       <img src={vipsImage} alt="Vipps" className={styles.icon} />
       {isLoading
         ? t("payment.pleaseWait")

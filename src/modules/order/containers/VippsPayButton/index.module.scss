@@ -5,17 +5,29 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  gap: 10px;
+  gap: 15px;
   padding: 10px 10px 10px 0;
-  background-color: $orangeAccent;
+  background-color: $orangeAccent; // для Vipps
   color: $whiteColor;
   border: none;
   border-radius: 6px;
   font-size: 18px;
   font-weight: 600;
   transition: opacity 0.2s;
-  cursor: "pointer";
+  cursor: pointer;
 }
+
+.buttonCard {
+  @extend .button;
+  padding: 20px;
+  margin-top: 25px;
+  background-color: $blueAccent;
+
+  & img {
+    display: none;
+  }
+}
+
 .icon {
   width: 40px;
 }

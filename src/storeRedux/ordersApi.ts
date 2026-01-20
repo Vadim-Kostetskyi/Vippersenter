@@ -1,12 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_URL } from "./routes";
 import {
-  CreateVippsPaymentRequest,
-  CreateVippsPaymentResponse,
   OrderPayload,
   PlaceOrderRequest,
   ServicePoint,
-  VippsPaymentStatusResponse,
 } from "./types";
 
 export const ordersApi = createApi({
@@ -47,7 +44,7 @@ export const ordersApi = createApi({
       {
         query: (toPostalCode) =>
           `order/postnord/calculateDelivery.php?toPostalCode=${toPostalCode}`,
-      }
+      },
     ),
 
     getPickupPoints: builder.query<any[], string>({
@@ -74,30 +71,6 @@ export const ordersApi = createApi({
 
     /** ---------- VIPPS (ePayment) ---------- */
 
-    // 1) Створити Vipps платіж і отримати redirectUrl
-    createVippsPayment: builder.mutation<
-      CreateVippsPaymentResponse,
-      CreateVippsPaymentRequest
-    >({
-      query: ({ amount, ...rest }) => ({
-        url: "payment/vipps/create-payment.php",
-        method: "POST",
-        body: {
-          ...rest,
-          amountOre: Math.round(amount * 100), // Vipps у мінорних одиницях (øre)
-          currency: "NOK",
-        },
-      }),
-    }),
-
-    // 2) Перевірити статус платежу (після returnUrl або для polling)
-    getVippsPaymentStatus: builder.query<VippsPaymentStatusResponse, string>({
-      query: (reference) =>
-        `payment/vipps/get-payment.php?reference=${encodeURIComponent(
-          reference
-        )}`,
-    }),
-
     createOrder: builder.mutation<void, OrderPayload>({
       query: (body) => ({
         url: "order/orders/create-order.php",
@@ -116,9 +89,4 @@ export const {
   useGetPickupPointsQuery,
   useLazyGetShippingPriceQuery,
   useCreateOrderMutation,
-
-  // VIPPS hooks
-  useCreateVippsPaymentMutation,
-  useLazyGetVippsPaymentStatusQuery,
-  useGetVippsPaymentStatusQuery,
 } = ordersApi;
