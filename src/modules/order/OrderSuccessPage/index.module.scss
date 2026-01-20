@@ -6,6 +6,25 @@
   align-items: center;
   justify-content: center;
   background: #f7f7f7;
+
+  & button {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    background: #111;
+    color: #fff;
+    font-weight: 500;
+  }
+
+  & h1 {
+    margin-bottom: 12px;
+  }
+
+  & p {
+    color: #555;
+    margin-bottom: 24px;
+  }
 }
 
 .card {
@@ -23,29 +42,10 @@
   margin-bottom: 16px;
 }
 
-h1 {
-  margin-bottom: 12px;
-}
-
-p {
-  color: #555;
-  margin-bottom: 24px;
-}
-
 .actions {
   display: flex;
   gap: 12px;
   justify-content: center;
-}
-
-button {
-  padding: 10px 16px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  background: #111;
-  color: #fff;
-  font-weight: 500;
 }
 
 .secondary {

@@ -17,7 +17,6 @@ const OrderReview: FC<OrderReviewProps> = ({
   isDelivery,
 }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  console.log(isDelivery);
 
   const { t } = useTranslation();
 
