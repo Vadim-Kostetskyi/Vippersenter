@@ -5,15 +5,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f7f7f7;
 
   & button {
     padding: 10px 16px;
     border-radius: 8px;
     border: none;
     cursor: pointer;
-    background: #111;
-    color: #fff;
+    background: $darkCharcoal;
+    color: $whiteColor;
     font-weight: 500;
   }
 
@@ -22,19 +21,19 @@
   }
 
   & p {
-    color: #555;
+    color: $panelBgDark;
     margin-bottom: 24px;
   }
 }
 
 .card {
-  background: #fff;
+  background: $whiteColor;
   padding: 40px;
   border-radius: 16px;
   max-width: 420px;
   width: 100%;
   text-align: center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 30px $black40;
 }
 
 .icon {
@@ -49,6 +48,6 @@
 }
 
 .secondary {
-  background: #e5e5e5;
-  color: #111;
+  background: $grayDark;
+  color: $panelBgDark;
 }

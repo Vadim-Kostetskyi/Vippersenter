@@ -54,21 +54,18 @@ const OrderSuccessPage: FC = () => {
     handlePayment();
   }, [reference, data, isLoading, navigate, createOrder, orderPayload]);
 
-  if (!show) return <>error</>;
+  if (!show) return null;
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.card}>
         <div className={styles.icon}>✅</div>
-
         <h1>{t("order.thankForPurchase")}</h1>
-
         <p>
           {t("order.orderHasBeenPaid")}
           <br />
           {t("order.startedProcessingIt")}
         </p>
-
         <div className={styles.actions}>
           <button className={styles.secondary} onClick={() => navigate("/")}>
             {t("order.toMainPage")}

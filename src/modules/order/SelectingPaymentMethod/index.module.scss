@@ -1,0 +1,47 @@
+@use "styles/bootstrap" as *;
+
+.paymentMethodBox {
+  display: flex;
+  margin: auto;
+  width: fit-content;
+  margin-bottom: 15px;
+  border: 1px solid $gainsboro;
+  border-radius: 4px;
+
+  & label {
+    display: flex;
+    align-items: center;
+    width: 250px;
+    padding: 20px;
+
+    & input {
+      margin-right: 15px;
+    }
+  }
+
+  & span {
+    text-align: center;
+  }
+
+  & img {
+    width: 70%;
+  }
+
+  & label:last-child {
+    position: relative;
+
+    & img {
+      width: 100%;
+      padding-top: 15px;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 20;
+      left: 0;
+      height: calc(100% - 40px);
+      border-left: 1px solid $gainsboro;
+    }
+  }
+}
