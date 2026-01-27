@@ -249,7 +249,7 @@ export const productsApi = createApi({
           { type: "Product", id: slug },
           { type: "Product", id: "LIST" },
         ],
-      }
+      },
     ),
 
     placeOrder: builder.mutation<
@@ -264,6 +264,32 @@ export const productsApi = createApi({
         method: "POST",
         body: orderData,
       }),
+    }),
+
+    updateProductQuantityDecrease: builder.mutation<
+      Product,
+      {
+        slug: string;
+        quantity: number; // скільки відняти
+        value_main: string;
+        value_secondary?: string;
+        value_tertiary?: string;
+      }
+    >({
+      query: ({
+        slug,
+        quantity,
+        value_main,
+        value_secondary,
+        value_tertiary,
+      }) => ({
+        url: `products/${slug}/decrease-quantity`,
+        method: "PATCH",
+        body: { quantity, value_main, value_secondary, value_tertiary },
+      }),
+      invalidatesTags: (_result, _error, { slug }) => [
+        { type: "Product", slug },
+      ],
     }),
 
     updateProductFlags: builder.mutation<
@@ -314,4 +340,5 @@ export const {
   usePlaceOrderMutation,
   useUpdateProductFlagsMutation,
   useUpdateProductDescriptionMutation,
+  useUpdateProductQuantityDecreaseMutation
 } = productsApi;

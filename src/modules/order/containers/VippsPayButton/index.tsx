@@ -13,7 +13,7 @@ interface VippsPaymentButtonProps {
 }
 
 const VippsPaymentButton: FC<VippsPaymentButtonProps> = ({
-  methodType = "WALLET", // за замовчуванням Vipps Wallet
+  methodType = "WALLET",
   returnUrl = "https://vippersenter.no/order-success",
   orderPayload,
   inputError,
@@ -26,8 +26,8 @@ const VippsPaymentButton: FC<VippsPaymentButtonProps> = ({
   const amount = orderPayload.amount;
 
   const handlePay = useCallback(async () => {
-    const hasError = inputError();
-    if (hasError) return;
+    if (inputError()) return;
+
     try {
       const { redirectUrl, reference } = await createVippsPayment({
         orderId,
@@ -36,17 +36,28 @@ const VippsPaymentButton: FC<VippsPaymentButtonProps> = ({
         methodType,
       }).unwrap();
 
-      if (!redirectUrl) throw new Error("Vipps redirectUrl missing");
-      localStorage.setItem("paymentSuccess", "true");
+      if (!redirectUrl || !reference) {
+        throw new Error("Vipps response invalid");
+      }
+
+      localStorage.setItem("vippsReference", reference);
       localStorage.setItem("orderPayload", JSON.stringify(orderPayload));
 
-      // Редірект на сторінку Vipps або Card
-      window.location.href = `${redirectUrl}&returnReference=${encodeURIComponent(reference)}`;
+      window.location.href = redirectUrl;
     } catch (err) {
       console.error("Vipps payment error:", err);
       alert(t("payment.createError"));
     }
-  }, [createVippsPayment, orderId, amount, returnUrl, methodType]);
+  }, [
+    createVippsPayment,
+    orderId,
+    amount,
+    returnUrl,
+    methodType,
+    orderPayload,
+    inputError,
+    t,
+  ]);
 
   return (
     <button

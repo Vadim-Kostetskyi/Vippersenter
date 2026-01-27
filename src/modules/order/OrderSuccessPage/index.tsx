@@ -1,9 +1,10 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { clearCart } from "utils/card";
 import { useGetVippsPaymentStatusQuery } from "storeRedux/paymentApi";
 import { useCreateOrderMutation } from "storeRedux/ordersApi";
+import { useUpdateProductQuantityDecreaseMutation } from "storeRedux/productsApi";
 import styles from "./index.module.scss";
 
 const OrderSuccessPage: FC = () => {
@@ -11,48 +12,72 @@ const OrderSuccessPage: FC = () => {
   const { t } = useTranslation();
   const [show, setShow] = useState(false);
   const [createOrder] = useCreateOrderMutation();
+  const [decreaseProductQuantity] = useUpdateProductQuantityDecreaseMutation();
+
+  // 🔒 флаг, щоб createOrder виконався ТІЛЬКИ 1 раз
+  const createdRef = useRef(false);
 
   const storedOrder = localStorage.getItem("orderPayload");
+  const reference = localStorage.getItem("vippsReference");
+
+  // ❗ перевірки тільки в useEffect
+  useEffect(() => {
+    if (!storedOrder || !reference) {
+      navigate("/checkout", { replace: true });
+    }
+  }, [navigate]);
+
   const orderPayload = storedOrder ? JSON.parse(storedOrder) : null;
 
-  if (!orderPayload) {
-    navigate("/checkout", { replace: true });
-    return null;
-  }
-
-  const params = new URLSearchParams(location.search);
-  const reference = params.get("returnReference");
-
-  const { data, isLoading } = useGetVippsPaymentStatusQuery(reference || "", {
+  const { data } = useGetVippsPaymentStatusQuery(reference ?? "", {
     skip: !reference,
+    pollingInterval: 1500, // обовʼязково для картки
   });
+  console.log(data);
 
   useEffect(() => {
-    if (!reference) {
-      navigate("/checkout", { replace: true });
+    if (!data || createdRef.current) return;
+
+    // ✅ УСПІШНА ОПЛАТА
+    const SUCCESS_STATES = ["AUTHORIZED", "CAPTURED", "COMPLETED"];
+
+    if (SUCCESS_STATES.includes(data.state)) {
+      createdRef.current = true;
+
+      (async () => {
+        try {
+          await createOrder(orderPayload).unwrap();
+          orderPayload.items.forEach((item: any) => {
+            const mainAttr = item.attributes[0]?.attribute ?? "";
+            const secondaryAttr = item.attributes[1]?.attribute ?? "";
+            const tertiaryAttr = item.attributes[2]?.attribute ?? "";
+
+            decreaseProductQuantity({
+              slug: item.slug,
+              quantity: item.quantity,
+              value_main: mainAttr,
+              value_secondary: secondaryAttr,
+              value_tertiary: tertiaryAttr,
+            });
+          });
+          clearCart();
+          localStorage.removeItem("orderPayload");
+          localStorage.removeItem("vippsReference");
+          setShow(true);
+        } catch (e) {
+          console.error("Create order failed", e);
+          navigate("/checkout", { replace: true });
+        }
+      })();
+
       return;
     }
-    if (isLoading) return;
-    if (!data) return;
 
-    const handlePayment = async () => {
-      // Оплата успішна
-      if (data.state === "AUTHORIZED" || data.state === "CAPTURED") {
-        setShow(true);
-        await createOrder(orderPayload).unwrap();
-        localStorage.removeItem("orderPayload");
-        clearCart();
-        localStorage.removeItem("paymentSuccess");
-      } else {
-        // Оплата не пройшла → редірект на checkout
-        navigate("/checkout", { replace: true });
-        return;
-      }
-    };
-    console.log(data);
-
-    handlePayment();
-  }, [reference, data, isLoading, navigate, createOrder, orderPayload]);
+    // ❌ НЕУСПІШНА ОПЛАТА
+    if (["FAILED", "ABORTED"].includes(data.state)) {
+      navigate("/checkout", { replace: true });
+    }
+  }, [data, createOrder, orderPayload, navigate]);
 
   if (!show) return null;
 
