@@ -2,26 +2,27 @@ import { FC, useState } from "react";
 import LangLink from "utils/LangLink";
 import { useGetProductBySlugQuery } from "storeRedux/productsApi";
 import TrashIcon from "assets/svg/TrashCan.svg";
-import styles from "./index.module.scss";
 import { useTranslation } from "react-i18next";
 import Minus from "assets/svg/Minus";
 import PlusSubtle from "assets/svg/PlusSubtle";
 import {
-  CartItem,
   getCartItems,
   removeCartItem,
   updateCartItemQuantity,
 } from "utils/card";
-import { Attributes } from "utils/card";
 import { Attribute } from "storeRedux/types";
+import { CartAttributes, CartItem } from "types/types";
+import styles from "./index.module.scss";
 
 interface ShoppingBagCardProps {
   slug: string;
   savedPrice: number;
   assignedQuantity: number;
   setProducts: (items: CartItem[]) => void;
-  delProduct: (productId: string, attributes?: Attributes[]) => void;
-  assignedAttributes?: Attributes[];
+  delProduct: (productId: string, attributes?: CartAttributes[]) => void;
+  assignedAttributes?: CartAttributes[];
+  hasChanged?: boolean;
+  availableQuantity?: number;
 }
 
 const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
@@ -31,6 +32,8 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
   setProducts,
   delProduct,
   assignedAttributes,
+  hasChanged,
+  availableQuantity,
 }) => {
   const { data: product } = useGetProductBySlugQuery(slug);
   const {
@@ -41,10 +44,14 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
     attributes,
   } = product ?? {};
   const [count, setCount] = useState(assignedQuantity);
+  console.log(slug);
+
+  console.log("hasChanged", hasChanged);
+  console.log("availableQuantity", availableQuantity);
 
   const findQuantity = (
     allAttributes: Attribute[],
-    searchAttributes: Attributes[]
+    searchAttributes: CartAttributes[],
   ): number | null => {
     const found = allAttributes.find((attr) => {
       return searchAttributes.every((search) => {
@@ -66,7 +73,7 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
 
   const productQuantity = findQuantity(
     attributes ?? [],
-    assignedAttributes ?? []
+    assignedAttributes ?? [],
   );
 
   const { t } = useTranslation();
@@ -97,9 +104,16 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
 
   return (
     <div className={styles.shoppingBagCard}>
+      {hasChanged && (
+        <div className={styles.warningBanner}>
+          Товару залишилось {availableQuantity ?? 0}
+        </div>
+      )}
+
       <LangLink to={`/product/${slug}`}>
         {!!image && <img src={image} alt="" />}
       </LangLink>
+
       <div className={styles.infoBox}>
         <div>
           <LangLink to={`/product/${slug}`}>
@@ -114,11 +128,13 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
             <img src={TrashIcon} alt="delete item" />
           </button>
         </div>
+
         {assignedAttributes?.map(({ parameter, attribute }) => (
           <div key={parameter} className={styles.attributes}>
             <span>{parameter}:</span> <span>{attribute}</span>
           </div>
         ))}
+
         <div>
           <div className={styles.quantityBox}>
             <button

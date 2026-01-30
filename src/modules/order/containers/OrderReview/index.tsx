@@ -1,9 +1,10 @@
 import { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ShoppingBagList from "modules/core/components/ShoppingBagList";
-import { Attributes, CartItem, getCartItems } from "utils/card";
-import styles from "./index.module.scss";
+import { getCartItems } from "utils/card";
 import OrderPrice from "modules/order/components/OrderPrice";
+import { CartAttributes, CartItem } from "types/types";
+import styles from "./index.module.scss";
 
 interface OrderReviewProps {
   deliveryPrice: number;
@@ -37,7 +38,7 @@ const OrderReview: FC<OrderReviewProps> = ({
     window.dispatchEvent(new Event("cartUpdated"));
   };
 
-  const removeCartItem = (slug: string, attributes?: Attributes[]) => {
+  const removeCartItem = (slug: string, attributes?: CartAttributes[]) => {
     const updatedCart = cartItems.filter((item) => {
       if (item.slug !== slug) return true;
 

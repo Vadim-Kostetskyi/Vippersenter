@@ -11,10 +11,12 @@ import ProductFormPage from "./ProductFormPage";
 import PrivateRoute from "storeRedux/PrivateRoute";
 import ProductCategoryPage from "./ProductCategoryPage";
 import ProductCategoriesPage from "./ProductCategoriesPage";
+import CartSync from "modules/core/components/CartSync";
 import SuccessPage from "./SuccessPage";
 
 const App = () => (
   <>
+    <CartSync />
     <ScrollToTop />
     <Routes>
       <Route path="/" element={<HomePage />} />

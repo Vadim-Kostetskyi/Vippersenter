@@ -4,8 +4,9 @@ import LangLink from "utils/LangLink";
 import ShoppingCard from "assets/svg/ShoppingCard";
 import CardButton from "../CardButton";
 import ShoppingBagList from "../ShoppingBagList";
-import { Attributes, CartItem, getCartItems } from "utils/card";
+import { getCartItems } from "utils/card";
 import emptyImg from "assets/svg/EmptyCart.svg";
+import { CartAttributes, CartItem } from "types/types";
 import styles from "./index.module.scss";
 
 const ShoppingBag = () => {
@@ -32,12 +33,12 @@ const ShoppingBag = () => {
 
   const quantityOfProducts = cartItems.reduce(
     (total, item) => total + item.quantity,
-    0
+    0,
   );
 
   const totalCartPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
-    0
+    0,
   );
 
   const onSetProducts = (items: CartItem[]) => {
@@ -45,7 +46,7 @@ const ShoppingBag = () => {
     window.dispatchEvent(new Event("cartUpdated"));
   };
 
-  const removeCartItem = (slug: string, attributes?: Attributes[]) => {
+  const removeCartItem = (slug: string, attributes?: CartAttributes[]) => {
     const updatedCart = cartItems.filter((item) => {
       if (item.slug !== slug) return true;
 
@@ -56,8 +57,8 @@ const ShoppingBag = () => {
       const isSame = item.attributes.every((attr) =>
         attributes.some(
           (a) =>
-            a.attribute === attr.parameter && a.attribute === attr.attribute
-        )
+            a.attribute === attr.parameter && a.attribute === attr.attribute,
+        ),
       );
 
       return !isSame;

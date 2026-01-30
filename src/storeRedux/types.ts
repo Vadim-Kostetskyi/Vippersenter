@@ -1,4 +1,4 @@
-import { CartItem } from "utils/card";
+import { CartAttributes, CartItem } from "types/types";
 
 export type AttributeValue = {
   value_main: string;
@@ -137,3 +137,10 @@ export type OrderPayload = {
   deliveryType: "post" | "pickup";
   items: CartItem[];
 };
+
+export interface CartSyncResponseItem {
+  slug: string;
+  price: number;
+  stock: number; // кількість на складі
+  attributes?: CartAttributes[];
+}

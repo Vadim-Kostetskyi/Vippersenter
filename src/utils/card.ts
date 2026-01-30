@@ -1,28 +1,10 @@
-export interface Attributes {
-  parameter: string;
-  attribute: string;
-  attribute_main?: string;
-  value_main?: string;
-  attribute_secondary?: string;
-  value_secondary?: string;
-  attribute_tertiary?: string;
-  value_tertiary?: string;
-  quantity?: number;
-  [key: string]: any;
-}
-
-export interface CartItem {
-  price: number;
-  quantity: number;
-  attributes?: Attributes[];
-  slug: string;
-}
+import { CartAttributes, CartItem } from "types/types";
 
 export const addProductToCart = (
   slug: string,
   price: number,
   quantity: number = 1,
-  attributes?: Attributes[]
+  attributes?: CartAttributes[],
 ) => {
   const storedCart = localStorage.getItem("cart");
   const cart: CartItem[] = storedCart ? JSON.parse(storedCart) : [];
@@ -35,8 +17,8 @@ export const addProductToCart = (
 
     return item.attributes.every((attr) =>
       attributes.some(
-        (a) => a.parameter === attr.parameter && a.attribute === attr.attribute
-      )
+        (a) => a.parameter === attr.parameter && a.attribute === attr.attribute,
+      ),
     );
   });
 
@@ -54,7 +36,10 @@ export const getCartItems = (): CartItem[] => {
   return storedCart ? JSON.parse(storedCart) : [];
 };
 
-const areAttributesEqual = (a?: Attributes[], b?: Attributes[]): boolean => {
+const areAttributesEqual = (
+  a?: CartAttributes[],
+  b?: CartAttributes[],
+): boolean => {
   if (!a && !b) return true;
   if (!a || !b) return false;
   if (a.length !== b.length) return false;
@@ -73,7 +58,7 @@ const areAttributesEqual = (a?: Attributes[], b?: Attributes[]): boolean => {
 export const updateCartItemQuantity = (
   slug: string,
   newQuantity: number,
-  attributes?: Attributes[]
+  attributes?: CartAttributes[],
 ) => {
   const cart: CartItem[] = JSON.parse(localStorage.getItem("cart") || "[]");
 
@@ -89,13 +74,13 @@ export const updateCartItemQuantity = (
   localStorage.setItem("cart", JSON.stringify(updatedCart));
 };
 
-export const removeCartItem = (slug: string, attributes?: Attributes[]) => {
+export const removeCartItem = (slug: string, attributes?: CartAttributes[]) => {
   const storedCart = localStorage.getItem("cart");
   const cart: CartItem[] = storedCart ? JSON.parse(storedCart) : [];
 
   const updatedCart = cart.filter(
     (item) =>
-      !(item.slug === slug && areAttributesEqual(item.attributes, attributes))
+      !(item.slug === slug && areAttributesEqual(item.attributes, attributes)),
   );
 
   localStorage.setItem("cart", JSON.stringify(updatedCart));

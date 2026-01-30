@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_URL } from "./routes";
-import { GetProductsResponse, Product } from "./types";
+import { CartSyncResponseItem, GetProductsResponse, Product } from "./types";
+import { CartAttributes } from "types/types";
 
 export const productsApi = createApi({
   reducerPath: "productsApi",
@@ -266,6 +267,22 @@ export const productsApi = createApi({
       }),
     }),
 
+    syncCartProducts: builder.mutation<
+      CartSyncResponseItem[], // відповідає типу відповіді бекенду
+      {
+        items: {
+          slug: string;
+          attributes?: CartAttributes[];
+        }[];
+      }
+    >({
+      query: (body) => ({
+        url: "products/cart-sync",
+        method: "POST",
+        body,
+      }),
+    }),
+
     updateProductQuantityDecrease: builder.mutation<
       Product,
       {
@@ -340,5 +357,6 @@ export const {
   usePlaceOrderMutation,
   useUpdateProductFlagsMutation,
   useUpdateProductDescriptionMutation,
-  useUpdateProductQuantityDecreaseMutation
+  useUpdateProductQuantityDecreaseMutation,
+  useSyncCartProductsMutation,
 } = productsApi;
