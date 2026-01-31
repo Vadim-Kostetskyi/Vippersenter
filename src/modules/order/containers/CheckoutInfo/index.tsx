@@ -18,6 +18,8 @@ const CheckoutInfo = () => {
   const [isDelivery, setIsdelivery] = useState(true);
   const [totalPrice, setTotalPrice] = useState(0);
   const [formData, setFormData] = useState<OrderFormData | null>(null);
+  const [pay, setPay] = useState(false);
+  const [countError, setCountError] = useState(false);
 
   const onSetDeliveryPrice = (price: number) => setDeliveryPrice(price);
   const onSetIsDelivery = (type: boolean) => setIsdelivery(type);
@@ -30,6 +32,14 @@ const CheckoutInfo = () => {
   const orderDetails = {
     formData,
     totalPrice,
+  };
+
+  const handlePay = () => {
+    setPay(true);
+  };
+
+  const handleCountError = (isError: boolean) => {
+    setCountError(isError);
   };
 
   return (
@@ -45,9 +55,15 @@ const CheckoutInfo = () => {
           deliveryPrice={deliveryPrice}
           setTotalPrice={onSetTotalPrice}
           isDelivery={isDelivery}
+          pay={pay}
+          countError={handleCountError}
         />
 
-        <Payment deliveryDetails={orderDetails} />
+        <Payment
+          deliveryDetails={orderDetails}
+          pay={handlePay}
+          countError={countError}
+        />
 
         {/* Для перевірки */}
         {/* <pre>{JSON.stringify(formData, null, 2)}</pre> */}

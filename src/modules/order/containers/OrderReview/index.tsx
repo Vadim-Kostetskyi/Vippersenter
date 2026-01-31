@@ -10,12 +10,16 @@ interface OrderReviewProps {
   deliveryPrice: number;
   setTotalPrice: (price: number) => void;
   isDelivery: boolean;
+  pay: boolean;
+  countError?: (isError: boolean) => void;
 }
 
 const OrderReview: FC<OrderReviewProps> = ({
   // deliveryPrice,
   setTotalPrice,
   isDelivery,
+  pay,
+  countError,
 }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
@@ -25,11 +29,27 @@ const OrderReview: FC<OrderReviewProps> = ({
   const totalCartPrice = cartPrices.reduce((acc, num) => acc + num, 0);
 
   useEffect(() => {
-    setCartItems(getCartItems());
-  }, []);
+    const syncCart = () => {
+      setCartItems(getCartItems());
+    };
+    syncCart();
+
+    const timeout = setTimeout(syncCart, 5000);
+
+    const interval = setInterval(syncCart, 30000);
+
+    const pageReloadInterval = setInterval(() => {
+      window.location.reload();
+    }, 300000);
+
+    return () => {
+      clearTimeout(timeout);
+      clearInterval(interval);
+      clearInterval(pageReloadInterval);
+    };
+  }, [pay]);
 
   useEffect(() => {
-    // setTotalPrice(totalCartPrice + deliveryPrice);
     setTotalPrice(totalCartPrice);
   }, [totalCartPrice]);
 
@@ -85,6 +105,7 @@ const OrderReview: FC<OrderReviewProps> = ({
         products={cartItems}
         setProducts={onSetProducts}
         delProduct={removeCartItem}
+        countError={countError}
       />
       <div className={styles.priceBox}>
         {prices.map((props) => (

@@ -4,11 +4,13 @@ import { OrderFormData } from "modules/order/containers/CheckoutInfo";
 interface EmptyInputCheckArgs {
   formData: OrderFormData;
   t: (key: string) => string;
+  countError: boolean;
 }
 
 export const emptyInputCheck = ({
   formData,
   t,
+  countError,
 }: EmptyInputCheckArgs): boolean => {
   const {
     name,
@@ -26,6 +28,11 @@ export const emptyInputCheck = ({
     phone.trim().length === 0 ||
     email.trim().length === 0 ||
     town.trim().length === 0;
+
+  if (countError) {
+    toast.error(t("payment.insufficientAmount"));
+    return true;
+  }
 
   if (hasError) {
     window.scrollTo({ top: 0, behavior: "smooth" });

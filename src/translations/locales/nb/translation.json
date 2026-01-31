@@ -73,7 +73,9 @@
     "returnToStore": "Tilbake til butikken",
     "continueShopping": "Fortsett å handle",
     "total": "Totalt",
-    "placeAnOrder": "Legg inn bestilling"
+    "placeAnOrder": "Legg inn bestilling",
+    "itemsLeft": "Produkter igjen",
+    "priceChanged": "Prisen har endret seg"
   },
 
   "order": {
@@ -129,7 +131,8 @@
     "createError": "Feil ved oppretting av betaling",
     "fillError": "Vennligst fyll ut alle feltene",
     "deliveryError": "Velg leveringsmåte og postkontor",
-    "payWithVipps": "Betal med Vipps"
+    "payWithVipps": "Betal med Vipps",
+    "insufficientAmount": "Ikke nok novaru på lager"
   },
 
   "save": "Bevare",

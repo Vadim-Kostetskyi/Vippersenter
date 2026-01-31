@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { OrderFormData } from "../CheckoutInfo";
 import VippsPay from "../VippsPayButton";
@@ -12,10 +12,11 @@ interface PaymentProps {
     formData: OrderFormData | null;
     totalPrice: number;
   };
+  pay: () => void;
+  countError: boolean;
 }
 
-const Payment: FC<PaymentProps> = ({ deliveryDetails }) => {
-  // const [cartItems, setCartItems] = useState(getCartItems());
+const Payment: FC<PaymentProps> = ({ deliveryDetails, pay, countError }) => {
   const { t } = useTranslation();
 
   const cartItems = getCartItems();
@@ -62,13 +63,16 @@ const Payment: FC<PaymentProps> = ({ deliveryDetails }) => {
     <section className={styles.payment}>
       <h3>{t("payment.payment")}</h3>
       <VippsPay
+        methodType="WALLET"
         orderPayload={orderPayload}
         inputError={() =>
           emptyInputCheck({
             formData: customerInfo,
             t,
+            countError,
           })
         }
+        pay={pay}
       />
       <VippsPay
         methodType="CARD"
@@ -77,8 +81,10 @@ const Payment: FC<PaymentProps> = ({ deliveryDetails }) => {
           emptyInputCheck({
             formData: customerInfo,
             t,
+            countError,
           })
         }
+        pay={pay}
       />
     </section>
   );

@@ -73,7 +73,9 @@
     "returnToStore": "Return to store",
     "continueShopping": "Continue shopping",
     "total": "Total",
-    "placeAnOrder": "Place an order"
+    "placeAnOrder": "Place an order",
+    "itemsLeft": "Products left",
+    "priceChanged": "The price has changed"
   },
 
   "order": {
@@ -129,7 +131,8 @@
     "createError": "Error creating payment",
     "fillError": "Please fill in all fields",
     "deliveryError": "Select the delivery method and post office",
-    "payWithVipps": "Pay with Vipps"
+    "payWithVipps": "Pay with Vipps",
+    "insufficientAmount": "Insufficient amount of novar in stock"
   },
 
   "save": "Save",

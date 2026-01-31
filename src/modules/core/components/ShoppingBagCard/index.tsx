@@ -6,7 +6,6 @@ import { useTranslation } from "react-i18next";
 import Minus from "assets/svg/Minus";
 import PlusSubtle from "assets/svg/PlusSubtle";
 import {
-  getCartItems,
   removeCartItem,
   updateCartItemPrice,
   updateCartItemQuantity,
@@ -24,15 +23,16 @@ interface ShoppingBagCardProps {
   assignedAttributes?: CartAttributes[];
   hasChanged?: boolean;
   availableQuantity?: number;
+  countError?: (isError: boolean) => void;
 }
 
 const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
   slug,
   savedPrice,
   assignedQuantity,
-  setProducts,
   delProduct,
   assignedAttributes,
+  countError,
   // hasChanged,
   // availableQuantity,
 }) => {
@@ -79,8 +79,8 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
     setCount((prev) => {
       const newCount = prev + 1;
       updateCartItemQuantity(slug, newCount, assignedAttributes);
-      const cards = getCartItems();
-      setProducts(cards);
+      // const cards = getCartItems();
+      // setProducts(cards);
       return newCount;
     });
   };
@@ -89,13 +89,16 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
     setCount((prev) => {
       const newCount = prev > 1 ? prev - 1 : 1;
       updateCartItemQuantity(slug, newCount, assignedAttributes);
-      const cards = getCartItems();
-      setProducts(cards);
+      // const cards = getCartItems();
+      // setProducts(cards);
       return newCount;
     });
   };
 
-  const totalPrice = count * +savedPrice;
+  const totalPrice = useMemo(() => {
+    return count * Number(savedPrice);
+  }, [count, savedPrice]);
+
   const maxQuantity =
     attributes?.length === 1 ? +quantity : productQuantity || 0;
 
@@ -147,18 +150,25 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
   const maxCount = selectedVariant?.quantity || maxQuantity;
   updateCartItemPrice(slug, newPrice, assignedAttributes);
 
+  const istotalPriceChanged = totalPrice !== newPriceAdded;
+  const isMaxCount = +maxCount < count;
+
+  if (countError && isMaxCount) {
+    countError(isMaxCount);
+  }
+
   return (
     <div className={styles.shoppingBagCard}>
-      {newPriceAdded !== totalPrice && (
+      {product && istotalPriceChanged && (
         <div className={styles.warningPriceBanner}>
-          Ціна змінилась: {savedPrice.toFixed(2)}
+          {t("shoppingCard.priceChanged")}: {savedPrice.toFixed(2)}
           {t("currency")} → {newPrice.toFixed(2)}
           {t("currency")}
         </div>
       )}
-      {maxCount && +maxCount < count && (
+      {maxCount && isMaxCount && (
         <div className={styles.warningQuantityBanner}>
-          Товару залишилось {maxCount}
+          {t("shoppingCard.itemsLeft")}: {maxCount}
         </div>
       )}
 

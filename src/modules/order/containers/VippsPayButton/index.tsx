@@ -10,6 +10,7 @@ interface VippsPaymentButtonProps {
   returnUrl?: string;
   orderPayload: OrderPayload;
   inputError: () => boolean;
+  pay: () => void;
 }
 
 const VippsPaymentButton: FC<VippsPaymentButtonProps> = ({
@@ -17,6 +18,7 @@ const VippsPaymentButton: FC<VippsPaymentButtonProps> = ({
   returnUrl = "https://vippersenter.no/order-success",
   orderPayload,
   inputError,
+  pay,
 }) => {
   const [createVippsPayment, { isLoading }] = useCreateVippsPaymentMutation();
 
@@ -27,6 +29,7 @@ const VippsPaymentButton: FC<VippsPaymentButtonProps> = ({
 
   const handlePay = useCallback(async () => {
     if (inputError()) return;
+    pay();
 
     try {
       const { redirectUrl, reference } = await createVippsPayment({

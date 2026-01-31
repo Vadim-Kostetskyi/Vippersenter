@@ -16,19 +16,21 @@ const ShoppingBag = () => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  // початкове завантаження
   useEffect(() => {
-    setCartItems(getCartItems());
-  }, []);
-
-  // синхронізація через custom event
-  useEffect(() => {
-    const updateCart = () => {
-      setCartItems(JSON.parse(localStorage.getItem("cart") || "[]"));
+    const syncCart = () => {
+      setCartItems(getCartItems());
     };
 
-    window.addEventListener("cartUpdated", updateCart);
-    return () => window.removeEventListener("cartUpdated", updateCart);
+    syncCart();
+
+    const timeout = setTimeout(syncCart, 5000);
+
+    const interval = setInterval(syncCart, 30000);
+
+    return () => {
+      clearTimeout(timeout);
+      clearInterval(interval);
+    };
   }, []);
 
   const quantityOfProducts = cartItems.reduce(
@@ -44,7 +46,7 @@ const ShoppingBag = () => {
   const onSetProducts = (items: CartItem[]) => {
     setCartItems(items);
     localStorage.setItem("cart", JSON.stringify(items));
-    window.dispatchEvent(new Event("cartUpdated"));
+    // window.dispatchEvent(new Event("cartUpdated"));
   };
 
   const isSameAttributes = (

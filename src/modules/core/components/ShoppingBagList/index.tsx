@@ -7,12 +7,14 @@ interface ShoppingBagListProps {
   products: CartItem[];
   setProducts: (items: CartItem[]) => void;
   delProduct: (productId: string, attributes?: CartAttributes[]) => void;
+  countError?: (isError: boolean) => void;
 }
 
 const ShoppingBagList: FC<ShoppingBagListProps> = ({
   products,
   setProducts,
   delProduct,
+  countError,
 }) => (
   <div className={styles.shoppingBagList}>
     {products.map(
@@ -30,6 +32,7 @@ const ShoppingBagList: FC<ShoppingBagListProps> = ({
           assignedAttributes={attributes}
           hasChanged={hasChanged}
           availableQuantity={availableQuantity}
+          countError={countError}
         />
       ),
     )}

@@ -33,7 +33,6 @@ const OrderSuccessPage: FC = () => {
     skip: !reference,
     pollingInterval: 1500, // обовʼязково для картки
   });
-  console.log(data);
 
   useEffect(() => {
     if (!data || createdRef.current) return;
