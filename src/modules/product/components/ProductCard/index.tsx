@@ -36,7 +36,7 @@ const ProductCard = () => {
       selectedAttributes.map(({ parameter, attribute }) => [
         parameter,
         attribute,
-      ])
+      ]),
     );
   }, [selectedAttributes]);
 
@@ -46,7 +46,7 @@ const ProductCard = () => {
 
   const getSelectedVariantData = (
     attributes: Attribute[],
-    selectedAttributes: SelectedAttributes[]
+    selectedAttributes: SelectedAttributes[],
   ): Attribute | null => {
     if (selectedAttributes.length === 0) return null;
 
@@ -123,7 +123,7 @@ const ProductCard = () => {
 
   const variant = useMemo(
     () => getSelectedVariantData(product?.attributes ?? [], selectedAttributes),
-    [product?.attributes, selectedAttributes]
+    [product?.attributes, selectedAttributes],
   );
 
   useEffect(() => {
@@ -136,7 +136,7 @@ const ProductCard = () => {
         const productInCart = cart.find((p: any) => p.slug === productSlug);
         const maxAddable = Math.max(
           +product?.quantity - productInCart?.quantity,
-          0
+          0,
         );
         setMaxCount(productInCart ? maxAddable : +product?.quantity);
         return;
@@ -144,7 +144,7 @@ const ProductCard = () => {
 
       const variant = getSelectedVariantData(
         product.attributes,
-        selectedAttributes
+        selectedAttributes,
       );
       const qty = parseInt(variant?.quantity || "0");
 
@@ -155,14 +155,14 @@ const ProductCard = () => {
           (p.attributes[1]?.attribute === undefined ||
             p.attributes[1]?.attribute === selectedAttributes[1]?.attribute) &&
           (p.attributes[2]?.attribute === undefined ||
-            p.attributes[2]?.attribute === selectedAttributes[2]?.attribute)
+            p.attributes[2]?.attribute === selectedAttributes[2]?.attribute),
       );
 
       const alreadyInCart = productInCart?.quantity || 0;
       const maxAddable = Math.max(qty - alreadyInCart, 0);
       const alreadyInCartMaxAddable = Math.max(
         +product.quantity - alreadyInCart,
-        0
+        0,
       );
 
       if (variant) {
@@ -218,7 +218,7 @@ const ProductCard = () => {
 
   const availableValues = getAvailableAttributeValues(
     product.attributes ?? [],
-    selectedAttributes
+    selectedAttributes,
   );
 
   const availableValuesArray = Object.values(availableValues).flatMap((set) => [

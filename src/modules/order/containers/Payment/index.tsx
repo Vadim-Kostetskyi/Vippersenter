@@ -1,14 +1,11 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-// import { PaymentCard } from "components/PaymentCard";
 import { OrderFormData } from "../CheckoutInfo";
 import VippsPay from "../VippsPayButton";
 import { getCartItems } from "utils/card";
 import { OrderPayload } from "storeRedux/types";
-// import { PaymentMethod } from "types/types";
-// import SelectingPaymentMethod from "modules/order/SelectingPaymentMethod";
-import styles from "./index.module.scss";
 import { emptyInputCheck } from "utils/emptyInputCheck";
+import styles from "./index.module.scss";
 
 interface PaymentProps {
   deliveryDetails: {
@@ -18,9 +15,10 @@ interface PaymentProps {
 }
 
 const Payment: FC<PaymentProps> = ({ deliveryDetails }) => {
-  // const [paymentMethod, setPaymentMethod] =
-  //   useState<PaymentMethod>("bank_card");
+  // const [cartItems, setCartItems] = useState(getCartItems());
   const { t } = useTranslation();
+
+  const cartItems = getCartItems();
 
   let customerInfo = null;
   if (deliveryDetails.formData) {
@@ -40,11 +38,6 @@ const Payment: FC<PaymentProps> = ({ deliveryDetails }) => {
   } = customerInfo;
 
   const totalPrice = deliveryDetails.totalPrice;
-  const cartItems = getCartItems();
-
-  // const onSetPaymentMethod = (item: PaymentMethod) => {
-  //   setPaymentMethod(item);
-  // };
 
   const orderPayload: OrderPayload = {
     paymentIntentId: Number(
@@ -68,13 +61,6 @@ const Payment: FC<PaymentProps> = ({ deliveryDetails }) => {
   return (
     <section className={styles.payment}>
       <h3>{t("payment.payment")}</h3>
-      {/* <SelectingPaymentMethod
-        paymentMethod={paymentMethod}
-        onSetPaymentMethod={onSetPaymentMethod}
-      /> */}
-      {/* {paymentMethod === "banc_card" ? ( */}
-      {/* <PaymentCard orderPayload={orderPayload} inputError={emptyInputCheck} /> */}
-      {/* ) : ( */}
       <VippsPay
         orderPayload={orderPayload}
         inputError={() =>
@@ -94,7 +80,6 @@ const Payment: FC<PaymentProps> = ({ deliveryDetails }) => {
           })
         }
       />
-      {/* )} */}
     </section>
   );
 };

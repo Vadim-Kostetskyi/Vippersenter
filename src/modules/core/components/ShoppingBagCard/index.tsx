@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import LangLink from "utils/LangLink";
 import { useGetProductBySlugQuery } from "storeRedux/productsApi";
 import TrashIcon from "assets/svg/TrashCan.svg";
@@ -8,9 +8,10 @@ import PlusSubtle from "assets/svg/PlusSubtle";
 import {
   getCartItems,
   removeCartItem,
+  updateCartItemPrice,
   updateCartItemQuantity,
 } from "utils/card";
-import { Attribute } from "storeRedux/types";
+import { Attribute, SelectedAttributes } from "storeRedux/types";
 import { CartAttributes, CartItem } from "types/types";
 import styles from "./index.module.scss";
 
@@ -32,8 +33,8 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
   setProducts,
   delProduct,
   assignedAttributes,
-  hasChanged,
-  availableQuantity,
+  // hasChanged,
+  // availableQuantity,
 }) => {
   const { data: product } = useGetProductBySlugQuery(slug);
   const {
@@ -44,10 +45,6 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
     attributes,
   } = product ?? {};
   const [count, setCount] = useState(assignedQuantity);
-  console.log(slug);
-
-  console.log("hasChanged", hasChanged);
-  console.log("availableQuantity", availableQuantity);
 
   const findQuantity = (
     allAttributes: Attribute[],
@@ -102,11 +99,66 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
   const maxQuantity =
     attributes?.length === 1 ? +quantity : productQuantity || 0;
 
+  const selected = useMemo(() => {
+    if (!assignedAttributes) return;
+    return Object.fromEntries(
+      assignedAttributes.map(({ parameter, attribute }) => [
+        parameter,
+        attribute,
+      ]),
+    );
+  }, [assignedAttributes]);
+
+  const getSelectedVariantData = (
+    attributes: Attribute[],
+    selectedAttributes: SelectedAttributes[],
+  ): Attribute | null => {
+    if (selectedAttributes.length === 0) return null;
+    if (!selected) return null;
+
+    return (
+      attributes.find((attr) => {
+        const mainMatch =
+          attr.attribute_main &&
+          attr.value_main === selected[attr.attribute_main];
+        const secondaryMatch =
+          attr.attribute_secondary &&
+          attr.value_secondary === selected[attr.attribute_secondary];
+        const tertiaryMatch =
+          attr.attribute_tertiary &&
+          attr.value_tertiary === selected[attr.attribute_tertiary];
+
+        if (selectedAttributes.length === 3) {
+          return mainMatch && secondaryMatch && tertiaryMatch;
+        } else if (selectedAttributes.length === 1) {
+          return mainMatch;
+        }
+      }) ?? null
+    );
+  };
+
+  const selectedVariant = getSelectedVariantData(
+    attributes ?? [],
+    assignedAttributes ?? [],
+  );
+
+  const newPrice = (product?.price ?? 0) + +(selectedVariant?.extraPrice ?? 0);
+  const newPriceAdded = newPrice * count;
+  const maxCount = selectedVariant?.quantity || maxQuantity;
+  updateCartItemPrice(slug, newPrice, assignedAttributes);
+
   return (
     <div className={styles.shoppingBagCard}>
-      {hasChanged && (
-        <div className={styles.warningBanner}>
-          Товару залишилось {availableQuantity ?? 0}
+      {newPriceAdded !== totalPrice && (
+        <div className={styles.warningPriceBanner}>
+          Ціна змінилась: {savedPrice.toFixed(2)}
+          {t("currency")} → {newPrice.toFixed(2)}
+          {t("currency")}
+        </div>
+      )}
+      {maxCount && +maxCount < count && (
+        <div className={styles.warningQuantityBanner}>
+          Товару залишилось {maxCount}
         </div>
       )}
 
@@ -154,7 +206,9 @@ const ShoppingBagCard: FC<ShoppingBagCardProps> = ({
             </button>
           </div>
           <span className={styles.price}>
-            {totalPrice.toFixed(2)}
+            {newPriceAdded === totalPrice
+              ? totalPrice.toFixed(2)
+              : newPriceAdded.toFixed(2)}
             {t("currency")}
           </span>
         </div>

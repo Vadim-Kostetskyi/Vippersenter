@@ -74,6 +74,24 @@ export const updateCartItemQuantity = (
   localStorage.setItem("cart", JSON.stringify(updatedCart));
 };
 
+export const updateCartItemPrice = (
+  slug: string,
+  newPrice: number,
+  attributes?: CartAttributes[],
+) => {
+  const cart: CartItem[] = JSON.parse(localStorage.getItem("cart") || "[]");
+
+  const updatedCart = cart.map((item) => {
+    const sameProduct = item.slug === slug;
+    const sameAttributes = areAttributesEqual(item.attributes, attributes);
+
+    return sameProduct && sameAttributes ? { ...item, price: newPrice } : item;
+  });
+
+  localStorage.setItem("cart", JSON.stringify(updatedCart));
+  window.dispatchEvent(new Event("cartUpdated"));
+};
+
 export const removeCartItem = (slug: string, attributes?: CartAttributes[]) => {
   const storedCart = localStorage.getItem("cart");
   const cart: CartItem[] = storedCart ? JSON.parse(storedCart) : [];
